@@ -1,0 +1,68 @@
+import Image from "next/image";
+import type { TeamMember } from "@/lib/types";
+import { cn } from "@/lib/utils";
+
+/** Initials from a verified name — never a generated or stock portrait. */
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+export function TeamCard({
+  member,
+  className,
+}: {
+  member: TeamMember;
+  className?: string;
+}) {
+  return (
+    <article className={cn("group", className)}>
+      <div className="relative aspect-4/5 overflow-hidden bg-mist">
+        {member.image ? (
+          <Image
+            src={member.image}
+            alt={`${member.name}, ${member.role}, Kinetic Edge`}
+            fill
+            sizes="(min-width: 1280px) 20vw, (min-width: 768px) 30vw, 45vw"
+            className="object-cover object-top transition-transform duration-700 ease-[var(--ease-ke)] group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 flex items-center justify-center bg-mist"
+          >
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(-63deg, rgba(10,22,38,0.04) 0px, rgba(10,22,38,0.04) 1px, transparent 1px, transparent 13px)",
+              }}
+            />
+            <span className="relative font-display text-4xl font-bold tracking-[-0.04em] text-ink/15 md:text-5xl">
+              {initials(member.name)}
+            </span>
+          </div>
+        )}
+
+        {/* Accent rule on hover */}
+        <span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-[var(--ease-ke)] group-hover:scale-x-100"
+        />
+      </div>
+
+      <h3 className="mt-4 font-display text-[1.0625rem] font-bold tracking-[-0.022em] text-ink md:text-[1.1875rem]">
+        {member.name}
+      </h3>
+      {/* Roles are long. Setting them in mono at a smaller size makes them read
+          as metadata rather than as a headline competing with the name. */}
+      <p className="mt-2 font-mono text-[0.6875rem] uppercase leading-[1.5] tracking-[0.1em] text-steel md:text-[0.75rem]">
+        {member.role}
+      </p>
+    </article>
+  );
+}

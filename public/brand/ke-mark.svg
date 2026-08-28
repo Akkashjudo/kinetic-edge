@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 111" fill="none" role="img" aria-label="Kinetic Edge">
+  <defs>
+    <linearGradient id="keMarkGrad" x1="0" y1="111" x2="196" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1E7CC2"/>
+      <stop offset="0.55" stop-color="#4FADDF"/>
+      <stop offset="1" stop-color="#74CBE9"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#keMarkGrad)">
+    <path d="M38.5 1.0L42.5 1.3L43.3 3.8L34.3 41.8L34.5 45.8L36.0 45.8L39.5 43.3L84.5 2.3L92.0 1.0L107.0 1.5L102.8 7.0L52.3 56.0L53.3 59.0L83.5 104.3L86.0 108.5L85.5 110.0L67.3 110.3L64.8 109.5L38.8 69.5L32.0 60.8L29.8 63.0L20.5 109.3L17.8 110.3L7.0 110.3L1.5 108.8L23.3 4.3L25.5 1.3L38.3 1.3Z"/>
+    <path d="M150.3 1.0L193.8 1.0L195.0 2.5L185.0 17.8L182.0 19.8L113.8 19.8L112.5 18.8L118.8 7.8L124.0 1.5L150.0 1.3Z"/>
+    <path d="M118.3 45.8L154.8 45.8L155.8 47.3L147.5 61.5L144.8 64.5L105.5 64.5L115.0 47.3L118.0 46.0Z"/>
+    <path d="M106.5 91.5L176.0 91.5L177.3 92.8L167.0 108.5L165.3 109.8L95.0 109.8L95.5 107.0L104.5 92.8L106.3 91.8Z"/>
+  </g>
+</svg>

@@ -1,0 +1,558 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   KINETIC EDGE — DESIGN TOKENS
+   Built for Performance. Engineered for Recovery.
+   ========================================================================== */
+
+@theme {
+  /* Brand */
+  --color-ke-blue: #1385d6;
+  --color-ke-blue-700: #0b5d99;
+  --color-ke-blue-600: #0f6fb5;
+  --color-ke-blue-100: #d5e9f9;
+  --color-ke-blue-50: #eef6fd;
+
+  --color-ke-teal: #0f9aab;
+  --color-ke-teal-800: #085a65;
+  --color-ke-teal-700: #0a6f7c;
+  --color-ke-teal-600: #0c818f;
+  --color-ke-teal-100: #d2edf1;
+  --color-ke-teal-50: #ecf7f9;
+
+  /* Neutrals */
+  --color-ink: #0a1626;
+  /* Lifted ink — the rehabilitation ground and the footer, so neither sits at
+     exactly the same value as the surface above it. */
+  --color-ink-lift: #10203a;
+  --color-night: #071320;
+  --color-paper: #ffffff;
+  --color-bone: #f6f8fa;
+  --color-mist: #edf1f5;
+  --color-line: #dde4ec;
+  --color-line-dark: #1a2c42;
+  --color-steel: #5c6c7e;
+  /* Muted-but-readable on dark grounds: 5.43:1 on --night. Used for the
+     *inactive* state of scroll-activated content, so information is never
+     carried by opacity alone. */
+  --color-steel-500: #7b8ba0;
+  --color-steel-400: #93a3b5;
+
+  /* Typography */
+  --font-display: var(--font-archivo), "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Motion */
+  --ease-ke: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-ke-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Layout */
+  --spacing-gutter: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Accent switching: sections opt into performance (blue) or rehab (teal).
+   Components read var(--accent) and stay identical across both contexts.
+   -------------------------------------------------------------------------- */
+:root,
+[data-accent="performance"] {
+  --accent: var(--color-ke-blue);
+  --accent-strong: var(--color-ke-blue-600);
+  --accent-deep: var(--color-ke-blue-700);
+  --accent-tint: var(--color-ke-blue-50);
+  --accent-line: var(--color-ke-blue-100);
+  /* Text-safe accent. The brand blue only reaches 3.96:1 on white, so small
+     text and filled buttons on light surfaces use this deeper shade (5.4:1).
+     The brand blue itself still carries rules, marks and dark surfaces. */
+  --accent-ink: var(--color-ke-blue-600);
+  --accent-ink-hover: var(--color-ke-blue-700);
+}
+
+[data-accent="rehab"] {
+  --accent: var(--color-ke-teal);
+  --accent-strong: var(--color-ke-teal-600);
+  --accent-deep: var(--color-ke-teal-700);
+  --accent-tint: var(--color-ke-teal-50);
+  --accent-line: var(--color-ke-teal-100);
+  --accent-ink: var(--color-ke-teal-700);
+  --accent-ink-hover: var(--color-ke-teal-800);
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-tint: var(--accent-tint);
+  --color-accent-line: var(--accent-line);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-ink-hover: var(--accent-ink-hover);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header clearance for in-page anchors */
+    scroll-padding-top: 6rem;
+    /* `clip`, not `hidden`, so position: sticky still works */
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-ke-blue);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Dark surfaces get a light focus ring */
+  .surface-dark :focus-visible {
+    outline-color: #7cc6f2;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Layout utilities
+   -------------------------------------------------------------------------- */
+@utility ke-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 640px) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 1024px) {
+    padding-inline: 3rem;
+  }
+  @media (width >= 1440px) {
+    padding-inline: 4rem;
+  }
+}
+
+/* Narrower measure for editorial content blocks */
+@utility ke-content {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+/* ── Vertical rhythm ───────────────────────────────────────────────────────
+   Four intensities, so a section can signal how much it matters. Reaching for
+   `ke-section` everywhere is what made the page read as metronomic.
+
+     ke-section-connective  seams and transitions between heavier sections
+     ke-section-tight       supporting content
+     ke-section             the standard beat
+     ke-section-lg          the four signature moments only
+   ------------------------------------------------------------------------ */
+@utility ke-section {
+  padding-block: 4.5rem;
+
+  @media (width >= 768px) {
+    padding-block: 6.5rem;
+  }
+  @media (width >= 1280px) {
+    padding-block: 8rem;
+  }
+}
+
+@utility ke-section-lg {
+  padding-block: 6rem;
+
+  @media (width >= 768px) {
+    padding-block: 8.5rem;
+  }
+  @media (width >= 1280px) {
+    padding-block: 11rem;
+  }
+}
+
+@utility ke-section-tight {
+  padding-block: 3.5rem;
+
+  @media (width >= 768px) {
+    padding-block: 4.5rem;
+  }
+}
+
+@utility ke-section-connective {
+  padding-block: 2.5rem;
+
+  @media (width >= 768px) {
+    padding-block: 3.5rem;
+  }
+}
+
+/* Minimum interactive target (WCAG 2.5.8 AA) for small text links.
+   Applied to footer, breadcrumb and social links, which would otherwise sit
+   under 24px tall at their type size. */
+@utility ke-tap {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
+}
+
+/* Editorial hairline used to divide sections and grid cells */
+@utility ke-rule {
+  border-top: 1px solid var(--color-line);
+}
+
+/* --------------------------------------------------------------------------
+   Type scale helpers
+   -------------------------------------------------------------------------- */
+/* ── Type scale ────────────────────────────────────────────────────────────
+   Every clamp is expressed as `rem + vw` rather than a bare `vw`, so the size
+   climbs continuously between the floor and the cap. A bare `vw` middle term
+   pinned h2 to its 30px floor all the way from 375px to 768px, which left
+   tablet reading as an enlarged phone.
+   ------------------------------------------------------------------------ */
+
+@utility ke-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  /* Calibrated against the measured width of the longest headline phrase
+     ("Engineered for Recovery.") at every breakpoint, with ~4% headroom. The
+     curve deliberately climbs slower than the container so the phrase never
+     outgrows the column. */
+  font-size: clamp(2.1875rem, 0.916rem + 5.65vw, 6rem);
+
+  /* Archivo carries a width axis (62–125). Narrowing it on small screens is
+     what lets each phrase hold one authored line at full display size, rather
+     than shrinking the type or breaking mid-phrase. The steps land on the same
+     widths where the container gutters change, so they read as one adjustment. */
+  /* 62% is the bottom of Archivo's width axis — reserved for the handful of
+     sub-360px devices, where the phrase would otherwise break. */
+  font-stretch: 62%;
+
+  @media (width >= 360px) {
+    font-stretch: 70%;
+  }
+  @media (width >= 400px) {
+    font-stretch: 76%;
+  }
+  @media (width >= 640px) {
+    font-stretch: 88%;
+  }
+  @media (width >= 1024px) {
+    font-stretch: 100%;
+  }
+}
+
+@utility ke-h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.032em;
+  font-size: clamp(2.25rem, 1.545rem + 3.005vw, 4.25rem);
+}
+
+@utility ke-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.875rem, 1.39rem + 2.07vw, 3.25rem);
+}
+
+@utility ke-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.024em;
+  font-size: clamp(1.375rem, 1.19rem + 0.79vw, 1.875rem);
+}
+
+/* The editorial statement — the largest non-hero type on the site. */
+@utility ke-statement {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.032em;
+  font-size: clamp(1.75rem, 0.94rem + 3.46vw, 4rem);
+}
+
+@utility ke-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@utility ke-lead {
+  font-size: clamp(1.0625rem, 0.996rem + 0.282vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--color-steel);
+}
+
+/* Running copy. Replaces the hardcoded 15px that never scaled. */
+@utility ke-body {
+  font-size: clamp(0.9375rem, 0.894rem + 0.188vw, 1.0625rem);
+  line-height: 1.65;
+}
+
+@utility ke-body-sm {
+  font-size: clamp(0.875rem, 0.85rem + 0.11vw, 0.9375rem);
+  line-height: 1.6;
+}
+
+/* Comfortable measure for running copy — roughly 62 characters. */
+@utility ke-measure {
+  max-width: 62ch;
+}
+
+/* --------------------------------------------------------------------------
+   Components
+   -------------------------------------------------------------------------- */
+
+/* Subtle technical grid used behind dark hero / method sections */
+@utility ke-grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 88px 88px;
+}
+
+@utility ke-noise {
+  position: relative;
+}
+
+/* Marquee track */
+@keyframes ke-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ke-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: ke-marquee var(--marquee-duration, 60s) linear infinite;
+}
+
+.ke-marquee:hover .ke-marquee-track {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Elements that exist only to convey motion — a scroll cue, a sweep line.
+     They are rendered identically on the server and the client (branching the
+     tree on the reduced-motion preference is a hydration mismatch) and removed
+     here in CSS instead. */
+  .ke-motion-only {
+    display: none !important;
+  }
+
+  /* Content must never depend on an entrance animation firing.
+     `Reveal` and friends render their hidden `initial` state into the HTML and
+     rely on an IntersectionObserver to release it — which means a visitor who
+     prefers reduced motion would still be waiting on a scroll trigger to see
+     the page. Overriding the result in CSS keeps the markup identical across
+     hydration (so no mismatch) while guaranteeing everything is visible. */
+  [data-ke-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .ke-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Marquee falls back to a static wrapped list when motion is reduced,
+   so no content is clipped and no horizontal overflow is introduced. */
+@media (prefers-reduced-motion: reduce) {
+  .ke-marquee-track,
+  .ke-marquee-track > ul {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.5rem;
+  }
+
+  .ke-marquee-dup {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Method steps
+   --------------------------------------------------------------------------
+   Step emphasis is driven by CSS custom properties keyed off `data-active`,
+   rather than by branching class names in the component. Two reasons:
+
+   1. `prefers-reduced-motion` can force every step to its active state here,
+      in CSS, without the component branching its markup on a value that
+      resolves differently on the server and the client.
+   2. Inactive steps are dimmed with a *colour token that still meets AA*
+      (--steel-500 is 5.43:1 on --night), never with an opacity value. Every
+      step is fully readable whether or not the rail has reached it — the
+      activation is emphasis, not disclosure.
+   -------------------------------------------------------------------------- */
+.ke-step {
+  --step-node: rgb(255 255 255 / 0.15);
+  --step-node-border: rgb(255 255 255 / 0.25);
+  --step-index: var(--color-steel-500);
+  --step-title: var(--color-steel-500);
+  --step-body: var(--color-steel-500);
+  transition: none;
+}
+
+.ke-step[data-tone="light"] {
+  --step-node: var(--color-line);
+  --step-node-border: var(--color-line);
+  --step-index: var(--color-steel);
+  --step-title: var(--color-steel);
+  --step-body: var(--color-steel);
+}
+
+.ke-step[data-active="true"] {
+  --step-node: var(--accent);
+  --step-node-border: var(--accent);
+  --step-index: var(--accent);
+  --step-title: #ffffff;
+  --step-body: var(--color-steel-400);
+}
+
+.ke-step[data-tone="light"][data-active="true"] {
+  --step-node: var(--accent);
+  --step-node-border: var(--accent);
+  --step-index: var(--accent-ink);
+  --step-title: var(--color-ink);
+  --step-body: var(--color-steel);
+}
+
+.ke-step > * {
+  transition: color 350ms var(--ease-ke), background-color 350ms var(--ease-ke),
+    border-color 350ms var(--ease-ke);
+}
+
+/* Reduced motion: every step reads as active, and the rail is drawn complete,
+   so the sequence never depends on scrolling to be understood. */
+@media (prefers-reduced-motion: reduce) {
+  .ke-step {
+    --step-node: var(--accent);
+    --step-node-border: var(--accent);
+    --step-index: var(--accent);
+    --step-title: #ffffff;
+    --step-body: var(--color-steel-400);
+  }
+
+  .ke-step[data-tone="light"] {
+    --step-index: var(--accent-ink);
+    --step-title: var(--color-ink);
+    --step-body: var(--color-steel);
+  }
+
+  .ke-rail-fill {
+    transform: scaleX(1) scaleY(1) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero scroll cue
+   -------------------------------------------------------------------------- */
+@keyframes ke-scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+.ke-scroll-cue-line {
+  animation: ke-scroll-cue 2.4s var(--ease-ke-in-out) infinite;
+}
+
+/* The cue is a motion hint and nothing else — with motion reduced there is
+   nothing left for it to say, so it is removed rather than left frozen. */
+@media (prefers-reduced-motion: reduce) {
+  .ke-scroll-cue {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Route transition
+   --------------------------------------------------------------------------
+   The resting state is scaleY(0) — collapsed and invisible. The animation only
+   ever plays it *out* from full height, so an interrupted or never-run
+   transition leaves the panel collapsed rather than stranded over the page.
+   -------------------------------------------------------------------------- */
+@keyframes ke-page-wipe {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+.ke-page-wipe {
+  transform-origin: top;
+  transform: scaleY(0);
+  animation: ke-page-wipe 320ms cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+/* The global reduced-motion rule already collapses animation-duration, which
+   lands the panel at its collapsed resting state immediately. */

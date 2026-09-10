@@ -1,58 +1,162 @@
 import type { Audience, Programme } from "@/lib/types";
 
 /**
- * How people work with Kinetic Edge. No prices are published — none are verified.
+ * THE FIVE PROGRAMMES
+ *
+ * Every specification below is quoted from the client content document. Where a
+ * programme does not state a value — session duration for Distance Coaching,
+ * for instance — the field is simply absent and the comparison renders a dash
+ * rather than an assumption.
+ *
+ * NO PRICING. None has been supplied, and none may be inferred.
  */
 export const programmes: Programme[] = [
   {
-    code: "P/01",
-    title: "General Population Fitness Training",
+    slug: "group-high-performance",
+    code: "01",
+    title: "Group High Performance",
+    audience: "Athletes training alongside a squad",
     description:
-      "Structured training for people who are not competing, built and progressed with the same process used with athletes.",
-    formats: [
-      "Personal Training",
-      "Hybrid Personal Training",
-      "Semi-Personal Training",
-      "Online Coaching",
+      "Sport-specific programming delivered in a training group, with progressions and regressions adjusted to each athlete inside the session.",
+    specs: {
+      frequency: "4 sessions / week",
+      duration: "60–75 min",
+      ratio: "Up to 10 athletes per batch",
+      individualisation: "Individual progressions & regressions",
+    },
+    inclusions: [
+      "Sports specific program",
+      "Individual progressions & regressions modified as per needs",
     ],
     accent: "performance",
   },
   {
-    code: "P/02",
-    title: "High Performance Athlete Training",
+    slug: "hybrid-high-performance",
+    code: "02",
+    title: "Hybrid High Performance",
+    audience: "Competing athletes who need individual programming",
     description:
-      "Physical preparation for competitive sport — delivered individually, in small groups, or remotely for athletes based elsewhere.",
-    formats: [
-      "1:1",
-      "1:3",
-      "Group 1:5",
-      "Long-Term Athletic Development — Youth",
-      "Online Coaching",
-      "Distance Coaching",
+      "A small-group format with a programme written for the individual, sport-science technology in the session, and support that continues while the athlete is away competing.",
+    specs: {
+      frequency: "4 sessions / week",
+      duration: "Up to 90 min",
+      ratio: "Up to 3 athletes per batch",
+      individualisation: "Individual specific, tailor-made programs",
+    },
+    inclusions: [
+      "Individual specific, tailor-made programs",
+      "Tournament follow-ups & online support during tour travel",
+      "Sport science tech incorporation",
+      "Percussion Therapy",
+      "1 × Compression boots",
     ],
     accent: "performance",
   },
   {
-    code: "P/03",
-    title: "Clinical & Support Services",
+    slug: "high-performance-pro",
+    code: "03",
+    title: "High Performance PRO",
+    audience: "Athletes requiring one-to-one preparation",
     description:
-      "The clinical and support side of the system — assessment, treatment, rehabilitation and the specialist input around it.",
-    formats: [
-      "Physiotherapy & Rehabilitation",
-      "Nutrition Consultation",
-      "Sport Psychology Consultation",
-      "Performance Testing & Re-testing",
+      "One-to-one personal training with a fully individualised programme, sport-science technology, and virtual training that travels with the athlete through the competitive season.",
+    specs: {
+      frequency: "4 sessions / week",
+      duration: "Up to 90 min",
+      ratio: "1:1 Personal Training",
+      individualisation: "Individual specific, tailor-made programs",
+    },
+    inclusions: [
+      "Individual specific, tailor-made programs",
+      "Tournament follow-ups & virtual training during tour travel",
+      "Sports science tech incorporation",
+      "Percussion Therapy",
+      "3 × Compression boots",
     ],
-    accent: "rehab",
+    accent: "performance",
+  },
+  {
+    slug: "online-coaching",
+    code: "04",
+    title: "Online Coaching",
+    audience: "Athletes and clients training from anywhere",
+    description:
+      "Coached one-to-one sessions delivered online, built on an individualised sport-specific programme with conditioning work alongside it.",
+    specs: {
+      frequency: "Weekly 3 sessions",
+      duration: "60 min",
+      ratio: "1:1 sessions",
+      individualisation: "Individualised, sports specific program",
+    },
+    inclusions: [
+      "Individualised, sports specific Program",
+      "2 days Cardio Program",
+    ],
+    remote: true,
+    accent: "performance",
+  },
+  {
+    slug: "distance-coaching",
+    code: "05",
+    title: "Distance Coaching",
+    audience: "Athletes training in their own environment",
+    description:
+      "A written individualised programme with a scheduled review call and day-to-day coaching access, for athletes who train independently.",
+    specs: {
+      individualisation: "Individualised, sports specific program",
+    },
+    inclusions: [
+      "Individualised, sports specific Program",
+      "Weekly once review call",
+      "WhatsApp assistance (6am–10pm IST)",
+    ],
+    remote: true,
+    accent: "performance",
   },
 ];
 
-/** Who trains at Kinetic Edge. Presented as a visual index, not descriptive cards. */
+export const getProgramme = (slug: string) =>
+  programmes.find((programme) => programme.slug === slug);
+
+/**
+ * WHO KINETIC EDGE WORKS WITH
+ *
+ * Performance is not only for elite athletes — this is the point the content
+ * document makes first, and it drives the whole positioning.
+ */
 export const audiences: Audience[] = [
-  { code: "A/01", label: "Elite & Professional Athletes" },
-  { code: "A/02", label: "Competitive Athletes" },
-  { code: "A/03", label: "Developing Athletes" },
-  { code: "A/04", label: "Recreational Athletes" },
-  { code: "A/05", label: "General Population" },
-  { code: "A/06", label: "Special Population" },
+  {
+    code: "01",
+    label: "Athletes",
+    description:
+      "Competing athletes preparing for the physical demands of their sport.",
+    icon: "trophy",
+  },
+  {
+    code: "02",
+    label: "Youth Athletes",
+    description:
+      "Long-term athletic development, built around training age and stage rather than a scaled-down adult programme.",
+    icon: "sprout",
+  },
+  {
+    code: "03",
+    label: "General Fitness",
+    description:
+      "Strength, conditioning and movement for people training for their own goals and everyday capacity.",
+    icon: "users",
+  },
+  {
+    code: "04",
+    label: "Return from Injury",
+    description:
+      "Structured rehabilitation through to return to training, sport and performance.",
+    icon: "activity",
+  },
+  {
+    code: "05",
+    label: "Online / Distance",
+    description:
+      "Athletes and clients coached remotely, wherever they train.",
+    icon: "globe",
+  },
 ];

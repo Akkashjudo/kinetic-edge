@@ -25,7 +25,7 @@ export function AthleteResults({ index = "05" }: { index?: string }) {
     .slice(0, 6);
 
   return (
-    <section className={hasAthleteResults ? "ke-section-lg bg-paper" : "ke-section bg-paper"}>
+    <section className={hasAthleteResults ? "ke-section-lg bg-bone" : "ke-section bg-bone"}>
       <Container>
         <Reveal>
           <SectionHeading

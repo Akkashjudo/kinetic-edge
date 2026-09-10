@@ -14,16 +14,34 @@ import type { NavItem } from "@/lib/types";
 
 const PHONE_E164 = "+917010053659";
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://kinetic-edge-one.vercel.app");
+
 export const site = {
   legalName: "Kinetic Edge High Performance Centre",
   name: "Kinetic Edge",
-  tagline: "Built for Performance. Engineered for Recovery.",
+  /** Primary positioning, per the client content document. */
+  tagline: "Optimising Human Performance.",
+  /** Used where a second line is needed alongside the tagline. */
+  taglineSupport: "In person. Online. Anywhere.",
   founded: "2020",
   description:
-    "Integrated strength & conditioning, sport science, physiotherapy and rehabilitation in Chennai.",
+    "An integrated human performance ecosystem in Chennai — strength & conditioning, physiotherapy & rehabilitation, sport nutrition, sport psychology and recovery.",
 
-  /** Deployed origin. The intended domain (kineticedge.in) is not assumed live. */
-  url: "https://kinetic-edge-one.vercel.app",
+  /**
+   * Deployed origin — drives every canonical URL, the sitemap, Open Graph and
+   * the schema.org @id, so it must match what the site is actually served from.
+   *
+   * Resolution order:
+   *   1. NEXT_PUBLIC_SITE_URL — set this once the real domain is live.
+   *   2. VERCEL_PROJECT_PRODUCTION_URL — set automatically by Vercel, so a
+   *      fresh deployment gets correct URLs with no configuration at all.
+   *   3. The literal below, as a local-development fallback.
+   */
+  url: SITE_URL,
 
   phone: {
     display: "+91 70100 53659",
@@ -166,6 +184,7 @@ export const navigation: NavItem[] = [
       },
     ],
   },
+  { label: "Programmes", href: "/programmes" },
   { label: "Athletes", href: "/athletes" },
   { label: "KE Education", href: "/education" },
   { label: "Partners", href: "/partners" },
@@ -176,6 +195,7 @@ export const footerLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Programmes", href: "/programmes" },
   { label: "Athletes", href: "/athletes" },
   { label: "KE Education", href: "/education" },
   { label: "Partners", href: "/partners" },

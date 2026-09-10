@@ -75,7 +75,15 @@ export function MobileNav({
       cancelAnimationFrame(raf);
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = overflow;
-      restoreRef.current?.focus?.();
+
+      // Return focus to whatever opened the panel — deferred a frame, because
+      // the exit animation is still running at cleanup time and focusing an
+      // element that is mid-unmount silently drops focus onto <body>, leaving a
+      // keyboard user back at the top of the document.
+      const trigger = restoreRef.current;
+      requestAnimationFrame(() => {
+        if (trigger && trigger.isConnected) trigger.focus();
+      });
     };
   }, [open, onClose]);
 

@@ -8,7 +8,8 @@ import { BrandIntro } from "@/components/sections/BrandIntro";
 import { StoryTimeline } from "@/components/sections/StoryTimeline";
 import { CentreSplit } from "@/components/sections/CentreSplit";
 import { MethodProcess } from "@/components/sections/MethodProcess";
-import { AudienceStrip } from "@/components/sections/AudienceStrip";
+import { AudienceCards } from "@/components/sections/AudienceCards";
+import { CollaborationTimeline } from "@/components/sections/CollaborationTimeline";
 import { TeamGrid } from "@/components/sections/TeamGrid";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 
@@ -33,8 +34,8 @@ export default function AboutPage() {
         crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
         index="01"
         label="About Kinetic Edge"
-        title="Performance is a process."
-        lead={`Founded in ${site.founded}, Kinetic Edge is a high performance and rehabilitation centre in Mogappair East, Chennai — built so that training, testing and rehabilitation answer to the same plan.`}
+        title="Optimising human performance."
+        lead={`Founded in ${site.founded} by Deepak, a Sports Science graduate, and co-founded by Lakshmi Priyanka Subramanian, a professional badminton player — Kinetic Edge has grown from a strength & conditioning freelance practice into an integrated human performance ecosystem.`}
         imageKey="facilityInterior"
         actions={
           <>
@@ -54,8 +55,9 @@ export default function AboutPage() {
       {/* The full method treatment belongs here — this is where a reader has
           come to understand how the place works. */}
       <MethodProcess index="04" />
-      <AudienceStrip />
-      <TeamGrid index="05" variant="full" />
+      <AudienceCards index="05" />
+      <CollaborationTimeline index="06" />
+      <TeamGrid index="07" variant="full" />
       <ContactCTA
         title="Start where every athlete starts."
         body="An assessment sets the baseline. Everything after it — training, testing or rehabilitation — is written against what it shows."

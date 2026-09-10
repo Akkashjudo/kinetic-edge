@@ -1,26 +1,32 @@
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { Check, Wifi } from "lucide-react";
 import { programmes } from "@/data/programmes";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
-import { Figure } from "@/components/ui/Figure";
+import { CTAButton } from "@/components/ui/CTAButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 /**
- * P/01 – P/03. No prices are published anywhere, because none are verified.
+ * The five programmes.
  *
- * The three programmes are not equals: P/02 is the high-performance athlete
- * pathway and the commercial centre of the business. Three identical columns
- * gave it the same weight as the other two and made the section read as a
- * template, so it now spans the tall cell and carries the one photograph.
+ * Presented as cards plus a specification table, because the thing a visitor
+ * actually needs is to tell them apart — frequency, ratio and individualisation
+ * are what differ, so those are the columns.
+ *
+ * A spec that was not stated for a programme renders as an em dash. It is never
+ * filled with a plausible-looking value, and no prices appear anywhere because
+ * none have been supplied.
  */
-export function ProgrammeGrid({ index = "04" }: { index?: string }) {
-  const featured = programmes.find((programme) => programme.code === "P/02");
-  const supporting = programmes.filter((programme) => programme.code !== "P/02");
+const SPEC_ROWS = [
+  { key: "frequency", label: "Frequency" },
+  { key: "duration", label: "Session length" },
+  { key: "ratio", label: "Format" },
+  { key: "individualisation", label: "Individualisation" },
+] as const;
 
+export function ProgrammeGrid({ index = "05" }: { index?: string }) {
   return (
-    <section className="ke-section bg-bone">
+    <section data-accent="performance" className="ke-section bg-bone">
       <Container>
         <Reveal>
           <SectionHeading
@@ -28,83 +34,32 @@ export function ProgrammeGrid({ index = "04" }: { index?: string }) {
             label="Programmes"
             title={
               <>
-                How you can work
+                Five ways to
                 <br />
-                with Kinetic Edge.
+                work with us.
               </>
             }
-            lead="Three ways in. The format changes with the athlete and the goal; the process behind it does not."
+            lead="The format changes with the athlete, the goal and where they train. The process behind it does not."
+            aside={
+              <CTAButton href="/contact" variant="outline">
+                Find the right programme
+              </CTAButton>
+            }
           />
         </Reveal>
 
-        <ul className="mt-14 grid gap-px border border-line bg-line lg:mt-18 lg:grid-cols-12">
-          {featured ? (
+        {/* Cards */}
+        <ul className="mt-14 grid gap-px border border-line bg-line lg:mt-18 lg:grid-cols-3">
+          {programmes.map((programme, i) => (
             <Reveal
+              key={programme.slug}
               as="li"
-              className="flex lg:col-span-5 lg:row-span-2"
-              delay={0}
-            >
-              <article
-                data-accent={featured.accent}
-                className="group relative flex flex-1 flex-col overflow-hidden bg-paper transition-[background-color,box-shadow,transform] duration-300 ease-[var(--ease-ke)] hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(10,22,38,0.45)]"
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute left-0 top-0 z-10 h-0.5 w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-[var(--ease-ke)] group-hover:scale-x-100"
-                />
-
-                <div className="relative overflow-hidden">
-                  <Figure
-                    imageKey="athleteDevelopment"
-                    ratio="16/10"
-                    sizes="(min-width: 1024px) 42vw, 100vw"
-                    tone="dark"
-                    imageClassName="transition-transform duration-[900ms] ease-[var(--ease-ke)] group-hover:scale-[1.03]"
-                  />
-                  {/* Solid ground, white text. The chip sits over a photograph
-                      that is not yet supplied, so contrast cannot be allowed to
-                      depend on how bright that photograph turns out to be —
-                      the accent is carried by the mark, not by the type. */}
-                  <p className="ke-label absolute left-6 top-6 flex items-center gap-2.5 bg-night px-3 py-2 text-white">
-                    <span aria-hidden="true" className="h-1.5 w-1.5 bg-ke-blue" />
-                    {featured.code}
-                    <span aria-hidden="true" className="text-white/30">/</span>
-                    Featured
-                  </p>
-                </div>
-
-                <div className="flex flex-1 flex-col p-7 md:p-9 lg:p-10">
-                  <h3 className="ke-h3 max-w-[18ch] text-ink">{featured.title}</h3>
-                  <p className="ke-body mt-4 max-w-md text-steel">
-                    {featured.description}
-                  </p>
-
-                  <ul className="mt-8 border-t border-line pt-2">
-                    {featured.formats.map((format) => (
-                      <li
-                        key={format}
-                        className="ke-body-sm flex items-center gap-3 border-b border-line/70 py-3 text-ink/85 last:border-b-0"
-                      >
-                        <span aria-hidden="true" className="h-1 w-1 shrink-0 bg-accent" />
-                        {format}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            </Reveal>
-          ) : null}
-
-          {supporting.map((programme, cardIndex) => (
-            <Reveal
-              key={programme.code}
-              as="li"
-              delay={0.08 + cardIndex * 0.08}
-              className="flex lg:col-span-7"
+              delay={Math.min(i, 4) * 0.06}
+              className="flex"
             >
               <article
                 data-accent={programme.accent}
-                className="group relative flex flex-1 flex-col bg-paper p-7 transition-[background-color,box-shadow,transform] duration-300 ease-[var(--ease-ke)] hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(10,22,38,0.45)] md:p-9 lg:p-10"
+                className="group relative flex flex-1 flex-col bg-paper p-7 transition-[background-color,box-shadow,transform] duration-300 ease-[var(--ease-ke)] hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(10,22,38,0.45)] md:p-8"
               >
                 <span
                   aria-hidden="true"
@@ -113,53 +68,109 @@ export function ProgrammeGrid({ index = "04" }: { index?: string }) {
 
                 <div className="flex items-start justify-between gap-4">
                   <p className="ke-label text-accent-ink">{programme.code}</p>
-                  <span
-                    aria-hidden="true"
-                    className="h-1.5 w-1.5 rotate-45 bg-line transition-colors duration-300 group-hover:bg-accent"
-                  />
-                </div>
-
-                <div className="mt-6 gap-x-10 lg:flex">
-                  <div className="lg:w-1/2">
-                    <h3 className="ke-h3 max-w-[16ch] text-ink">{programme.title}</h3>
-                    <p className="ke-body mt-4 max-w-md text-steel">
-                      {programme.description}
+                  {programme.remote ? (
+                    <p className="ke-label flex items-center gap-2 text-steel">
+                      <Wifi aria-hidden="true" className="h-3.5 w-3.5" />
+                      Remote
                     </p>
-                  </div>
-
-                  <ul className="mt-8 border-t border-line pt-2 lg:mt-0 lg:w-1/2 lg:border-t-0 lg:pt-0">
-                    {programme.formats.map((format) => (
-                      <li
-                        key={format}
-                        className={cn(
-                          "ke-body-sm flex items-center gap-3 border-b border-line/70 py-3 text-ink/85 last:border-b-0",
-                        )}
-                      >
-                        <span aria-hidden="true" className="h-1 w-1 shrink-0 bg-accent" />
-                        {format}
-                      </li>
-                    ))}
-                  </ul>
+                  ) : null}
                 </div>
+
+                <h3 className="ke-h3 mt-6 max-w-[16ch] text-ink">
+                  {programme.title}
+                </h3>
+                <p className="ke-label mt-3 text-steel">{programme.audience}</p>
+                <p className="ke-body mt-4 text-steel">{programme.description}</p>
+
+                <ul className="mt-7 space-y-0 border-t border-line pt-2">
+                  {programme.inclusions.map((inclusion) => (
+                    <li
+                      key={inclusion}
+                      className="ke-body-sm flex items-start gap-3 border-b border-line/70 py-3 text-ink/85 last:border-b-0"
+                    >
+                      <Check
+                        aria-hidden="true"
+                        className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent-ink"
+                      />
+                      {inclusion}
+                    </li>
+                  ))}
+                </ul>
               </article>
             </Reveal>
           ))}
         </ul>
 
-        <Reveal delay={0.1}>
-          <p className="ke-body mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-steel">
-            Not sure which route fits?
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-1.5 font-medium text-ink underline-offset-4 transition-colors hover:text-ke-blue hover:underline"
-            >
-              Start with an assessment
-              <ArrowUpRight
-                aria-hidden="true"
-                className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </Link>
-          </p>
+        {/* Specification comparison */}
+        <Reveal delay={0.08}>
+          <div className="mt-14 lg:mt-18">
+            <h3 className="ke-label mb-6 text-steel">At a glance</h3>
+
+            <div className="overflow-x-auto border border-line bg-paper">
+              <table className="w-full min-w-[46rem] border-collapse text-left">
+                <caption className="sr-only">
+                  Programme specifications compared. A dash means the
+                  specification was not stated for that programme.
+                </caption>
+                <thead>
+                  <tr className="border-b border-line">
+                    <th
+                      scope="col"
+                      className="ke-label bg-bone px-5 py-4 font-medium text-steel"
+                    >
+                      Programme
+                    </th>
+                    {SPEC_ROWS.map((row) => (
+                      <th
+                        key={row.key}
+                        scope="col"
+                        className="ke-label bg-bone px-5 py-4 font-medium text-steel"
+                      >
+                        {row.label}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {programmes.map((programme) => (
+                    <tr
+                      key={programme.slug}
+                      className="border-b border-line last:border-b-0"
+                    >
+                      <th
+                        scope="row"
+                        className="px-5 py-4 align-top font-display text-[0.9375rem] font-bold tracking-[-0.02em] text-ink"
+                      >
+                        <span className="ke-label mb-1.5 block text-steel">
+                          {programme.code}
+                        </span>
+                        {programme.title}
+                      </th>
+                      {SPEC_ROWS.map((row) => {
+                        const value = programme.specs[row.key];
+                        return (
+                          <td
+                            key={row.key}
+                            className={cn(
+                              "ke-body-sm px-5 py-4 align-top",
+                              value ? "text-ink/85" : "text-steel-400",
+                            )}
+                          >
+                            {value ?? (
+                              <>
+                                <span aria-hidden="true">—</span>
+                                <span className="sr-only">Not specified</span>
+                              </>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </Reveal>
       </Container>
     </section>

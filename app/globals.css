@@ -67,6 +67,10 @@
      The brand blue itself still carries rules, marks and dark surfaces. */
   --accent-ink: var(--color-ke-blue-600);
   --accent-ink-hover: var(--color-ke-blue-700);
+  /* Mirror of --accent-ink for dark grounds. The brand blue reaches only
+     4.15:1 on --ink-lift, so small accent text there uses this lighter shade
+     (7.1:1 on --ink-lift, 8.2:1 on --night). Rules and marks keep --accent. */
+  --accent-on-dark: #5cb3ef;
 }
 
 [data-accent="rehab"] {
@@ -77,6 +81,7 @@
   --accent-line: var(--color-ke-teal-100);
   --accent-ink: var(--color-ke-teal-700);
   --accent-ink-hover: var(--color-ke-teal-800);
+  --accent-on-dark: #34c8db;
 }
 
 @theme inline {
@@ -87,6 +92,7 @@
   --color-accent-line: var(--accent-line);
   --color-accent-ink: var(--accent-ink);
   --color-accent-ink-hover: var(--accent-ink-hover);
+  --color-accent-on-dark: var(--accent-on-dark);
 }
 
 /* --------------------------------------------------------------------------

@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       path: `/services/${slug}`,
       priority: 0.8,
     })),
+    { path: "/programmes", priority: 0.85 },
     { path: "/athletes", priority: 0.7 },
     { path: "/education", priority: 0.6 },
     { path: "/partners", priority: 0.5 },

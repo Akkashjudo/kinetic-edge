@@ -66,18 +66,70 @@ export interface MethodStep {
   body: string;
 }
 
+/**
+ * A Kinetic Edge programme. Specifications are quoted from the client content
+ * document; anything not stated there — pricing above all — stays absent.
+ */
 export interface Programme {
+  slug: string;
   code: string;
   title: string;
+  /** Who the programme is for, in one line. */
+  audience: string;
   description: string;
-  formats: string[];
+  /** Comparison specs. Only fields actually stated for a programme are set. */
+  specs: {
+    frequency?: string;
+    duration?: string;
+    ratio?: string;
+    individualisation?: string;
+  };
+  /** Everything included, as supplied. */
+  inclusions: string[];
+  /** Marks the programme as delivered remotely. */
+  remote?: boolean;
   accent: Accent;
+}
+
+/**
+ * One of the six pillars of the Kinetic Edge performance system:
+ * ASSESS → TRAIN → RESTORE → FUEL → PERFORM → RECOVER.
+ */
+export interface Pillar {
+  slug: string;
+  /** ASSESS, TRAIN, … — the pillar verb. */
+  code: string;
+  /** The discipline that delivers it. */
+  title: string;
+  summary: string;
+  /** Full service list, as supplied. */
+  services: string[];
+  /** Optional sub-groups where the discipline splits (e.g. TRAIN). */
+  groups?: { title: string; services: string[] }[];
+  accent: Accent;
+  icon: string;
+  href?: string;
+}
+
+/** A camp, workshop, assessment or collaboration Kinetic Edge has delivered. */
+export interface CollaborationEvent {
+  year: string;
+  title: string;
+  /** Partner organisation, where one is named. */
+  withWhom?: string;
+  /** Month and year as stated, where stated. */
+  date?: string;
+  kind: "Camp" | "Workshop" | "Assessment" | "Representation";
 }
 
 export type TeamGroup =
   | "Leadership"
-  | "Sport Science & Coaching"
-  | "Clinical & Support";
+  | "Sport Science"
+  | "Strength & Conditioning"
+  | "Physiotherapy"
+  | "Nutrition"
+  | "Psychology & Recovery"
+  | "Operations";
 
 export interface TeamMember {
   name: string;
@@ -112,6 +164,8 @@ export interface FaqItem {
 export interface Audience {
   code: string;
   label: string;
+  description: string;
+  icon: string;
 }
 
 export interface StoryChapter {

@@ -12,8 +12,8 @@ import { PageHero } from "@/components/ui/PageHero";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { PillarSystem } from "@/components/sections/PillarSystem";
 import { MethodProcess } from "@/components/sections/MethodProcess";
-import { ProgrammeGrid } from "@/components/sections/ProgrammeGrid";
 import { ServicesMarquee } from "@/components/sections/ServicesMarquee";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { ContactCTA } from "@/components/sections/ContactCTA";
@@ -21,7 +21,7 @@ import { ContactCTA } from "@/components/sections/ContactCTA";
 export const metadata: Metadata = pageMetadata({
   title: "Services",
   description:
-    "Strength & conditioning, athlete development, performance testing, sports physiotherapy, sports rehabilitation and online coaching at Kinetic Edge, Chennai.",
+    "Athlete assessment, strength & conditioning, physiotherapy & rehabilitation, sport nutrition, mental performance coaching and recovery at Kinetic Edge, Chennai.",
   path: "/services",
 });
 
@@ -71,22 +71,40 @@ export default function ServicesPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
-        index="02"
+        index="04"
         label="Services"
-        title="Performance and recovery under one system."
-        lead="Two environments, one process. What changes between them is the goal — not the standard of assessment, prescription and re-testing behind it."
+        title="Six disciplines. One system."
+        lead="Assessment, training, rehabilitation, nutrition, psychology and recovery — delivered by one team, against one plan, for athletes and everyday people alike."
         actions={
-          <CTAButton href="/contact" variant="light">
-            Book an Assessment
-          </CTAButton>
+          <>
+            <CTAButton href="/contact" variant="light">
+              Start Your Journey
+            </CTAButton>
+            <CTAButton href="/programmes" variant="outlineLight">
+              View Programmes
+            </CTAButton>
+          </>
         }
       />
 
       <ServicesMarquee />
 
-      {/* ------------------------------------------------ Category split */}
+      {/* The full six-pillar system, with every service behind it. */}
+      <PillarSystem index="01" />
+
+      {/* ------------------------------------------- Where each one happens */}
       <section className="ke-section bg-paper">
         <Container>
+          <Reveal>
+            <SectionHeading
+              index="02"
+              label="Two environments"
+              title="Where each discipline lives."
+              lead="The training floor and the clinical environment are separate rooms running one system."
+              className="mb-14 lg:mb-18"
+            />
+          </Reveal>
+
           <div className="grid gap-14 lg:grid-cols-2 lg:gap-px lg:border lg:border-line lg:bg-line">
             {serviceCategories.map((category, index) => (
               <Reveal
@@ -108,10 +126,10 @@ export default function ServicesPage() {
                     {category.title}
                   </SectionLabel>
 
-                  <h2 className="ke-h2 text-ink">
+                  <h3 className="ke-h2 text-ink">
                     {category.title}
                     <span className="text-accent">.</span>
-                  </h2>
+                  </h3>
 
                   <p className="ke-lead mt-4 max-w-lg">{category.description}</p>
 
@@ -147,16 +165,14 @@ export default function ServicesPage() {
       </section>
 
       <MethodProcess index="03" variant="compact" />
-      <ProgrammeGrid />
 
-      {/* The handover between environments — the thing that actually
-          distinguishes the two-centre model, shown rather than asserted. */}
-      <section className="ke-section bg-paper">
+      {/* ---------------------------------------- Between the two environments */}
+      <section className="ke-section bg-bone">
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-20">
             <Reveal>
               <SectionHeading
-                index="05"
+                index="04"
                 label="Between the two"
                 title="One athlete, one plan."
                 lead="An athlete rehabilitating a shoulder does not stop training their legs. Because both environments sit inside the same system, the rehabilitation plan and the training plan are written against each other rather than in isolation."
@@ -175,7 +191,9 @@ export default function ServicesPage() {
                       <span className="ke-label text-accent-ink">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="ke-label text-steel">{stage.environment}</span>
+                      <span className="ke-label text-steel">
+                        {stage.environment}
+                      </span>
                     </div>
                     <div>
                       <h3 className="font-display text-base font-bold tracking-[-0.02em] text-ink lg:text-lg">
@@ -192,8 +210,11 @@ export default function ServicesPage() {
         </Container>
       </section>
 
-      <FaqSection items={servicesFaq} index="06" />
-      <ContactCTA />
+      <FaqSection items={servicesFaq} index="05" surface="paper" />
+      <ContactCTA
+        title="Start your performance journey."
+        body="Whether you're training for competition, returning from injury or simply trying to move and perform better — start with the right assessment and plan."
+      />
     </>
   );
 }

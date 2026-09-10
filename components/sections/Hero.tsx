@@ -86,9 +86,9 @@ export function Hero() {
             </p>
           </MountReveal>
 
-          <h1 className="ke-display max-w-[22ch] text-white">
+          <h1 className="ke-display max-w-[19ch] text-white">
             <HeroLines
-              lines={["Built for Performance.", "Engineered for Recovery."]}
+              lines={["Optimising", "Human Performance."]}
               delay={0.15}
               stagger={0.09}
             />
@@ -96,18 +96,23 @@ export function Hero() {
 
           <MountReveal delay={0.55} y={16}>
             <p className="ke-lead mt-8 max-w-xl text-white/75">
-              Kinetic Edge brings performance training, sport science and
-              rehabilitation into one connected athlete-development system.
+              Individualised, evidence-informed performance solutions for
+              athletes and everyday people. Strength &amp; conditioning,
+              physiotherapy, nutrition, psychology and recovery — working
+              together.
+            </p>
+            <p className="ke-label mt-5 text-steel-400">
+              In person. Online. Anywhere.
             </p>
           </MountReveal>
 
           <MountReveal delay={0.68} y={16}>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
               <CTAButton href={primaryCta.href} variant="light" size="lg">
-                {primaryCta.label}
+                Start Your Journey
               </CTAButton>
               <CTAButton href="/services" variant="outlineLight" size="lg">
-                Explore Services
+                Explore Our Services
               </CTAButton>
             </div>
           </MountReveal>

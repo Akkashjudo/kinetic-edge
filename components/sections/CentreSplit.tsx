@@ -31,7 +31,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
  *              set; the differentiation is carried by ground and structure
  *              rather than by inconsistent crops.
  */
-export function CentreSplit() {
+export function CentreSplit({ index = "04" }: { index?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
@@ -59,7 +59,7 @@ export function CentreSplit() {
       <Container className="relative pb-14 pt-16 md:pb-16 md:pt-24 lg:pt-28">
         <Reveal>
           <SectionHeading
-            index="02"
+            index={index}
             label="Two Centres"
             tone="dark"
             title={

@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { PageTransition } from "@/components/motion/PageTransition";
+import { RevealWatchdog } from "@/components/motion/RevealWatchdog";
 import { LocalBusinessSchema } from "@/components/StructuredData";
 import "./globals.css";
 
@@ -113,6 +114,7 @@ export default function RootLayout({
         </a>
 
         <MotionProvider>
+          <RevealWatchdog />
           <PageTransition />
           <Header />
 

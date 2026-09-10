@@ -1,32 +1,43 @@
 "use client";
 
+import { useRef, type ElementType, type ReactNode } from "react";
 import { m, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { useRevealInView } from "@/lib/useRevealInView";
 
 /**
  * Entrance animations.
  *
- * THREE RULES HOLD THIS FILE TOGETHER
+ * ─────────────────────────────────────────────────────────────────────────────
+ * NEVER USE `whileInView` HERE
  *
- * 1. The rendered markup never branches on reduced motion. `useReducedMotion`
- *    resolves differently on the server and the client, so branching the tree on
- *    it produces a hydration mismatch. The markup is always identical and only
- *    the transition duration changes — reduced motion collapses the animation to
- *    an instant state change rather than removing the element.
+ * The app is wrapped in `LazyMotion features={domAnimation}`. That bundle is
+ * animations + gestures only — the viewport feature is NOT in it, so
+ * `whileInView` silently does nothing: the element renders its `initial` state
+ * and never leaves it. With `initial={{ opacity: 0 }}` that is permanently
+ * invisible content across the whole site, with no error anywhere.
  *
- * 2. Every animated wrapper carries `data-ke-reveal`, so the no-JavaScript
- *    fallback in the root layout can force it visible. Without that, a failed
- *    script would leave the page rendered at opacity 0.
+ * Reveals are driven by `useRevealInView` (see lib/useRevealInView.ts) feeding
+ * the `animate` prop, which IS in `domAnimation`. That hook is ours, and it
+ * fails open — see the note there for why that matters.
+ * ─────────────────────────────────────────────────────────────────────────────
  *
- * 3. `m.*`, never `motion.*` — the app is wrapped in a strict `LazyMotion`, so
- *    the full component would throw rather than silently reintroduce the bundle.
+ * TWO OTHER RULES HOLD THIS FILE TOGETHER
+ *
+ * · The rendered markup never branches on reduced motion. `useReducedMotion`
+ *   resolves differently on the server and the client, so branching the tree on
+ *   it is a hydration mismatch. Markup stays identical; only the transition
+ *   duration changes. `useInView` starts `false` on both the server and the
+ *   first client render, so `animate` matches `initial` at hydration.
+ *
+ * · Every animated wrapper carries `data-ke-reveal`, so the no-JavaScript
+ *   fallback in the root layout can force it visible.
  */
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const INSTANT = { duration: 0 };
 
 /** Shared viewport trigger. One place to tune when reveals feel early or late. */
-const ONCE_IN_VIEW = { once: true, margin: "-72px" } as const;
+const IN_VIEW = { once: true, margin: "-72px" };
 
 interface RevealProps {
   children: ReactNode;
@@ -46,16 +57,21 @@ export function Reveal({
   className,
   as = "div",
 }: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useRevealInView(ref, IN_VIEW);
   const reduce = useReducedMotion();
-  const MotionTag = m[as];
+  // `m[as]` is a union of element components, so a single ref type never
+  // satisfies all of them. Widened here rather than casting the ref at the
+  // call site — the props below are still checked by the motion types.
+  const MotionTag = m[as] as ElementType;
 
   return (
     <MotionTag
+      ref={ref}
       data-ke-reveal=""
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={ONCE_IN_VIEW}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
       transition={reduce ? INSTANT : { duration: 0.7, delay, ease: EASE }}
     >
       {children}
@@ -147,15 +163,20 @@ export function RevealMask({
   delay?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useRevealInView(ref, { once: true, margin: "-64px" });
   const reduce = useReducedMotion();
+
+  const hidden = { clipPath: "inset(100% 0% 0% 0%)" };
+  const shown = { clipPath: "inset(0% 0% 0% 0%)" };
 
   return (
     <m.div
+      ref={ref}
       data-ke-reveal=""
       className={className}
-      initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
-      whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }}
-      viewport={{ once: true, margin: "-64px" }}
+      initial={hidden}
+      animate={inView ? shown : hidden}
       transition={reduce ? INSTANT : { duration: 1, delay, ease: EASE }}
     >
       {children}
@@ -179,20 +200,24 @@ export function DrawRule({
   /** Draw on load rather than on scroll — used in the hero. */
   onMount?: boolean;
 }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useRevealInView(ref, IN_VIEW);
   const reduce = useReducedMotion();
-  const target = { scaleX: 1 };
+
+  const active = onMount || inView;
 
   return (
     <m.span
+      ref={ref}
       data-ke-reveal=""
       aria-hidden="true"
       className={className}
       style={{ transformOrigin: "left" }}
       initial={{ scaleX: 0 }}
-      animate={onMount ? target : undefined}
-      whileInView={onMount ? undefined : target}
-      viewport={onMount ? undefined : ONCE_IN_VIEW}
+      animate={{ scaleX: active ? 1 : 0 }}
       transition={reduce ? INSTANT : { duration: 0.9, delay, ease: EASE }}
-    />
+    >
+      {}
+    </m.span>
   );
 }

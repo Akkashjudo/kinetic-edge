@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
-import { site } from "@/data/site";
+import { primaryCta, site } from "@/data/site";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { PageHero } from "@/components/ui/PageHero";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { BrandIntro } from "@/components/sections/BrandIntro";
 import { StoryTimeline } from "@/components/sections/StoryTimeline";
-import { CentreSplit } from "@/components/sections/CentreSplit";
-import { MethodProcess } from "@/components/sections/MethodProcess";
-import { AudienceCards } from "@/components/sections/AudienceCards";
-import { CollaborationTimeline } from "@/components/sections/CollaborationTimeline";
+import { WhyKineticEdge } from "@/components/sections/WhyKineticEdge";
+import { CentreCards } from "@/components/sections/CentreCards";
 import { TeamGrid } from "@/components/sections/TeamGrid";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Kinetic Edge is a high performance and rehabilitation centre in Mogappair East, Chennai, founded in 2020. Strength & conditioning, sport science and physiotherapy in one connected system.",
+    "Kinetic Edge is a high performance and rehabilitation centre in Chennai, founded in 2020. Strength & conditioning, sport science and physiotherapy in one connected system, across two specialised centres.",
   path: "/about",
 });
 
+/**
+ * About — where the detail lives.
+ *
+ * The homepage carries a short introduction; this page carries the philosophy,
+ * the full history, how the work is done, both centres and the complete team.
+ * Collaborations now live under KE Education.
+ */
 export default function AboutPage() {
   return (
     <>
@@ -32,15 +37,14 @@ export default function AboutPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
-        index="01"
         label="About Kinetic Edge"
         title="Optimising human performance."
         lead={`Founded in ${site.founded} by Deepak, a Sports Science graduate, and co-founded by Lakshmi Priyanka Subramanian, a professional badminton player — Kinetic Edge has grown from a strength & conditioning freelance practice into an integrated human performance ecosystem.`}
         imageKey="facilityInterior"
         actions={
           <>
-            <CTAButton href="/contact" variant="light">
-              Book an Assessment
+            <CTAButton href={primaryCta.href} variant="light">
+              {primaryCta.label}
             </CTAButton>
             <CTAButton href="/services" variant="outlineLight">
               Explore Services
@@ -51,15 +55,12 @@ export default function AboutPage() {
 
       <BrandIntro />
       <StoryTimeline />
-      <CentreSplit />
-      {/* The full method treatment belongs here — this is where a reader has
-          come to understand how the place works. */}
-      <MethodProcess index="04" />
-      <AudienceCards index="05" />
-      <CollaborationTimeline index="06" />
-      <TeamGrid index="07" variant="full" />
+      <WhyKineticEdge index="03" />
+      <CentreCards index="04" surface="bone" />
+      <TeamGrid index="05" />
       <ContactCTA
-        title="Start where every athlete starts."
+        surface="bone"
+        title="Start Where Every Athlete Starts"
         body="An assessment sets the baseline. Everything after it — training, testing or rehabilitation — is written against what it shows."
       />
     </>

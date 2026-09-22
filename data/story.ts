@@ -35,6 +35,18 @@ export const storyChapters: StoryChapter[] = [
 ];
 
 /**
+ * The homepage About section — short on purpose. The full story lives on
+ * /about. Every sentence restates the verified brand story above.
+ */
+export const aboutSummary = {
+  mission: "Optimising Human Performance.",
+  intro:
+    "Founded in 2020 by Deepak, a Sports Science graduate, and co-founded by Lakshmi Priyanka Subramanian, a professional badminton player, Kinetic Edge has grown from a strength & conditioning practice into an integrated human performance ecosystem across two specialised centres in Chennai.",
+  philosophy:
+    "Performance is your ability to do what matters to you — better. For an athlete, that might mean becoming stronger, faster and more resilient. For someone else, it might mean returning to activity after an injury, or simply feeling better in everyday life.",
+};
+
+/**
  * WHY KINETIC EDGE — the credibility section.
  *
  * Each point describes the approach. None of them claims an outcome, a success

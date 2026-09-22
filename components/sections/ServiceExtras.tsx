@@ -1,16 +1,15 @@
 import { onlinePathway, rehabPathway } from "@/data/method";
 import { partners } from "@/data/partners";
-import { Container } from "@/components/ui/Container";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { programmes } from "@/data/programmes";
 import { FeatureSplit } from "./FeatureSplit";
 import { ProcessSteps } from "./ProcessSteps";
 import { MethodProcess } from "./MethodProcess";
+import { ProgrammeGrid } from "./ProgrammeGrid";
 
 /**
  * Per-service sections. Each service page shares a common shell, then adds the
- * content that is genuinely specific to it rather than repeating the same grid
- * six times.
+ * content that is genuinely specific to it rather than repeating one grid four
+ * times.
  */
 export function ServiceExtras({ slug }: { slug: string }) {
   switch (slug) {
@@ -31,17 +30,31 @@ export function ServiceExtras({ slug }: { slug: string }) {
             ]}
             surface="bone"
           />
-          <MethodProcess index="03" variant="compact" />
+          <MethodProcess index="03" variant="compact" tone="dark" />
         </>
       );
 
-    case "athlete-development":
+    case "athlete-performance":
       return (
         <>
           <FeatureSplit
-            imageKey="athleteDevelopment"
+            imageKey="forcePlate"
             index="02"
-            label="Youth · Long-term athletic development"
+            label="Performance testing"
+            title="Objective data, not impressions."
+            body={`Testing at Kinetic Edge uses ${partners[0].name} technology to measure force production and jump characteristics. The numbers are not the point on their own — they are the reference the next block of training is written against, and the reference it is judged by.`}
+            points={[
+              "Force production measured, not estimated",
+              "Jump characteristics beyond jump height",
+              "Compared against the athlete's own baseline",
+              "Re-tested on a schedule",
+            ]}
+            surface="bone"
+          />
+          <FeatureSplit
+            imageKey="athleteDevelopment"
+            index="03"
+            label="Developing athletes"
             title="Young athletes are not small adults."
             body="Long-term athletic development treats training age and stage of development as the starting point. The priority is building broad athletic qualities and good movement first, so that heavier and more specific work has something to sit on later."
             points={[
@@ -51,69 +64,12 @@ export function ServiceExtras({ slug }: { slug: string }) {
               "Progression planned across seasons",
             ]}
             flip
-            surface="bone"
           />
-          <MethodProcess index="03" variant="compact" />
+          <MethodProcess index="04" variant="compact" tone="dark" />
         </>
       );
 
-    case "performance-testing":
-      return (
-        <>
-          <FeatureSplit
-            imageKey="forcePlate"
-            index="02"
-            label="Technology"
-            title="Objective data, not impressions."
-            body={`Testing at Kinetic Edge uses ${partners[0].name} technology to measure force production and jump characteristics. Numbers on their own are not the point — they are the reference the next block of training is written against, and the reference it is judged by.`}
-            points={[
-              "Force production measured, not estimated",
-              "Jump characteristics beyond jump height",
-              "Compared against the athlete's own baseline",
-              "Re-tested on a schedule",
-            ]}
-            surface="bone"
-          />
-
-          <section data-accent="performance" className="ke-section-tight bg-paper">
-            <Container>
-              <Reveal>
-                <SectionHeading
-                  index="03"
-                  label="Where testing is used"
-                  title="Testing runs in both environments."
-                  lead="The same measurements that set a training baseline are used to judge readiness during rehabilitation — which is what allows return-to-sport decisions to be made on criteria rather than on the calendar."
-                />
-              </Reveal>
-            </Container>
-          </section>
-        </>
-      );
-
-    case "sports-physiotherapy":
-      return (
-        <>
-          <FeatureSplit
-            imageKey="mobility"
-            index="02"
-            label="Alongside the performance floor"
-            title="Treatment that does not stop at the plinth."
-            body="Because the clinical space and the performance floor belong to the same system, rehabilitation can be loaded properly and progressed under supervision. Treatment and training are planned against each other rather than in separate rooms."
-            points={[
-              "Assessment with the sport in view",
-              "Loaded rehabilitation, supervised",
-              "Prevention work carried forward",
-              "Continuity between clinic and floor",
-            ]}
-            accent="rehab"
-            flip
-            surface="bone"
-          />
-          <MethodProcess index="03" accent="rehab" variant="compact" />
-        </>
-      );
-
-    case "sports-rehabilitation":
+    case "physiotherapy-rehabilitation":
       return (
         <>
           <ProcessSteps
@@ -130,43 +86,53 @@ export function ServiceExtras({ slug }: { slug: string }) {
             lead="Progression is decided by criteria being met, not by weeks passing. Every stage has to hold up before the next one starts."
             accent="rehab"
           />
-
           <FeatureSplit
-            imageKey="returnToSport"
+            imageKey="mobility"
             index="03"
-            label="Return to sport"
-            title="The last stage is the sport itself."
-            body="Returning to training is not the same as returning to competition. The final stage rebuilds the specific qualities the sport demands and reintroduces them at competitive intensity, with prevention work continuing after the athlete is back."
+            label="Alongside the performance floor"
+            title="Treatment that does not stop at the plinth."
+            body="Because the clinical space and the performance floor belong to the same system, rehabilitation can be loaded properly and progressed under supervision. Treatment and training are planned against each other rather than in separate rooms."
             points={[
-              "Criteria-based progression",
-              "Sport-specific reconditioning",
-              "Reintegration into full training",
+              "Assessment with the sport in view",
+              "Loaded rehabilitation, supervised",
               "Prevention work carried forward",
+              "Continuity between clinic and floor",
             ]}
             accent="rehab"
+            flip
           />
         </>
       );
 
-    case "online-coaching":
+    case "distance-coaching":
       return (
-        <ProcessSteps
-          steps={onlinePathway}
-          index="02"
-          label="How online coaching runs"
-          title={
-            <>
-              The same process,
-              <br />
-              delivered remotely.
-            </>
-          }
-          lead="Consultation, prescription, monitoring, feedback and progression — the process does not change because the athlete is not in the building."
-          accent="performance"
-        />
+        <>
+          <ProcessSteps
+            steps={onlinePathway}
+            index="02"
+            label="How distance coaching runs"
+            title={
+              <>
+                The same process,
+                <br />
+                delivered remotely.
+              </>
+            }
+            lead="Consultation, prescription, monitoring, feedback and progression — the process does not change because you are not in the building."
+            accent="performance"
+          />
+          <ProgrammeGrid
+            index="03"
+            items={programmes.filter((programme) => programme.remote)}
+            title="Two ways to be coached remotely."
+            lead="Coached one-to-one sessions online each week, or a written programme with a weekly review call and WhatsApp support."
+            showTable={false}
+            surface="paper"
+          />
+        </>
       );
 
     default:
-      return <MethodProcess index="02" variant="compact" />;
+      return <MethodProcess index="02" variant="compact" tone="dark" />;
   }
 }

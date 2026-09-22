@@ -3,30 +3,31 @@
 import { useRef } from "react";
 import { m, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { MapPin } from "lucide-react";
-import { primaryCta, site } from "@/data/site";
+import { primaryCta } from "@/data/site";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { Figure } from "@/components/ui/Figure";
 import { DrawRule, HeroLines, MountReveal } from "@/components/ui/Reveal";
-import { ScrollCue } from "@/components/ui/ScrollCue";
 import { HeroBackdrop } from "./HeroBackdrop";
 import { useIsFinePointer } from "@/lib/useIsFinePointer";
 
 /**
- * Homepage hero — signature moment 01.
+ * Homepage hero.
  *
- * No counters, no ratings, no social proof. The proof on this site is the
- * verified athlete results further down the page.
+ * One job: say what Kinetic Edge is and offer the two next steps. No counters,
+ * ratings, badges or social proof — the brief is "clear first".
  *
  * The headline is authored as two lines and must never wrap inside one. That is
- * held by `max-w-[22ch]` plus the `font-stretch` ramp on `ke-display`, which
- * narrows Archivo's width axis on small screens instead of shrinking the type.
+ * held by `max-w-[19ch]` plus the `font-stretch` ramp on `ke-display`.
  *
- * ENTRANCE  eyebrow 0s · lines from 0.15s at 90ms · lead 0.55s · CTAs 0.68s ·
- *           accent rule 0.9s. After that the CTAs never move again — the
- *           conversion target is not an animation target.
+ * The hero stops short of the full viewport on desktop so the top of the next
+ * section shows beneath it. That replaces the looping scroll cue, which was
+ * constant motion doing the job a glimpse of content does better.
+ *
+ * ENTRANCE  eyebrow 0s · lines from 0.15s at 90ms · lead 0.5s · CTAs 0.62s ·
+ *           accent rule 0.85s. After that the CTAs never move again.
  * SCROLL    background 1.06 → 1.00 and copy 0 → -40px across the first 30% of
- *           the hero. Transform-only, desktop pointer only.
+ *           the hero. Transform-only, fine pointer only.
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -38,7 +39,6 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Both map across the first 30% of the hero's own travel.
   const imageScale = useTransform(scrollYProgress, [0, 0.3], [1.06, 1]);
   const copyY = useTransform(scrollYProgress, [0, 0.3], [0, -40]);
 
@@ -48,7 +48,7 @@ export function Hero() {
     <section
       ref={ref}
       data-accent="performance"
-      className="surface-dark relative isolate flex min-h-[86svh] flex-col justify-center overflow-hidden bg-night text-white md:min-h-[92svh] lg:min-h-[100svh] lg:justify-end"
+      className="surface-dark relative isolate flex min-h-[84svh] flex-col justify-center overflow-hidden bg-night text-white md:min-h-[88svh] lg:min-h-[90svh] lg:justify-end"
     >
       {/* Background frame. Priority-loaded: the only true LCP image on the site. */}
       <m.div
@@ -64,8 +64,6 @@ export function Hero() {
           className="h-full w-full"
         />
 
-        {/* One directional scrim for the copy, one bottom anchor for the seam.
-            The upper right of the photograph is left largely alone. */}
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,19,32,0.92)_0%,rgba(7,19,32,0.66)_38%,rgba(7,19,32,0.12)_78%,transparent_100%)]"
@@ -82,50 +80,48 @@ export function Hero() {
           <MountReveal delay={0} y={10}>
             <p className="ke-label mb-7 flex items-center gap-2.5 text-steel-400">
               <MapPin className="h-3.5 w-3.5 text-ke-blue" aria-hidden="true" />
-              {site.address.short}
+              High Performance Centre · Chennai
             </p>
           </MountReveal>
 
           <h1 className="ke-display max-w-[19ch] text-white">
             <HeroLines
-              lines={["Optimising", "Human Performance."]}
+              lines={["Train Better.", "Perform Better."]}
               delay={0.15}
               stagger={0.09}
             />
           </h1>
 
-          <MountReveal delay={0.55} y={16}>
-            <p className="ke-lead mt-8 max-w-xl text-white/75">
-              Individualised, evidence-informed performance solutions for
-              athletes and everyday people. Strength &amp; conditioning,
-              physiotherapy, nutrition, psychology and recovery — working
-              together.
-            </p>
-            <p className="ke-label mt-5 text-steel-400">
-              In person. Online. Anywhere.
+          <MountReveal delay={0.5} y={16}>
+            <p className="ke-lead mt-8 max-w-[34rem] text-white/75">
+              High-performance training, strength &amp; conditioning, sports
+              rehabilitation and performance development for athletes and
+              individuals who want to perform at their best.
             </p>
           </MountReveal>
 
-          <MountReveal delay={0.68} y={16}>
+          <MountReveal delay={0.62} y={16}>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <CTAButton href={primaryCta.href} variant="light" size="lg">
-                Start Your Journey
-              </CTAButton>
-              <CTAButton href="/services" variant="outlineLight" size="lg">
+              <CTAButton href="/services" variant="light" size="lg">
                 Explore Our Services
+              </CTAButton>
+              <CTAButton
+                href={primaryCta.href}
+                variant="outlineLight"
+                size="lg"
+              >
+                {primaryCta.label}
               </CTAButton>
             </div>
           </MountReveal>
         </Container>
       </m.div>
 
-      <ScrollCue className="absolute bottom-10 right-5 hidden sm:right-8 sm:block lg:right-12" />
-
       {/* Closing rule — the accent segment marks the performance environment. */}
       <div aria-hidden="true" className="relative h-px w-full bg-white/10">
         <DrawRule
           onMount
-          delay={0.9}
+          delay={0.85}
           className="absolute inset-y-0 left-0 block w-[22%] bg-ke-blue"
         />
       </div>

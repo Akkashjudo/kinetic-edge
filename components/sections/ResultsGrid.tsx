@@ -77,7 +77,7 @@ export function ResultsGrid({
         <ul className="mb-px grid gap-px bg-line">
           {featured.map((result, index) => (
             <li key={result.id} className="flex">
-              <RevealMask className="flex flex-1">
+              <RevealMask className="flex flex-1" innerClassName="flex flex-1">
                 <AthleteResultCard
                   result={result}
                   featured

@@ -128,7 +128,7 @@ export function Header() {
                           "relative rounded-[2px] px-3 py-2 text-[0.875rem] font-medium transition-colors xl:px-3.5",
                           solid
                             ? active
-                              ? "text-ke-blue"
+                              ? "text-accent-ink"
                               : "text-ink/75 hover:text-ink"
                             : active
                               ? "text-white"
@@ -169,7 +169,7 @@ export function Header() {
                         "relative flex items-center gap-1.5 rounded-[2px] px-3 py-2 text-[0.875rem] font-medium transition-colors xl:px-3.5",
                         solid
                           ? active
-                            ? "text-ke-blue"
+                            ? "text-accent-ink"
                             : "text-ink/75 hover:text-ink"
                           : active
                             ? "text-white"
@@ -233,13 +233,22 @@ export function Header() {
                               ))}
                             </ul>
 
-                            <Link
-                              href={item.href}
-                              className="mt-1 flex items-center justify-between border-t border-line px-3.5 py-3 text-[0.8125rem] font-medium text-ink transition-colors hover:text-ke-blue"
-                            >
-                              <span>All services — performance and rehabilitation</span>
-                              <span aria-hidden="true">→</span>
-                            </Link>
+                            <div className="mt-1 grid grid-cols-2 border-t border-line">
+                              <Link
+                                href={item.href}
+                                className="flex items-center justify-between px-3.5 py-3 text-[0.8125rem] font-medium text-ink transition-colors hover:text-accent-ink"
+                              >
+                                <span>All services</span>
+                                <span aria-hidden="true">→</span>
+                              </Link>
+                              <Link
+                                href="/programmes"
+                                className="flex items-center justify-between border-l border-line px-3.5 py-3 text-[0.8125rem] font-medium text-ink transition-colors hover:text-accent-ink"
+                              >
+                                <span>Compare programmes</span>
+                                <span aria-hidden="true">→</span>
+                              </Link>
+                            </div>
                           </div>
                         </m.div>
                       ) : null}

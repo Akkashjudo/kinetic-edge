@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, Phone } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/data/site";
+import { services } from "@/data/services";
 import { contactFaq } from "@/data/faq";
 import { BreadcrumbSchema, FaqSchema } from "@/components/StructuredData";
 import { Container } from "@/components/ui/Container";
@@ -19,41 +20,22 @@ import { FaqSection } from "@/components/sections/FaqSection";
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
-    "Book an assessment at Kinetic Edge, 253 Justice Rathinavel Pandian Road, Mogappair East, Chennai. Call or WhatsApp +91 70100 53659.",
+    "Book a consultation at Kinetic Edge, Chennai — performance centre in Mogappair East and rehabilitation centre in Nerkundram. Call or WhatsApp +91 70100 53659.",
   path: "/contact",
 });
 
-/** Enquiry routes. No email address is offered anywhere — none exists. */
-const enquiryCards = [
-  {
-    code: "E/01",
-    title: "Performance Training",
-    body: "Strength & conditioning, athlete development and performance testing.",
-    href: "/services/strength-conditioning",
-    accent: "performance" as const,
-  },
-  {
-    code: "E/02",
-    title: "Physiotherapy & Rehabilitation",
-    body: "Injury assessment, treatment, rehabilitation and return to sport.",
-    href: "/services/sports-physiotherapy",
-    accent: "rehab" as const,
-  },
-  {
-    code: "E/03",
-    title: "Online / Distance Coaching",
-    body: "Structured coaching for athletes and general population training elsewhere.",
-    href: "/services/online-coaching",
-    accent: "performance" as const,
-  },
-  {
-    code: "E/04",
-    title: "General Enquiry",
-    body: "Programmes, formats, KE Education or anything not covered above.",
-    href: "/services",
-    accent: "performance" as const,
-  },
-];
+/**
+ * "Not sure where to start?" — one card per service, generated from
+ * data/services.ts so the contact page can never list a service that no longer
+ * exists. No email address is offered anywhere — none exists.
+ */
+const enquiryCards = services.map((service, i) => ({
+  code: `S/${String(i + 1).padStart(2, "0")}`,
+  title: service.title,
+  body: service.what,
+  href: service.href,
+  accent: service.accent,
+}));
 
 export default function ContactPage() {
   return (
@@ -68,10 +50,9 @@ export default function ContactPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-        index="07"
         label="Contact"
-        title="Start with an assessment."
-        lead="An assessment sets the baseline. Whether the goal is performance, rehabilitation or a return to sport, that is where it begins."
+        title="Book a consultation."
+        lead="Tell us what you're working toward — competition, recovery from injury, or simply training better — and we'll help you find the right place to start."
         actions={
           <>
             <CTAButton
@@ -100,7 +81,7 @@ export default function ContactPage() {
         <Container>
           <Reveal>
             <SectionLabel index="01" className="mb-8">
-              What are you enquiring about?
+              Not sure where to start?
             </SectionLabel>
           </Reveal>
 
@@ -146,7 +127,12 @@ export default function ContactPage() {
       </section>
 
       {/* ----------------------------------------------------------- Form */}
-      <section data-accent="performance" className="ke-section bg-bone">
+      {/* `#enquiry` is where every "Book a Consultation" button lands. */}
+      <section
+        id="enquiry"
+        data-accent="performance"
+        className="ke-section bg-bone"
+      >
         <Container>
           <div className="grid gap-12 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20">
             <Reveal>
@@ -170,7 +156,9 @@ export default function ContactPage() {
                     {site.phone.display}
                   </a>
 
-                  <dl className="mt-7 space-y-2.5">
+                  {/* Hours are verified for Centre 01 only. */}
+                  <p className="ke-label mt-7 text-steel">Centre 01 hours</p>
+                  <dl className="mt-4 space-y-2.5">
                     {site.hours.map((slot) => (
                       <div
                         key={slot.days}

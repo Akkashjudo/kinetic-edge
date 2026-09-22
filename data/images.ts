@@ -53,6 +53,9 @@ const imageRegistry = {
     src: "/images/centres/centre-02-exterior.webp",
     alt: "The frontage of Kinetic Edge Fitness & Rehabilitation Centre, signed for strength and cardiovascular training and physiotherapy",
     shot: "SUPPLIED — exterior of the rehabilitation centre. An interior frame (plinth, assessment area, rehab equipment) would still be worth adding as a second slot.",
+    // The signage runs along the very top of this frame; any crop wider than
+    // the source takes it from the bottom instead.
+    position: "center top",
   },
 
   /* ---------------------------------------------------------------- Services */

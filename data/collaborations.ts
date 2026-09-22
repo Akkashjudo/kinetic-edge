@@ -84,10 +84,23 @@ export const collaborations: CollaborationEvent[] = [
   },
 ];
 
-/** Grouped newest-first for the timeline. */
-export const collaborationYears = Array.from(
-  new Set(collaborations.map((event) => event.year)),
-).map((year) => ({
-  year,
-  events: collaborations.filter((event) => event.year === year),
-}));
+/** Groups events newest-first by year, for the timeline. */
+export function byYear(events: CollaborationEvent[]) {
+  return Array.from(new Set(events.map((event) => event.year))).map((year) => ({
+    year,
+    events: events.filter((event) => event.year === year),
+  }));
+}
+
+/**
+ * KE Education splits the record in two, so nothing is listed twice:
+ * workshops sit under Workshops, and everything else — camps, assessments and
+ * representations — under Collaborations.
+ */
+export const pastWorkshops = collaborations.filter(
+  (event) => event.kind === "Workshop",
+);
+
+export const otherCollaborations = collaborations.filter(
+  (event) => event.kind !== "Workshop",
+);

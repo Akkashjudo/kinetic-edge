@@ -1,63 +1,34 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { pageMetadata } from "@/lib/metadata";
-import { serviceCategories } from "@/data/services";
+import { primaryCta } from "@/data/site";
+import { programmes } from "@/data/programmes";
 import { servicesFaq } from "@/data/faq";
 import { BreadcrumbSchema, FaqSchema } from "@/components/StructuredData";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
-import { Figure } from "@/components/ui/Figure";
 import { PageHero } from "@/components/ui/PageHero";
-import { Reveal, RevealMask } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { SectionLabel } from "@/components/ui/SectionLabel";
+import { ServicesOverview } from "@/components/sections/ServicesOverview";
 import { PillarSystem } from "@/components/sections/PillarSystem";
 import { MethodProcess } from "@/components/sections/MethodProcess";
-import { ServicesMarquee } from "@/components/sections/ServicesMarquee";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 
 export const metadata: Metadata = pageMetadata({
   title: "Services",
   description:
-    "Athlete assessment, strength & conditioning, physiotherapy & rehabilitation, sport nutrition, mental performance coaching and recovery at Kinetic Edge, Chennai.",
+    "Strength & conditioning, athlete performance training, physiotherapy & sports rehabilitation and distance coaching at Kinetic Edge, Chennai.",
   path: "/services",
 });
 
-const categoryImages = ["performanceCentre", "rehabCentre"] as const;
-
 /**
- * How a single athlete moves between the two environments. Describes the
- * process only — no timelines, outcomes or clinical claims.
+ * The services index.
+ *
+ * The four services first, then everything behind them — the six disciplines,
+ * the programme formats, and the process — for a visitor who wants the detail
+ * the homepage deliberately leaves out.
  */
-const handover = [
-  {
-    environment: "Rehabilitation",
-    accent: "rehab" as const,
-    title: "Assessed in the clinic",
-    body: "The injury, its irritability and the demands of the sport are established together.",
-  },
-  {
-    environment: "Rehabilitation",
-    accent: "rehab" as const,
-    title: "Loaded progressively",
-    body: "Capacity is rebuilt in the affected area while the rest of the body keeps training.",
-  },
-  {
-    environment: "Performance",
-    accent: "performance" as const,
-    title: "Reconditioned on the floor",
-    body: "Strength, power and conditioning are rebuilt to the level competition requires.",
-  },
-  {
-    environment: "Performance",
-    accent: "performance" as const,
-    title: "Re-tested against baseline",
-    body: "Readiness is judged against the athlete's own numbers, not against the calendar.",
-  },
-];
-
 export default function ServicesPage() {
   return (
     <>
@@ -71,137 +42,67 @@ export default function ServicesPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Services" }]}
-        index="04"
         label="Services"
-        title="Six disciplines. One system."
-        lead="Assessment, training, rehabilitation, nutrition, psychology and recovery — delivered by one team, against one plan, for athletes and everyday people alike."
+        title="How We Help You Perform Better"
+        lead="Four services, one team and one process — for competitive athletes, developing athletes, fitness clients and anyone recovering from injury."
         actions={
           <>
-            <CTAButton href="/contact" variant="light">
-              Start Your Journey
+            <CTAButton href={primaryCta.href} variant="light">
+              {primaryCta.label}
             </CTAButton>
             <CTAButton href="/programmes" variant="outlineLight">
-              View Programmes
+              Compare Programmes
             </CTAButton>
           </>
         }
       />
 
-      <ServicesMarquee />
+      <ServicesOverview
+        index="01"
+        title="Four Ways to Work With Us"
+        lead="Each one starts with an assessment and is built around you."
+      />
 
-      {/* The full six-pillar system, with every service behind it. */}
-      <PillarSystem index="01" />
+      {/* The full service list behind the four, including nutrition, mental
+          performance and recovery. */}
+      <PillarSystem index="02" />
 
-      {/* ------------------------------------------- Where each one happens */}
-      <section className="ke-section bg-paper">
+      {/* ------------------------------------------------------ Programmes */}
+      <section data-accent="performance" className="ke-section bg-paper">
         <Container>
-          <Reveal>
-            <SectionHeading
-              index="02"
-              label="Two environments"
-              title="Where each discipline lives."
-              lead="The training floor and the clinical environment are separate rooms running one system."
-              className="mb-14 lg:mb-18"
-            />
-          </Reveal>
-
-          <div className="grid gap-14 lg:grid-cols-2 lg:gap-px lg:border lg:border-line lg:bg-line">
-            {serviceCategories.map((category, index) => (
-              <Reveal
-                key={category.title}
-                delay={index * 0.08}
-                className="bg-paper lg:p-10 xl:p-12"
-              >
-                <div data-accent={category.accent}>
-                  <RevealMask className="mb-9">
-                    <Figure
-                      imageKey={categoryImages[index] ?? "facility"}
-                      ratio="16/9"
-                      sizes="(min-width: 1024px) 45vw, 100vw"
-                      tone="dark"
-                    />
-                  </RevealMask>
-
-                  <SectionLabel index={category.code} className="mb-6">
-                    {category.title}
-                  </SectionLabel>
-
-                  <h3 className="ke-h2 text-ink">
-                    {category.title}
-                    <span className="text-accent">.</span>
-                  </h3>
-
-                  <p className="ke-lead mt-4 max-w-lg">{category.description}</p>
-
-                  <ul className="mt-9 border-t border-line">
-                    {category.items.map((item) => (
-                      <li key={item.label} className="border-b border-line">
-                        <Link
-                          href={item.href}
-                          className="group flex items-center justify-between gap-4 py-4 transition-colors"
-                        >
-                          <span className="flex items-center gap-3.5">
-                            <span
-                              aria-hidden="true"
-                              className="h-1.5 w-1.5 shrink-0 bg-accent"
-                            />
-                            <span className="font-display text-base font-semibold tracking-[-0.02em] text-ink transition-colors group-hover:text-accent-ink md:text-lg">
-                              {item.label}
-                            </span>
-                          </span>
-                          <ArrowUpRight
-                            aria-hidden="true"
-                            className="h-4 w-4 shrink-0 text-steel transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-ink"
-                          />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <MethodProcess index="03" variant="compact" />
-
-      {/* ---------------------------------------- Between the two environments */}
-      <section className="ke-section bg-bone">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-20">
-            <Reveal>
+          <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+            <Reveal className="lg:col-span-5">
               <SectionHeading
-                index="04"
-                label="Between the two"
-                title="One athlete, one plan."
-                lead="An athlete rehabilitating a shoulder does not stop training their legs. Because both environments sit inside the same system, the rehabilitation plan and the training plan are written against each other rather than in isolation."
+                index="03"
+                label="Programmes"
+                title="Find the Format That Fits"
+                lead="Train in a squad, a small group, one-to-one, or remotely. Five programmes, compared side by side."
               />
+              <div className="mt-9">
+                <CTAButton href="/programmes" variant="primary">
+                  Compare Programmes
+                </CTAButton>
+              </div>
             </Reveal>
 
-            <Reveal delay={0.06}>
-              <ol className="grid gap-px border border-line bg-line sm:grid-cols-2">
-                {handover.map((stage, index) => (
+            <Reveal delay={0.06} className="lg:col-span-7">
+              <ol className="border-t border-line">
+                {programmes.map((programme) => (
                   <li
-                    key={stage.title}
-                    data-accent={stage.accent}
-                    className="flex min-h-44 flex-col justify-between gap-6 bg-paper p-6 lg:p-7"
+                    key={programme.slug}
+                    className="flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-line py-4 sm:flex-nowrap sm:py-5"
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="ke-label text-accent-ink">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                      <span className="ke-label text-steel">
-                        {stage.environment}
-                      </span>
-                    </div>
-                    <div>
-                      <h3 className="font-display text-base font-bold tracking-[-0.02em] text-ink lg:text-lg">
-                        {stage.title}
-                      </h3>
-                      <p className="ke-body-sm mt-2 text-steel">{stage.body}</p>
-                    </div>
-                    <span aria-hidden="true" className="h-0.5 w-10 bg-accent" />
+                    <span className="ke-label w-6 shrink-0 text-accent-ink">
+                      {programme.code}
+                    </span>
+                    <span className="font-display text-lg font-bold tracking-[-0.02em] text-ink">
+                      {programme.title}
+                    </span>
+                    <span className="ke-body-sm w-full pl-11 text-steel sm:ml-auto sm:w-auto sm:pl-0 sm:text-right">
+                      {[programme.specs.ratio, programme.remote && "Remote"]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -210,11 +111,10 @@ export default function ServicesPage() {
         </Container>
       </section>
 
+      <MethodProcess index="04" variant="compact" tone="light" />
+
       <FaqSection items={servicesFaq} index="05" surface="paper" />
-      <ContactCTA
-        title="Start your performance journey."
-        body="Whether you're training for competition, returning from injury or simply trying to move and perform better — start with the right assessment and plan."
-      />
+      <ContactCTA />
     </>
   );
 }

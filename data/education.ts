@@ -35,6 +35,19 @@ export const educationEvents: EducationEvent[] = [
   },
 ];
 
+/** What KE Education is, in the client's words from the redesign brief. */
+export const educationIntro =
+  "Sharing practical knowledge in strength & conditioning, sports science and performance development.";
+
+/** The areas KE Education works in — descriptive, not a list of events. */
+export const educationFocus = [
+  "Workshops",
+  "Seminars",
+  "Coach education",
+  "Sports science learning",
+  "Professional collaborations",
+];
+
 export const featuredEvent = educationEvents[0];
 
 export const upcomingEvents = educationEvents.filter(

@@ -1,70 +1,57 @@
 import type { Centre } from "@/lib/types";
+import { site } from "./site";
 
 /**
- * The two-environment model.
+ * THE TWO CENTRES
  *
- * Centre 02 has no address supplied and must never be placed on a map or given
- * a location anywhere in the UI.
+ * Addresses come from data/site.ts, where they are verified — Centre 02's was
+ * supplied by the client on 28 Aug 2026 with a Google Maps link. Nothing about
+ * either location (hours, parking, size, equipment counts) is added here that
+ * has not been supplied.
+ *
+ * `highlights` name what happens at each centre. Centre 02's signage lists
+ * strength and cardiovascular training alongside physiotherapy, which is why it
+ * carries a fitness line as well as its clinical ones.
  */
 export const centres: Centre[] = [
   {
     id: "01",
-    code: "CENTRE 01",
-    name: "Performance",
+    code: "Centre 01",
+    name: "High Performance Centre",
+    fullName: "Kinetic Edge High Performance & Fitness Centre",
     accent: "performance",
-    headline: "The training environment.",
     description:
-      "Built for athletic development — where physical qualities are tested, trained and progressed against the demands of the sport.",
+      "The training environment — where physical qualities are assessed, trained and re-tested against the demands of the sport.",
     highlights: [
       "Strength & Conditioning",
-      "Athlete Development",
+      "Athlete Performance Training",
       "Performance Testing",
-      "Sports-Specific Conditioning",
-      "Distance & Online Coaching",
+      "Youth Athletic Development",
+      "General Fitness",
     ],
-    services: [
-      "Strength & Conditioning",
-      "Athletic Development",
-      "Speed & Acceleration",
-      "Strength & Power",
-      "Agility & Change of Direction",
-      "Conditioning",
-      "Performance Testing",
-      "Sports-Specific Preparation",
-      "Injury Prevention",
-      "Long-Term Athlete Development",
-    ],
-    href: "/services/strength-conditioning",
+    street: site.address.street,
+    area: site.address.short,
+    maps: site.links.maps,
     imageKey: "performanceCentre",
   },
   {
     id: "02",
-    code: "CENTRE 02",
-    name: "Rehabilitation",
+    code: "Centre 02",
+    name: "Rehabilitation Centre",
+    fullName: site.rehab.name,
     accent: "rehab",
-    headline: "The clinical environment.",
     description:
-      "Built for assessment, treatment and progressive rehabilitation — through to a criteria-based return to full training and competition.",
+      "The clinical environment — assessment, treatment and progressive rehabilitation through to a return to training and sport.",
     highlights: [
-      "Sports Physiotherapy",
-      "Sports Rehabilitation",
-      "Return to Sport",
-      "Injury Prevention",
-      "Mobility & Recovery",
-    ],
-    services: [
-      "Sports Physiotherapy",
-      "Injury Assessment",
-      "Sports Rehabilitation",
-      "Pain Management",
-      "Mobility Restoration",
-      "Return-to-Sport Rehabilitation",
+      "Physiotherapy",
+      "Sports Injury Rehabilitation",
       "Post-operative Rehabilitation",
-      "Movement Correction",
-      "Recovery",
-      "Injury Prevention",
+      "Return-to-Sport Training",
+      "Strength & Fitness Training",
     ],
-    href: "/services/sports-physiotherapy",
+    street: site.rehab.street,
+    area: site.rehab.short,
+    maps: site.rehab.maps,
     imageKey: "rehabCentre",
   },
 ];

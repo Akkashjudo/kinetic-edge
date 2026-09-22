@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
+import { centres } from "@/data/centres";
+import { services } from "@/data/services";
 import { footerLinks, site, socialLinks } from "@/data/site";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -10,14 +12,14 @@ import { WhatsAppIcon } from "@/components/ui/icons";
  * No email address is published anywhere in the footer — none exists.
  * Phone and WhatsApp are the contact routes.
  *
- * Grounded on --ink-lift rather than --night so it steps away from the closing
- * CTA above it instead of merging into one continuous dark band.
+ * Both centres are listed. Opening hours are verified for Centre 01 only, so
+ * they sit under Centre 01 and nowhere else.
  */
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="surface-dark relative isolate overflow-hidden border-t border-white/10 bg-ink-lift text-white">
+    <footer className="surface-dark relative isolate overflow-hidden bg-ink-lift text-white">
       <div aria-hidden="true" className="ke-grid-lines absolute inset-0 opacity-60" />
       <div
         aria-hidden="true"
@@ -29,17 +31,19 @@ export function Footer() {
       />
 
       <Container className="relative">
-        <div className="grid gap-12 py-16 lg:grid-cols-[1.3fr_1fr_1fr] lg:gap-16 lg:py-20">
+        {/* Two link columns sit side by side even on a phone; the brand and
+            visit blocks span the full width around them. */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-16 lg:grid-cols-[1.2fr_1fr_0.8fr_1.3fr] lg:gap-12 lg:py-20">
           {/* Brand */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <Logo tone="dark" withDescriptor gradientId="ke-grad-footer" />
             <p className="mt-7 max-w-xs font-display text-xl font-bold leading-tight tracking-[-0.028em] text-white sm:text-2xl">
-              Built for Performance.
+              Train Better.
               <br />
-              Engineered for Recovery.
+              Perform Better.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8">
               <CTAButton
                 href={site.whatsapp.href}
                 external
@@ -52,6 +56,23 @@ export function Footer() {
               </CTAButton>
             </div>
           </div>
+
+          {/* Services */}
+          <nav aria-label="Services">
+            <h2 className="ke-label text-steel-400">Services</h2>
+            <ul className="mt-6 space-y-3">
+              {services.map((service) => (
+                <li key={service.href}>
+                  <Link
+                    href={service.href}
+                    className="ke-tap text-[0.9375rem] text-white/70 transition-colors hover:text-white"
+                  >
+                    {service.navLabel}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           {/* Navigate */}
           <nav aria-label="Footer">
@@ -70,36 +91,49 @@ export function Footer() {
             </ul>
           </nav>
 
-          {/* Contact — Centre 01 only */}
-          <div>
-            <h2 className="ke-label text-steel-400">Centre 01</h2>
+          {/* Visit */}
+          <div className="col-span-2 lg:col-span-1">
+            <h2 className="ke-label text-steel-400">Visit</h2>
 
-            <address className="mt-6 not-italic">
-              <p className="flex gap-3 ke-body text-white/70">
-                <MapPin
-                  className="mt-0.5 h-4 w-4 shrink-0 text-ke-blue"
-                  aria-hidden="true"
-                />
-                <span>
-                  {site.address.street},<br />
-                  {site.address.locality},<br />
-                  {site.address.city}, {site.address.region}{" "}
-                  {site.address.postalCode}
-                </span>
-              </p>
+            <ul className="mt-6 space-y-5">
+              {centres.map((centre) => (
+                <li key={centre.id} data-accent={centre.accent}>
+                  <address className="not-italic">
+                    <p className="text-[0.8125rem] font-medium text-white">
+                      {centre.code} — {centre.name}
+                    </p>
+                    <a
+                      href={centre.maps}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1.5 flex min-h-6 gap-2.5 text-[0.875rem] leading-relaxed text-white/70 transition-colors hover:text-white"
+                    >
+                      <MapPin
+                        className="mt-1 h-3.5 w-3.5 shrink-0 text-accent-on-dark"
+                        aria-hidden="true"
+                      />
+                      <span>
+                        {centre.street}, {centre.area}
+                        <span className="sr-only"> (opens Google Maps)</span>
+                      </span>
+                    </a>
+                  </address>
+                </li>
+              ))}
+            </ul>
 
-              <p className="mt-4">
-                <a
-                  href={site.phone.href}
-                  className="flex min-h-6 items-center gap-3 text-[0.9375rem] text-white/70 transition-colors hover:text-white"
-                >
-                  <Phone className="h-4 w-4 shrink-0 text-ke-blue" aria-hidden="true" />
-                  {site.phone.display}
-                </a>
-              </p>
-            </address>
+            <a
+              href={site.phone.href}
+              className="mt-6 flex min-h-6 items-center gap-2.5 text-[0.9375rem] text-white/80 transition-colors hover:text-white"
+            >
+              <Phone className="h-4 w-4 shrink-0 text-accent-on-dark" aria-hidden="true" />
+              {site.phone.display}
+            </a>
 
-            <dl className="mt-6 space-y-1.5 border-t border-white/10 pt-5 text-[0.8125rem]">
+            <p className="ke-label mt-5 border-t border-white/10 pt-4 text-steel-400">
+              Centre 01 hours
+            </p>
+            <dl className="mt-3 space-y-1.5 text-[0.8125rem]">
               {site.hours.map((slot) => (
                 <div key={slot.days} className="flex justify-between gap-4">
                   <dt className="text-steel-400">{slot.days}</dt>
@@ -129,7 +163,7 @@ export function Footer() {
           <p>
             © {year} {site.legalName}. Established {site.founded}.
           </p>
-          <p className="ke-label">{site.address.short}</p>
+          <p className="ke-label">Chennai · Tamil Nadu</p>
         </div>
       </Container>
     </footer>

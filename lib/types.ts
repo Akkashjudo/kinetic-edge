@@ -35,11 +35,23 @@ export interface ServiceSummary {
 
 export interface ServiceDetail extends ServiceSummary {
   label: string;
+  /** Shorter name for the navigation, where the full title would wrap. */
+  navLabel: string;
+  /**
+   * The homepage service card answers three questions in order — what it is,
+   * who it is for, and what it works toward — then lists its focus areas.
+   * `goal` describes the aim of the service, never a promised outcome.
+   */
+  what: string;
+  audience: string;
+  goal: string;
+  focus: string[];
+  /** Card call to action, e.g. "Explore Strength & Conditioning". */
+  exploreLabel: string;
   headline: string;
   intro: string;
   /** Capability blocks rendered as the numbered body of a service page. */
   blocks: { title: string; body: string }[];
-  cta: { label: string; href: string };
   imageKey: ImageKey;
   metaTitle: string;
   metaDescription: string;
@@ -48,15 +60,19 @@ export interface ServiceDetail extends ServiceSummary {
 export interface Centre {
   id: "01" | "02";
   code: string;
+  /** Short name used as the card heading. */
   name: string;
+  /** The name on the signage / Google Maps listing. */
+  fullName: string;
   accent: Accent;
-  headline: string;
   description: string;
-  /** Short list shown on the homepage panel. */
+  /** Main services and facilities, shown on the centre card. */
   highlights: string[];
-  /** Full list shown on the services page. */
-  services: string[];
-  href: string;
+  /** Street line and area, from the verified address. */
+  street: string;
+  area: string;
+  /** Google Maps listing — the "View Centre" destination. */
+  maps: string;
   imageKey: ImageKey;
 }
 
@@ -135,8 +151,39 @@ export interface TeamMember {
   name: string;
   role: string;
   group: TeamGroup;
+  /**
+   * One short line of expertise. Only ever set from a verified statement in the
+   * client content — never written to fill the card. Absent for most people.
+   */
+  expertise?: string;
   /** Optional — no photograph is invented for anyone. */
   image?: string;
+}
+
+/**
+ * An athlete who represents Kinetic Edge. Cards show the name, sport and one
+ * headline achievement; the detail view carries the rest.
+ */
+export interface Ambassador {
+  slug: string;
+  name: string;
+  sport: string;
+  /** The single achievement shown on the card. Verified only. */
+  achievement: string;
+  credentials: string[];
+  role: string;
+  /** Section headline for the profile. Not presented as the athlete's quote. */
+  statement: string;
+  body: string[];
+  closing: string;
+  /** Null until an approved quote exists. Never paraphrased or invented. */
+  testimonial: { quote: string; attribution: string } | null;
+  images: {
+    /** Clean frame with no baked-in typography — cards and small screens. */
+    card: { src: string; width: number; height: number; position?: string };
+    /** Designed key art, shown in the profile from `sm` up. */
+    poster?: { src: string; width: number; height: number };
+  };
 }
 
 /**
@@ -166,6 +213,9 @@ export interface Audience {
   label: string;
   description: string;
   icon: string;
+  /** The service this visitor should look at first. */
+  href: string;
+  linkLabel: string;
 }
 
 export interface StoryChapter {

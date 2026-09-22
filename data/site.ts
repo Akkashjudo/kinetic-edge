@@ -1,4 +1,5 @@
 import type { NavItem } from "@/lib/types";
+import { services } from "./services";
 
 /**
  * VERIFIED BUSINESS DATA ONLY.
@@ -18,7 +19,7 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://kinetic-edge-one.vercel.app");
+    : "https://kinetic-edge-wine.vercel.app");
 
 export const site = {
   legalName: "Kinetic Edge High Performance Centre",
@@ -139,71 +140,52 @@ export const socialLinks = [
   { label: "YouTube", href: site.links.youtube },
 ] as const;
 
+/**
+ * Primary navigation — six items, in the order a first-time visitor asks
+ * questions. The Services menu is generated from data/services.ts, so a service
+ * cannot appear in one place and be missing from the other.
+ *
+ * Programmes and Partners are still live pages; they are reached from the
+ * services page and the footer rather than from the top bar.
+ */
 export const navigation: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
   {
     label: "Services",
     href: "/services",
-    children: [
-      {
-        label: "Strength & Conditioning",
-        href: "/services/strength-conditioning",
-        description: "Build the physical qualities your sport demands.",
-        accent: "performance",
-      },
-      {
-        label: "Athlete Development",
-        href: "/services/athlete-development",
-        description: "Long-term physical preparation, not one-off workouts.",
-        accent: "performance",
-      },
-      {
-        label: "Performance Testing",
-        href: "/services/performance-testing",
-        description: "Measure, understand and progress physical qualities.",
-        accent: "performance",
-      },
-      {
-        label: "Sports Physiotherapy",
-        href: "/services/sports-physiotherapy",
-        description: "Assessment and treatment with the demands of sport in mind.",
-        accent: "rehab",
-      },
-      {
-        label: "Sports Rehabilitation",
-        href: "/services/sports-rehabilitation",
-        description: "Progressive rehabilitation through to return to sport.",
-        accent: "rehab",
-      },
-      {
-        label: "Distance & Online Coaching",
-        href: "/services/online-coaching",
-        description: "Structured coaching beyond the facility.",
-        accent: "performance",
-      },
-    ],
+    children: services.map((service) => ({
+      label: service.navLabel,
+      href: service.href,
+      description: service.summary,
+      accent: service.accent,
+    })),
   },
-  { label: "Programmes", href: "/programmes" },
   { label: "Athletes", href: "/athletes" },
   { label: "KE Education", href: "/education" },
-  { label: "Partners", href: "/partners" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
 export const footerLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Programmes", href: "/programmes" },
   { label: "Athletes", href: "/athletes" },
   { label: "KE Education", href: "/education" },
+  { label: "About", href: "/about" },
   { label: "Partners", href: "/partners" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy", href: "/privacy" },
 ] as const;
 
+/** The one conversion action. Lands on the enquiry form, not the page top. */
 export const primaryCta = {
-  label: "Book an Assessment",
+  label: "Book a Consultation",
+  href: "/contact#enquiry",
+} as const;
+
+/** Paired with the primary action wherever two are offered. */
+export const contactCta = {
+  label: "Contact Kinetic Edge",
   href: "/contact",
 } as const;

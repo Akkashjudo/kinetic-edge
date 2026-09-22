@@ -1,29 +1,37 @@
 import type { MethodStep } from "@/lib/types";
 
 /**
- * The Kinetic Edge method — Assess, Prescribe, Monitor, Re-test.
- * Used on the homepage, the about page and every service page.
+ * The Kinetic Edge System — Assess → Plan → Train → Track → Improve.
+ *
+ * Every programme runs through these five steps, in person or remotely, for
+ * performance and for rehabilitation alike. Each body line describes the
+ * process, never an outcome.
  */
 export const methodSteps: MethodStep[] = [
   {
     index: "01",
     title: "Assess",
-    body: "Establish the starting point. Training and injury history, current physical qualities, movement, and the demands of the sport.",
+    body: "Establish your starting point — history, current physical qualities, movement and the demands of your sport or goal.",
   },
   {
     index: "02",
-    title: "Prescribe",
-    body: "Build the programme around what the assessment showed — not around a template. Training or rehabilitation is written for the individual.",
+    title: "Plan",
+    body: "Build an individual programme around what the assessment showed. Never a template.",
   },
   {
     index: "03",
-    title: "Monitor",
-    body: "Track the work as it is done. Load, progression and response are reviewed session to session and adjusted where needed.",
+    title: "Train",
+    body: "Coached sessions delivered to the plan — at our centres, or remotely wherever you train.",
   },
   {
     index: "04",
-    title: "Re-test",
-    body: "Measure again against the baseline. Re-testing shows what has changed, confirms readiness and sets the next block of work.",
+    title: "Track",
+    body: "Load, progress and response are monitored session to session, and adjusted where needed.",
+  },
+  {
+    index: "05",
+    title: "Improve",
+    body: "Re-test against the baseline, confirm what has changed, and set the next block of work.",
   },
 ];
 

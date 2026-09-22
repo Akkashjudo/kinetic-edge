@@ -94,8 +94,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // data-scroll-behavior lets Next switch smooth scrolling off during route
+    // changes, so a new page starts at the top instead of gliding up to it.
+    // In-page anchors keep the smooth scroll set in globals.css.
     <html
       lang="en-IN"
+      data-scroll-behavior="smooth"
       className={`${archivo.variable} ${inter.variable} ${geistMono.variable}`}
     >
       <head>

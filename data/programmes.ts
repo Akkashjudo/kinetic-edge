@@ -121,42 +121,45 @@ export const getProgramme = (slug: string) =>
  * WHO KINETIC EDGE WORKS WITH
  *
  * Performance is not only for elite athletes — this is the point the content
- * document makes first, and it drives the whole positioning.
+ * document makes first, and it drives the whole positioning. Each audience
+ * points at the one service it should look at first, so the section answers
+ * "what do I do next?" rather than stopping at "this is for you".
  */
 export const audiences: Audience[] = [
   {
     code: "01",
-    label: "Athletes",
+    label: "Competitive Athletes",
     description:
-      "Competing athletes preparing for the physical demands of their sport.",
+      "Preparing for the physical demands of competition — assessed, programmed and re-tested against your sport.",
     icon: "trophy",
+    href: "/services/athlete-performance",
+    linkLabel: "Athlete Performance Training",
   },
   {
     code: "02",
-    label: "Youth Athletes",
+    label: "Developing Athletes",
     description:
-      "Long-term athletic development, built around training age and stage rather than a scaled-down adult programme.",
+      "Young and emerging athletes building a long-term athletic base, trained for their stage rather than as small adults.",
     icon: "sprout",
+    href: "/services/athlete-performance",
+    linkLabel: "Athlete Performance Training",
   },
   {
     code: "03",
-    label: "General Fitness",
+    label: "Fitness Clients",
     description:
-      "Strength, conditioning and movement for people training for their own goals and everyday capacity.",
+      "Training for strength, fitness and everyday capacity — with the same structure an athlete gets.",
     icon: "users",
+    href: "/services/strength-conditioning",
+    linkLabel: "Strength & Conditioning",
   },
   {
     code: "04",
-    label: "Return from Injury",
+    label: "Injury Rehabilitation Clients",
     description:
-      "Structured rehabilitation through to return to training, sport and performance.",
+      "Recovering from injury or surgery, with a clear, progressive path back to activity, training and sport.",
     icon: "activity",
-  },
-  {
-    code: "05",
-    label: "Online / Distance",
-    description:
-      "Athletes and clients coached remotely, wherever they train.",
-    icon: "globe",
+    href: "/services/physiotherapy-rehabilitation",
+    linkLabel: "Physiotherapy & Rehabilitation",
   },
 ];

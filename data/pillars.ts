@@ -21,7 +21,7 @@ export const pillars: Pillar[] = [
       "Establish the starting point. What the assessment shows is what the programme is written against — and what every re-test is measured back to.",
     icon: "gauge",
     accent: "performance",
-    href: "/services/performance-testing",
+    href: "/services/athlete-performance",
     services: [
       "Comprehensive Physical Assessment",
       "Movement Screening",
@@ -102,7 +102,7 @@ export const pillars: Pillar[] = [
       "Assessment, treatment and progressive loading — planned toward return to training, return to sport and return to performance rather than stopping at symptom relief.",
     icon: "activity",
     accent: "rehab",
-    href: "/services/sports-rehabilitation",
+    href: "/services/physiotherapy-rehabilitation",
     services: [
       "Sports Injury Assessment",
       "Musculoskeletal Assessment",

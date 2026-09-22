@@ -18,7 +18,7 @@ const chapterImages = [
  */
 export function StoryTimeline() {
   return (
-    <section data-accent="performance" className="ke-section bg-paper">
+    <section data-accent="performance" className="ke-section bg-bone">
       <Container>
         <Reveal>
           <SectionHeading

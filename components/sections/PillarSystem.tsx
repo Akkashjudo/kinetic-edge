@@ -40,7 +40,15 @@ const ICONS: Record<string, LucideIcon> = {
  * Every service is in the DOM for the selected pillar; nothing is hidden behind
  * hover alone.
  */
-export function PillarSystem({ index = "03" }: { index?: string }) {
+export function PillarSystem({
+  index = "02",
+  title = "One Team. Six Disciplines.",
+  lead = "Training and rehabilitation are the core. Nutrition, mental performance and recovery work alongside them — on the same person, against the same assessment.",
+}: {
+  index?: string;
+  title?: string;
+  lead?: string;
+}) {
   const [active, setActive] = useState(0);
   const reduce = useReducedMotion();
   const pillar = pillars[active];
@@ -81,22 +89,16 @@ export function PillarSystem({ index = "03" }: { index?: string }) {
       <Container className="relative">
         <SectionHeading
           index={index}
-          label="The System"
+          label="Every Discipline"
           tone="dark"
-          title={
-            <>
-              One system.
-              <br />
-              Six disciplines.
-            </>
-          }
-          lead="Training, rehabilitation, nutrition, psychology and recovery are not separate services here. They work on the same person, against the same assessment."
+          title={title}
+          lead={lead}
         />
 
         {/* Pillar rail */}
         <div
           role="tablist"
-          aria-label="The Kinetic Edge performance system"
+          aria-label="Kinetic Edge disciplines"
           onKeyDown={onKeyDown}
           className="mt-14 grid grid-cols-2 gap-px border border-white/10 bg-white/10 sm:grid-cols-3 lg:mt-20 lg:grid-cols-6"
         >

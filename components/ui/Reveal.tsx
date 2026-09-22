@@ -153,15 +153,37 @@ export function HeroLines({
   );
 }
 
-/** Image mask reveal — the frame wipes upward to expose the photograph. */
+/**
+ * Image mask reveal — the frame wipes upward to expose the photograph.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * THE OBSERVED ELEMENT IS NEVER THE CLIPPED ONE
+ *
+ * Chrome does not reliably update an IntersectionObserver that has a
+ * `rootMargin` when the target's own `clip-path` hides it completely. Measured
+ * on the service pages: the mask scrolled into view, and its observer reported
+ * nothing until the watchdog unclipped the frame two seconds later — every
+ * image sat as an empty box for 2s. Observers on unclipped elements fired on
+ * the same frame.
+ *
+ * So the outer element is observed and carries the layout classes, and the
+ * inner element is the one that animates `clip-path`. `data-ke-reveal` stays on
+ * the inner element, where the no-JS, reduced-motion and watchdog fallbacks
+ * need it.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
 export function RevealMask({
   children,
   delay = 0,
   className,
+  innerClassName = "h-full",
 }: {
   children: ReactNode;
   delay?: number;
+  /** Layout classes — margins, grid order, display, stickiness. */
   className?: string;
+  /** Classes for the clipped frame, e.g. `flex flex-1` to pass flex through. */
+  innerClassName?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useRevealInView(ref, { once: true, margin: "-64px" });
@@ -171,16 +193,17 @@ export function RevealMask({
   const shown = { clipPath: "inset(0% 0% 0% 0%)" };
 
   return (
-    <m.div
-      ref={ref}
-      data-ke-reveal=""
-      className={className}
-      initial={hidden}
-      animate={inView ? shown : hidden}
-      transition={reduce ? INSTANT : { duration: 1, delay, ease: EASE }}
-    >
-      {children}
-    </m.div>
+    <div ref={ref} className={className}>
+      <m.div
+        data-ke-reveal=""
+        className={innerClassName}
+        initial={hidden}
+        animate={inView ? shown : hidden}
+        transition={reduce ? INSTANT : { duration: 1, delay, ease: EASE }}
+      >
+        {children}
+      </m.div>
+    </div>
   );
 }
 
@@ -189,6 +212,11 @@ export function RevealMask({
  *
  * Uses `scaleX` rather than animating `width` — same result, but it stays on the
  * compositor instead of triggering layout on every frame.
+ *
+ * Only ever used with `onMount` today. If it is ever scroll-triggered, give it an
+ * unscaled wrapper to observe, for the same reason RevealMask has one: an
+ * element scaled to nothing is as unreliable an IntersectionObserver target as
+ * one clipped to nothing.
  */
 export function DrawRule({
   delay = 0,

@@ -6,6 +6,7 @@ import { methodSteps } from "@/data/method";
 import type { Accent, MethodStep } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 interface MethodProcessProps {
@@ -27,33 +28,29 @@ interface MethodProcessProps {
 }
 
 /**
- * The Kinetic Edge method: Assess → Prescribe → Monitor → Re-test.
- * Signature moment 03.
+ * The Kinetic Edge System: Assess → Plan → Train → Track → Improve.
+ *
+ * Read left to right on desktop and top to bottom on mobile, so the order is
+ * understood before a word of the body copy is.
  *
  * The rail is not decoration — it drives the steps. As the fill passes each
  * node, that step activates: node fills, index takes the accent, title and body
  * lift to full emphasis. Steps ahead of the line stay quieter.
  *
  * ACCESSIBILITY  Inactive steps are dimmed with a *colour token* that still
- * meets AA (--steel-500 is 5.43:1 on --night), never with an opacity value that
- * would drop text below contrast. The written sequence is legible whether or not
- * the animation ever runs, and reduced motion renders every step active with the
- * rail complete.
+ * meets AA (--steel on --bone, --steel-500 on --night), never with an opacity
+ * value that would drop text below contrast. The written sequence is legible
+ * whether or not the animation ever runs, and reduced motion renders every step
+ * active with the rail complete.
  */
 export function MethodProcess({
   steps = methodSteps,
-  index = "03",
-  label = "Method",
-  title = (
-    <>
-      A system,
-      <br />
-      not random training.
-    </>
-  ),
-  lead = "Everything at Kinetic Edge runs through the same four steps — in the gym and in the clinic, for a professional athlete and for someone training for their own goals.",
+  index = "06",
+  label = "How It Works",
+  title = "The Kinetic Edge System",
+  lead = "Every programme follows the same five steps — in the gym or the clinic, in person or online.",
   accent = "performance",
-  tone = "dark",
+  tone = "light",
   variant = "signature",
   className,
 }: MethodProcessProps) {
@@ -121,7 +118,9 @@ function SignatureMethod({
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 85%", "end 55%"],
+    // Completes as the steps settle into view, rather than after they have
+    // scrolled past — a visitor who stops here sees all five steps lit.
+    offset: ["start 80%", "end 90%"],
   });
 
   const smoothed = useSpring(scrollYProgress, {
@@ -150,7 +149,7 @@ function SignatureMethod({
     <section
       data-accent={accent}
       className={cn(
-        "ke-section-lg relative overflow-hidden",
+        "ke-section relative overflow-hidden",
         dark ? "surface-dark bg-night text-white" : "bg-bone text-ink",
         className,
       )}
@@ -170,7 +169,9 @@ function SignatureMethod({
       ) : null}
 
       <Container className="relative">
-        <SectionHeading index={index} label={label} title={title} lead={lead} tone={tone} />
+        <Reveal>
+          <SectionHeading index={index} label={label} title={title} lead={lead} tone={tone} />
+        </Reveal>
 
         <div ref={ref} className="mt-14 lg:mt-20">
           {/* Desktop rail */}
@@ -187,12 +188,14 @@ function SignatureMethod({
             />
           </div>
 
+          {/* One column per step on desktop, so the whole sequence reads as a
+              single horizontal line; a single vertical run below that. */}
           <ol
             className={cn(
-              "relative grid",
-              steps.length > 4
-                ? "gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-10"
-                : "gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8",
+              "relative grid gap-y-10 lg:gap-x-8",
+              steps.length === 5 && "lg:grid-cols-5",
+              steps.length === 4 && "lg:grid-cols-4",
+              steps.length > 5 && "lg:grid-cols-3",
             )}
           >
             {/* Mobile rail — the same logic, read vertically. */}
@@ -294,7 +297,9 @@ function CompactMethod({
             <p className="ke-label mb-4 flex items-center gap-2">
               {index ? (
                 <>
-                  <span className="text-accent">{index}</span>
+                  <span className={dark ? "text-accent-on-dark" : "text-accent-ink"}>
+                    {index}
+                  </span>
                   <span aria-hidden="true" className={dark ? "text-white/25" : "text-line"}>
                     /
                   </span>
@@ -312,14 +317,21 @@ function CompactMethod({
             </h2>
           </div>
 
-          <ol className="grid gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-5">
             {steps.map((step) => (
               <li key={step.index}>
                 <div
                   aria-hidden="true"
                   className={cn("h-0.5 w-full", "bg-accent")}
                 />
-                <p className="ke-label mt-4 text-accent">{step.index}</p>
+                <p
+                  className={cn(
+                    "ke-label mt-4",
+                    dark ? "text-accent-on-dark" : "text-accent-ink",
+                  )}
+                >
+                  {step.index}
+                </p>
                 <h3
                   className={cn(
                     "mt-2 font-display text-base font-bold tracking-[-0.02em]",

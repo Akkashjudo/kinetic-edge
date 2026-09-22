@@ -1,5 +1,7 @@
 import { Check, Wifi } from "lucide-react";
 import { programmes } from "@/data/programmes";
+import { primaryCta } from "@/data/site";
+import type { Programme } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -24,24 +26,36 @@ const SPEC_ROWS = [
   { key: "individualisation", label: "Individualisation" },
 ] as const;
 
-export function ProgrammeGrid({ index = "05" }: { index?: string }) {
+export function ProgrammeGrid({
+  index = "05",
+  items = programmes,
+  title = "Five Ways to Work With Us",
+  lead = "The format changes with the athlete, the goal and where they train. The process behind it does not.",
+  showTable = true,
+  surface = "bone",
+}: {
+  index?: string;
+  /** A subset — e.g. only the remote programmes on the Distance Coaching page. */
+  items?: Programme[];
+  title?: string;
+  lead?: string;
+  showTable?: boolean;
+  surface?: "paper" | "bone";
+}) {
   return (
-    <section data-accent="performance" className="ke-section bg-bone">
+    <section
+      data-accent="performance"
+      className={cn("ke-section", surface === "paper" ? "bg-paper" : "bg-bone")}
+    >
       <Container>
         <Reveal>
           <SectionHeading
             index={index}
             label="Programmes"
-            title={
-              <>
-                Five ways to
-                <br />
-                work with us.
-              </>
-            }
-            lead="The format changes with the athlete, the goal and where they train. The process behind it does not."
+            title={title}
+            lead={lead}
             aside={
-              <CTAButton href="/contact" variant="outline">
+              <CTAButton href={primaryCta.href} variant="outline">
                 Find the right programme
               </CTAButton>
             }
@@ -49,8 +63,13 @@ export function ProgrammeGrid({ index = "05" }: { index?: string }) {
         </Reveal>
 
         {/* Cards */}
-        <ul className="mt-14 grid gap-px border border-line bg-line lg:mt-18 lg:grid-cols-3">
-          {programmes.map((programme, i) => (
+        <ul
+          className={cn(
+            "mt-14 grid gap-px border border-line bg-line lg:mt-18",
+            items.length === 2 ? "md:grid-cols-2" : "lg:grid-cols-3",
+          )}
+        >
+          {items.map((programme, i) => (
             <Reveal
               key={programme.slug}
               as="li"
@@ -102,76 +121,82 @@ export function ProgrammeGrid({ index = "05" }: { index?: string }) {
         </ul>
 
         {/* Specification comparison */}
-        <Reveal delay={0.08}>
-          <div className="mt-14 lg:mt-18">
-            <h3 className="ke-label mb-6 text-steel">At a glance</h3>
+        {showTable ? (
+          <Reveal delay={0.08}>
+            <div className="mt-14 lg:mt-18">
+              <h3 className="ke-label mb-6 text-steel">At a glance</h3>
 
-            <div className="overflow-x-auto border border-line bg-paper">
-              <table className="w-full min-w-[46rem] border-collapse text-left">
-                <caption className="sr-only">
-                  Programme specifications compared. A dash means the
-                  specification was not stated for that programme.
-                </caption>
-                <thead>
-                  <tr className="border-b border-line">
-                    <th
-                      scope="col"
-                      className="ke-label bg-bone px-5 py-4 font-medium text-steel"
-                    >
-                      Programme
-                    </th>
-                    {SPEC_ROWS.map((row) => (
+              {/* `relative` makes this the containing block for the sr-only
+                  "Not specified" labels. They are absolutely positioned, and
+                  without it they escaped the scroll container and pushed the
+                  whole page 86px wider than a 360px phone. */}
+              <div className="relative overflow-x-auto border border-line bg-paper">
+                <table className="w-full min-w-[46rem] border-collapse text-left">
+                  <caption className="sr-only">
+                    Programme specifications compared. A dash means the
+                    specification was not stated for that programme.
+                  </caption>
+                  <thead>
+                    <tr className="border-b border-line">
                       <th
-                        key={row.key}
                         scope="col"
                         className="ke-label bg-bone px-5 py-4 font-medium text-steel"
                       >
-                        {row.label}
+                        Programme
                       </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {programmes.map((programme) => (
-                    <tr
-                      key={programme.slug}
-                      className="border-b border-line last:border-b-0"
-                    >
-                      <th
-                        scope="row"
-                        className="px-5 py-4 align-top font-display text-[0.9375rem] font-bold tracking-[-0.02em] text-ink"
-                      >
-                        <span className="ke-label mb-1.5 block text-steel">
-                          {programme.code}
-                        </span>
-                        {programme.title}
-                      </th>
-                      {SPEC_ROWS.map((row) => {
-                        const value = programme.specs[row.key];
-                        return (
-                          <td
-                            key={row.key}
-                            className={cn(
-                              "ke-body-sm px-5 py-4 align-top",
-                              value ? "text-ink/85" : "text-steel-400",
-                            )}
-                          >
-                            {value ?? (
-                              <>
-                                <span aria-hidden="true">—</span>
-                                <span className="sr-only">Not specified</span>
-                              </>
-                            )}
-                          </td>
-                        );
-                      })}
+                      {SPEC_ROWS.map((row) => (
+                        <th
+                          key={row.key}
+                          scope="col"
+                          className="ke-label bg-bone px-5 py-4 font-medium text-steel"
+                        >
+                          {row.label}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {items.map((programme) => (
+                      <tr
+                        key={programme.slug}
+                        className="border-b border-line last:border-b-0"
+                      >
+                        <th
+                          scope="row"
+                          className="px-5 py-4 align-top font-display text-[0.9375rem] font-bold tracking-[-0.02em] text-ink"
+                        >
+                          <span className="ke-label mb-1.5 block text-steel">
+                            {programme.code}
+                          </span>
+                          {programme.title}
+                        </th>
+                        {SPEC_ROWS.map((row) => {
+                          const value = programme.specs[row.key];
+                          return (
+                            <td
+                              key={row.key}
+                              className={cn(
+                                "ke-body-sm px-5 py-4 align-top",
+                                value ? "text-ink/85" : "text-steel-400",
+                              )}
+                            >
+                              {value ?? (
+                                <>
+                                  <span aria-hidden="true">—</span>
+                                  <span className="sr-only">Not specified</span>
+                                </>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        </Reveal>
+          </Reveal>
+        ) : null}
       </Container>
     </section>
   );

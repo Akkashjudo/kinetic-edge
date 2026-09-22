@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { programmes } from "@/data/programmes";
+import { primaryCta } from "@/data/site";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { PageHero } from "@/components/ui/PageHero";
@@ -28,13 +29,12 @@ export default function ProgrammesPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Programmes" }]}
-        index="05"
         label="Programmes"
         title="Find the format that fits."
         lead={`${programmes.length} ways to train with Kinetic Edge — in a squad, in a small group, one to one, or remotely from wherever you are based.`}
         actions={
-          <CTAButton href="/contact" variant="light">
-            Start Your Journey
+          <CTAButton href={primaryCta.href} variant="light">
+            {primaryCta.label}
           </CTAButton>
         }
       />
@@ -42,13 +42,13 @@ export default function ProgrammesPage() {
       <ProgrammeGrid index="01" />
 
       {/* The process is the same whichever format is chosen. */}
-      <MethodProcess index="02" variant="compact" />
+      <MethodProcess index="02" variant="compact" tone="dark" />
 
       <AudienceCards index="03" />
 
       <ContactCTA
-        title="Not sure which one?"
-        body="Start with an assessment. What it shows determines the programme — not the other way round."
+        title="Not Sure Which One?"
+        body="Start with a consultation. What the assessment shows decides the programme — not the other way round."
       />
     </>
   );

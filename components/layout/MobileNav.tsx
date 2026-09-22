@@ -1,24 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { ChevronDown, Phone, X } from "lucide-react";
 import { navigation, primaryCta, site, socialLinks } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { useModal } from "@/lib/useModal";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppIcon } from "@/components/ui/icons";
-
-const FOCUSABLE =
-  'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 /**
  * Full-height mobile panel.
  *
  * Locks background scroll, traps Tab inside the panel while open, closes on
- * Escape, and returns focus to whatever opened it.
+ * Escape, and returns focus to whatever opened it — see lib/useModal.ts.
  */
 export function MobileNav({
   open,
@@ -30,62 +28,11 @@ export function MobileNav({
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
   const [expanded, setExpanded] = useState<string | null>("Services");
   const reduce = useReducedMotion();
 
-  useEffect(() => {
-    if (!open) return;
-
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = "hidden";
-
-    const raf = requestAnimationFrame(() => closeRef.current?.focus());
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-
-      if (event.key !== "Tab" || !panelRef.current) return;
-
-      const nodes = Array.from(
-        panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE),
-      ).filter((node) => node.offsetParent !== null);
-      if (nodes.length === 0) return;
-
-      const first = nodes[0];
-      const last = nodes[nodes.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = overflow;
-
-      // Return focus to whatever opened the panel — deferred a frame, because
-      // the exit animation is still running at cleanup time and focusing an
-      // element that is mid-unmount silently drops focus onto <body>, leaving a
-      // keyboard user back at the top of the document.
-      const trigger = restoreRef.current;
-      requestAnimationFrame(() => {
-        if (trigger && trigger.isConnected) trigger.focus();
-      });
-    };
-  }, [open, onClose]);
+  // Scroll lock, Tab trap, Escape, and focus returned to the menu button.
+  useModal({ open, onClose, containerRef: panelRef, initialFocusRef: closeRef });
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);

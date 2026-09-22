@@ -1,11 +1,14 @@
 /**
  * COMPETITIONS — where Kinetic Edge athletes compete.
  *
+ * NOT CURRENTLY RENDERED. The client asked for the "Where Our Athletes Compete"
+ * section to be removed (Aug 2026), and it has been taken off the homepage,
+ * /athletes and /partners. The verified list is kept here so it can be restored
+ * without re-sourcing it.
+ *
  * ⚠ These are competitions, NOT partners. They must never appear under
  * "Trusted Partners", "Clients", "Associations" or any similar label, and no
- * endorsement or affiliation may be implied.
- *
- * The only confirmed partner is VALD Performance — see data/partners.ts.
+ * endorsement or affiliation may be implied. Partners are in data/partners.ts.
  */
 export const competitions = [
   "FZ Forza Dutch National Championship",

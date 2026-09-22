@@ -6,18 +6,19 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ResultsGrid } from "./ResultsGrid";
 
 /**
- * Homepage proof — signature moment 04.
+ * Homepage proof — verified competition results.
  *
- * Verified competition results are the primary proof on this site. The
- * composition is built and waiting: one featured record leads, six supporting
- * records follow, and the whole thing renders the moment
+ * The composition is built and waiting: one featured record leads, six
+ * supporting records follow, and the whole section appears the moment
  * `data/athlete-results.ts` is populated.
  *
- * Until then the section stands on its heading and hands over to the verified
- * competition band that follows it. Nothing is fabricated to fill the gap — no
- * placeholder athletes, no medal totals, no counts.
+ * Until then it renders nothing at all. An empty results heading on the
+ * homepage promised proof it could not show; nothing is fabricated to fill the
+ * gap — no placeholder athletes, no medal totals, no counts.
  */
-export function AthleteResults({ index = "05" }: { index?: string }) {
+export function AthleteResults({ index }: { index?: string }) {
+  if (!hasAthleteResults) return null;
+
   // One featured record plus six supporting ones. The full archive is /athletes.
   const featured = athleteResults.filter((result) => result.featured).slice(0, 1);
   const supporting = athleteResults
@@ -25,7 +26,7 @@ export function AthleteResults({ index = "05" }: { index?: string }) {
     .slice(0, 6);
 
   return (
-    <section className={hasAthleteResults ? "ke-section-lg bg-bone" : "ke-section bg-bone"}>
+    <section className="ke-section-lg bg-bone">
       <Container>
         <Reveal>
           <SectionHeading
@@ -48,14 +49,9 @@ export function AthleteResults({ index = "05" }: { index?: string }) {
         </Reveal>
       </Container>
 
-      {hasAthleteResults ? (
-        <Container className="mt-14 lg:mt-18">
-          <ResultsGrid
-            results={[...featured, ...supporting]}
-            showFilters={false}
-          />
-        </Container>
-      ) : null}
+      <Container className="mt-14 lg:mt-18">
+        <ResultsGrid results={[...featured, ...supporting]} showFilters={false} />
+      </Container>
     </section>
   );
 }

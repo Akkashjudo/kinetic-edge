@@ -69,9 +69,12 @@ export function CTAButton({
     className,
   );
 
+  // inline-flex, not a bare span: Tailwind's preflight makes <svg> a block,
+  // which pushed a leading icon (WhatsApp, phone) onto its own line above
+  // the label.
   const content = (
     <>
-      <span>{children}</span>
+      <span className="inline-flex items-center gap-2.5">{children}</span>
       {showArrow ? (
         <ArrowRight
           aria-hidden="true"

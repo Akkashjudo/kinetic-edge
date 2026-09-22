@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/Container";
-import { CTAButton } from "@/components/ui/CTAButton";
 import { Figure } from "@/components/ui/Figure";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -30,7 +29,7 @@ export function BrandIntro() {
           <div className="lg:col-span-7">
             <Reveal>
               <SectionLabel index="01" className="mb-8">
-                The System
+                Philosophy
               </SectionLabel>
             </Reveal>
 
@@ -60,14 +59,6 @@ export function BrandIntro() {
                   </li>
                 ))}
               </ul>
-            </Reveal>
-
-            <Reveal delay={0.15}>
-              <div className="mt-10">
-                <CTAButton href="/about" variant="outline">
-                  Inside Kinetic Edge
-                </CTAButton>
-              </div>
             </Reveal>
           </div>
 

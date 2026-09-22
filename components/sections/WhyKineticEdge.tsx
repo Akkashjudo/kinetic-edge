@@ -38,7 +38,7 @@ export function WhyKineticEdge({ index = "07" }: { index?: string }) {
         <Reveal>
           <SectionHeading
             index={index}
-            label="Why Kinetic Edge"
+            label="How We Work"
             title="How the work is done."
             lead="Not a claim about results — a description of the process every person here is put through."
           />

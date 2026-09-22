@@ -19,6 +19,11 @@ import type { TeamMember, TeamGroup } from "@/lib/types";
  * No credentials, qualifications, registration numbers or years of experience
  * are verified for anyone, so none are stored or rendered.
  *
+ * `expertise` is the one short line under a name. It is set only where the
+ * client content document itself states it — the two founders, whose
+ * backgrounds are given in the brand story (data/story.ts). It is left out for
+ * everyone else rather than written to fill the card.
+ *
  * Photographs: leave `image` undefined until a real photograph exists — the card
  * falls back to an initials placeholder. Never substitute a stock or generated
  * portrait for a real person. The six supplied portraits were normalised from
@@ -30,12 +35,14 @@ export const team: TeamMember[] = [
     name: "K. Deepak",
     role: "Founder & Managing Director",
     group: "Leadership",
+    expertise: "Sports Science graduate",
     image: "/images/team/deepak.webp",
   },
   {
     name: "Lakshmi Priyanka Subramanian S",
     role: "Co-Founder",
     group: "Leadership",
+    expertise: "Professional badminton player",
     image: "/images/team/lakshmi-priyanka-subramanian.webp",
   },
   {

@@ -35,8 +35,8 @@ export function LocationSection({
           <SectionHeading
             index={index}
             label="Location"
-            title="Two centres, one system."
-            lead="The training floor and the clinical environment are minutes apart in Chennai — so an athlete moves between them without leaving the system."
+            title="Where to find us."
+            lead="Both centres are in Golden George Nagar, Chennai. One number and one WhatsApp line serve both."
           />
         </Reveal>
       </Container>

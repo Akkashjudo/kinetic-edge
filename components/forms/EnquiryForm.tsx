@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Send } from "lucide-react";
+import { services } from "@/data/services";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -20,14 +21,10 @@ import { WhatsAppIcon } from "@/components/ui/icons";
  */
 const ENDPOINT = process.env.NEXT_PUBLIC_ENQUIRY_ENDPOINT;
 
+/** The four services, then the two enquiries that are not a service. */
 const SERVICE_OPTIONS = [
-  "Performance Training",
-  "Strength & Conditioning",
-  "Athlete Development",
-  "Performance Testing",
-  "Sports Physiotherapy",
-  "Sports Rehabilitation",
-  "Online / Distance Coaching",
+  ...services.map((service) => service.title),
+  "KE Education",
   "General Enquiry",
 ];
 

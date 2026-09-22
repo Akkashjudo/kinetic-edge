@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/metadata";
 import { getService, serviceSlugs } from "@/data/services";
-import { site } from "@/data/site";
+import { primaryCta, site } from "@/data/site";
 import { BreadcrumbSchema, ServiceSchema } from "@/components/StructuredData";
 import { CTAButton } from "@/components/ui/CTAButton";
 import { PageHero } from "@/components/ui/PageHero";
@@ -12,7 +12,10 @@ import { RelatedServices } from "@/components/sections/RelatedServices";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 import { WhatsAppIcon } from "@/components/ui/icons";
 
-/** Only the six defined services exist as routes. */
+/**
+ * Only the four defined services exist as routes. The six earlier slugs
+ * redirect permanently — see next.config.ts.
+ */
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -70,15 +73,15 @@ export default async function ServicePage({
           { label: service.title },
         ]}
         index={index}
-        label={category ?? service.title}
+        label={category ? category.charAt(0) + category.slice(1).toLowerCase() : service.title}
         title={service.headline}
         lead={service.intro}
         accent={service.accent}
         imageKey={service.imageKey}
         actions={
           <>
-            <CTAButton href={service.cta.href} variant="light">
-              {service.cta.label}
+            <CTAButton href={primaryCta.href} variant="light">
+              {primaryCta.label}
             </CTAButton>
             <CTAButton
               href={site.whatsapp.href}
@@ -101,7 +104,7 @@ export default async function ServicePage({
         title={
           <>
             Inside{" "}
-            <span className="text-accent">{service.title.toLowerCase()}</span>.
+            <span className="text-accent-ink">{service.title.toLowerCase()}</span>.
           </>
         }
         accent={service.accent}
@@ -115,13 +118,13 @@ export default async function ServicePage({
         accent={service.accent}
         title={
           service.accent === "rehab"
-            ? "Start with an assessment."
-            : "Ready to start?"
+            ? "Start With an Assessment"
+            : "Ready to Take Your Performance Further?"
         }
         body={
           service.accent === "rehab"
             ? "Rehabilitation begins with understanding the injury, the sport and the timeline you are working to."
-            : "Whether the goal is better performance, structured rehabilitation or a return to sport, start with an assessment."
+            : "Whether you're preparing for competition, returning from injury or simply looking to train better, our team can help build the right performance plan for you."
         }
       />
     </>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/metadata";
 import { athleteResults, hasAthleteResults } from "@/data/athlete-results";
-import { competitions } from "@/data/competitions";
+import { primaryCta } from "@/data/site";
 import { BreadcrumbSchema } from "@/components/StructuredData";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
@@ -9,26 +9,27 @@ import { Figure } from "@/components/ui/Figure";
 import { PageHero } from "@/components/ui/PageHero";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AthleteAmbassadors } from "@/components/sections/AthleteAmbassadors";
 import { ResultsGrid } from "@/components/sections/ResultsGrid";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 
 export const metadata: Metadata = pageMetadata({
   title: "Athletes",
   description:
-    "Kinetic Edge athletes compete at state, national and international level. Verified competition results from athletes training in Mogappair East, Chennai.",
+    "Athletes who represent Kinetic Edge, Chennai — including international badminton player and former World Junior No. 1 Sankar Muthusamy.",
   path: "/athletes",
 });
 
 /**
- * The athlete archive.
+ * Athletes.
  *
- * Image-led by construction: the verified results render as a featured record
- * plus a filterable archive the moment `data/athlete-results.ts` is populated,
- * and until then the page leans on training photography rather than four
- * screens of type.
+ * The ambassadors lead. Verified competition results follow the moment
+ * `data/athlete-results.ts` is populated; until then an honest interim section
+ * describes the preparation instead, with nothing fabricated to fill the gap.
  *
- * The method section was removed from this page — it was filler here, and it
- * appears in full on the homepage, /about and /services.
+ * The competitions list that used to sit here was removed at the client's
+ * request ("Where Our Athletes Compete"). Its data remains in
+ * data/competitions.ts.
  */
 export default function AthletesPage() {
   return (
@@ -42,50 +43,50 @@ export default function AthletesPage() {
 
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Athletes" }]}
-        index="04"
         label="Athletes"
         title="The work shows up in competition."
-        lead="Training is judged by what it transfers to. These are the competitions Kinetic Edge athletes step onto."
+        lead="Training is judged by what it transfers to. Every athlete here is assessed, programmed, tracked and re-tested — then they compete."
         imageKey="athletesHero"
         actions={
-          <CTAButton href="/contact" variant="light">
-            Train with Kinetic Edge
+          <CTAButton href={primaryCta.href} variant="light">
+            {primaryCta.label}
           </CTAButton>
         }
       />
 
-      {/* Verified results. Renders as soon as data/athlete-results.ts is filled. */}
+      <AthleteAmbassadors index="01" tone="light" showCta={false} />
+
       {hasAthleteResults ? (
-        <section className="ke-section-lg bg-paper">
+        <section className="ke-section-lg bg-bone">
           <Container>
             <Reveal>
               <SectionHeading
-                index="01"
+                index="02"
                 label="Results"
                 title="Verified competition results."
                 lead="Every result listed here is verified. Nothing is aggregated into medal totals or athlete counts."
                 className="mb-14"
               />
             </Reveal>
-          </Container>
-
-          <Container>
             <ResultsGrid results={athleteResults} />
           </Container>
         </section>
       ) : (
-        /* Honest interim state. No fabricated proof — training photography and
-           the verified competition list carry the page until results arrive. */
-        <section className="ke-section bg-paper">
+        <section className="ke-section bg-bone">
           <Container>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
               <Reveal>
                 <SectionHeading
-                  index="01"
+                  index="02"
                   label="The work"
                   title="Prepared for the demands of the sport."
-                  lead="Every athlete who competes under the Kinetic Edge name is assessed, prescribed for, monitored and re-tested. What follows is where that preparation is put to the test."
+                  lead="Every athlete who competes under the Kinetic Edge name is assessed, given an individual plan, tracked and re-tested. Competition is where that preparation is put to the test."
                 />
+                <div className="mt-9">
+                  <CTAButton href="/services/athlete-performance" variant="outline">
+                    Athlete Performance Training
+                  </CTAButton>
+                </div>
               </Reveal>
 
               <RevealMask delay={0.08}>
@@ -101,41 +102,8 @@ export default function AthletesPage() {
         </section>
       )}
 
-      {/* Competitions — verified, secondary proof, and never presented as partners. */}
-      <section className="ke-section bg-bone">
-        <Container>
-          <Reveal>
-            <SectionHeading
-              index={hasAthleteResults ? "02" : "02"}
-              label="Competitions"
-              title="Where our athletes compete."
-              lead="Kinetic Edge athletes compete at state, national and international level across a range of sports."
-            />
-          </Reveal>
-
-          {/* Not links — so they carry no hover state implying they are. */}
-          <Reveal delay={0.06}>
-            <ul className="mt-14 grid gap-px border border-line bg-line sm:grid-cols-2 lg:mt-18 lg:grid-cols-4">
-              {competitions.map((competition, index) => (
-                <li
-                  key={competition}
-                  className="flex min-h-36 flex-col justify-between gap-6 bg-paper p-6 lg:min-h-44 lg:p-7"
-                >
-                  <span className="ke-label text-steel">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="font-display text-base font-bold leading-snug tracking-[-0.025em] text-ink lg:text-lg">
-                    {competition}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </Container>
-      </section>
-
       <ContactCTA
-        title="Train where the work is measured."
+        title="Train Where the Work Is Measured"
         body="Every athlete starts the same way — an assessment that sets the baseline the programme is written against."
       />
     </>

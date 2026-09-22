@@ -110,6 +110,9 @@
     scroll-padding-top: 6rem;
     /* `clip`, not `hidden`, so position: sticky still works */
     overflow-x: clip;
+    /* Reserve the scrollbar's space, so the page does not jump sideways when a
+       modal locks scrolling and the scrollbar is removed. */
+    scrollbar-gutter: stable;
   }
 
   body {
@@ -361,24 +364,38 @@
   position: relative;
 }
 
-/* Marquee track */
-@keyframes ke-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
+/* Animated underline for text links. Draws in from the left on hover or
+   keyboard focus of the link, or on hover of a `group` card containing it.
+   Hover is gated on devices that can hover, so a tap never leaves it stuck. */
+@utility ke-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 2px;
+  transition: background-size 320ms var(--ease-ke);
+
+  &:focus-visible {
+    background-size: 100% 1px;
   }
-  to {
-    transform: translate3d(-50%, 0, 0);
+
+  @media (hover: hover) {
+    &:hover,
+    .group:hover & {
+      background-size: 100% 1px;
+    }
   }
 }
 
-.ke-marquee-track {
-  display: flex;
-  width: max-content;
-  animation: ke-marquee var(--marquee-duration, 60s) linear infinite;
-}
-
-.ke-marquee:hover .ke-marquee-track {
-  animation-play-state: paused;
+/* Pointer-follow spotlight for cards. The card writes --mx / --my on pointer
+   move; the layer fades in on hover. Adapted from Hirael's "Feature Grid
+   Spotlight Cards" (MIT) via 21st.dev, recoloured to the section accent. */
+.ke-spotlight {
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--accent) 11%, transparent),
+    transparent 70%
+  );
 }
 
 /* --------------------------------------------------------------------------
@@ -416,27 +433,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .ke-marquee-track {
-    animation: none !important;
-    transform: none !important;
-  }
-}
-
-/* Marquee falls back to a static wrapped list when motion is reduced,
-   so no content is clipped and no horizontal overflow is introduced. */
-@media (prefers-reduced-motion: reduce) {
-  .ke-marquee-track,
-  .ke-marquee-track > ul {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 0.5rem;
-  }
-
-  .ke-marquee-dup {
-    display: none;
   }
 }
 
@@ -511,30 +507,6 @@
 
   .ke-rail-fill {
     transform: scaleX(1) scaleY(1) !important;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   Hero scroll cue
-   -------------------------------------------------------------------------- */
-@keyframes ke-scroll-cue {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(200%);
-  }
-}
-
-.ke-scroll-cue-line {
-  animation: ke-scroll-cue 2.4s var(--ease-ke-in-out) infinite;
-}
-
-/* The cue is a motion hint and nothing else — with motion reduced there is
-   nothing left for it to say, so it is removed rather than left frozen. */
-@media (prefers-reduced-motion: reduce) {
-  .ke-scroll-cue {
-    display: none;
   }
 }
 

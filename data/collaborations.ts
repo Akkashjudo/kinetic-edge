@@ -93,14 +93,8 @@ export function byYear(events: CollaborationEvent[]) {
 }
 
 /**
- * KE Education splits the record in two, so nothing is listed twice:
- * workshops sit under Workshops, and everything else — camps, assessments and
- * representations — under Collaborations.
+ * KE Education is now a single record — camps, workshops, assessments and
+ * representations in one timeline. The separate Workshops block was removed at
+ * the client's request on 25 Sep 2026, along with the X-Plosive Plyometric
+ * Workshop 2.0 that headed it.
  */
-export const pastWorkshops = collaborations.filter(
-  (event) => event.kind === "Workshop",
-);
-
-export const otherCollaborations = collaborations.filter(
-  (event) => event.kind !== "Workshop",
-);

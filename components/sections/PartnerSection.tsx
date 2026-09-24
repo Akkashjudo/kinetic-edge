@@ -2,40 +2,38 @@ import Image from "next/image";
 import { partners, type Partner } from "@/data/partners";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
-import { Figure } from "@/components/ui/Figure";
-import { Reveal, RevealMask } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 /**
- * Confirmed partners only — VALD Performance and Hundred.
+ * Confirmed partners only — currently Hundred, the apparel sponsor. The VALD
+ * Performance partnership was removed at the client's request on 25 Sep 2026.
  *
- * Two variants:
- *  · strip — the homepage. One quiet band: a heading, two logos, two roles.
- *  · full  — /partners, with what the technology partnership actually does.
+ * Two variants: a quiet band for the homepage, and the fuller treatment for
+ * /partners. Both lay out from the data, so the section reads correctly with
+ * one partner or several — no empty cells.
  *
- * Both sit on light grounds. The supplied marks are white on transparency, so
- * they are shown as ink silhouettes (`brightness-0`) — a surface treatment that
+ * The supplied marks are white on transparency, so on these light grounds they
+ * are shown as ink silhouettes (`brightness-0`) — a surface treatment that
  * leaves each mark's shape and proportions untouched. Heights are set per logo
- * (see data/partners.ts) because VALD is a 4.1:1 wordmark and Hundred a 1.8:1
- * lock-up; matching their heights would make VALD dominate.
+ * (see data/partners.ts) so different ratios read as a set.
  *
  * Competitions are never shown here.
  */
 export function PartnerSection({
-  index = "07",
+  index = "08",
   variant = "strip",
-  title = "Performance requires the right tools.",
-  lead = "Objective measurement is part of the method. Where technology is used, it is named.",
+  title = "The kit behind the work.",
+  lead = "Kinetic Edge names who it works with. Only confirmed partners appear here.",
 }: {
   index?: string;
   variant?: "strip" | "full";
   title?: string;
   lead?: string;
 }) {
+  if (partners.length === 0) return null;
   if (variant === "strip") return <PartnerStrip index={index} />;
-
-  const vald = partners.find((p) => p.name === "VALD Performance");
 
   return (
     <section data-accent="performance" className="ke-section bg-paper">
@@ -44,13 +42,18 @@ export function PartnerSection({
           <SectionHeading index={index} label="Partners" title={title} lead={lead} />
         </Reveal>
 
-        <ul className="mt-14 grid gap-px border border-line bg-line sm:grid-cols-2 lg:mt-18">
+        <ul
+          className={cn(
+            "mt-14 grid gap-px border border-line bg-line lg:mt-18",
+            partners.length > 1 && "sm:grid-cols-2",
+          )}
+        >
           {partners.map((partner, i) => (
             <Reveal
               key={partner.name}
               as="li"
               delay={i * 0.08}
-              className="flex flex-col items-center gap-8 bg-paper px-8 py-12 md:px-12 md:py-16"
+              className="flex flex-col items-center gap-8 bg-paper px-8 py-14 md:px-12 md:py-16"
             >
               <PartnerLogo partner={partner} className="h-20 md:h-24" />
               <div className="text-center">
@@ -58,69 +61,43 @@ export function PartnerSection({
                 <p className="mt-3 font-display text-lg font-bold tracking-[-0.02em] text-ink">
                   {partner.name}
                 </p>
+                {partner.description ? (
+                  <p className="ke-body-sm mx-auto mt-4 max-w-md text-steel">
+                    {partner.description}
+                  </p>
+                ) : null}
               </div>
             </Reveal>
           ))}
         </ul>
-
-        {vald?.description ? (
-          <div className="mt-px grid gap-px border border-t-0 border-line bg-line lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-            <Reveal className="flex flex-col justify-center bg-bone p-8 md:p-10 lg:p-12">
-              <p className="ke-label mb-4 flex items-center gap-2 text-accent-ink">
-                <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
-                How it is used
-              </p>
-              <h3 className="ke-h3 text-ink">{vald.name}</h3>
-              <p className="ke-body mt-4 max-w-xl text-steel">{vald.description}</p>
-            </Reveal>
-
-            <RevealMask delay={0.08} className="bg-bone">
-              <Figure
-                imageKey="valdTesting"
-                ratio="16/10"
-                sizes="(min-width: 1024px) 55vw, 100vw"
-                tone="dark"
-                className="h-full"
-              />
-            </RevealMask>
-          </div>
-        ) : null}
       </Container>
     </section>
   );
 }
 
-/** The homepage band — minimal on purpose. */
+/** The homepage band — one quiet line, generous space around the marks. */
 function PartnerStrip({ index }: { index: string }) {
   return (
     <section data-accent="performance" className="ke-section-tight bg-paper">
       <Container>
-        <div className="grid items-center gap-10 border-y border-line py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] lg:gap-16 lg:py-12">
+        <div className="flex flex-col items-start gap-10 border-y border-line py-10 sm:flex-row sm:items-center sm:justify-between sm:gap-14 lg:py-12">
           <Reveal>
-            <SectionLabel index={index} className="mb-5">
+            <SectionLabel index={index} className="mb-4">
               Partners
             </SectionLabel>
-            <h2 className="ke-h3 max-w-[20ch] text-ink">
-              Performance Technology &amp; Partners
-            </h2>
-            <p className="ke-body-sm mt-3 max-w-sm text-steel">
-              The testing technology and the kit behind the work.
-            </p>
+            <h2 className="ke-h3 max-w-[16ch] text-ink">The kit behind the work.</h2>
           </Reveal>
 
-          <Reveal delay={0.06}>
-            <ul className="grid grid-cols-2 gap-px border border-line bg-line">
+          <Reveal delay={0.06} className="w-full sm:w-auto">
+            <ul className="flex flex-wrap items-center gap-x-12 gap-y-8">
               {partners.map((partner) => (
-                <li
-                  key={partner.name}
-                  className="group flex flex-col items-center justify-center gap-5 bg-paper px-4 py-8 sm:px-8"
-                >
+                <li key={partner.name} className="group flex items-center gap-6">
                   <PartnerLogo
                     partner={partner}
-                    className="h-16"
-                    imageClassName="opacity-75 transition-opacity duration-300 group-hover:opacity-100"
+                    className="w-auto"
+                    imageClassName="opacity-80 transition-opacity duration-300 group-hover:opacity-100"
                   />
-                  <p className="ke-label text-center text-steel">{partner.role}</p>
+                  <span className="ke-label text-steel">{partner.role}</span>
                 </li>
               ))}
             </ul>
@@ -133,8 +110,8 @@ function PartnerStrip({ index }: { index: string }) {
 
 /**
  * Height is set explicitly and width follows the intrinsic ratio, so nothing is
- * stretched — `max-h-full` + `w-auto` once collapsed this box to 0×0, which also
- * stopped lazy loading from ever firing.
+ * stretched — `max-h-full` + `w-auto` once collapsed this box to 0×0, which
+ * also stopped lazy loading from ever firing.
  */
 function PartnerLogo({
   partner,
@@ -146,7 +123,7 @@ function PartnerLogo({
   imageClassName?: string;
 }) {
   return (
-    <div className={cn("flex w-full items-center justify-center", className)}>
+    <div className={cn("flex items-center justify-center", className)}>
       <Image
         src={partner.logo}
         alt={`${partner.name} logo`}

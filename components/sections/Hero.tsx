@@ -64,9 +64,13 @@ export function Hero() {
           className="h-full w-full"
         />
 
+        {/* Two scrims, because the copy sits in different places.
+            Below md the headline spans the full width, so the whole frame is
+            darkened vertically; from md up the copy returns to the left third
+            and the directional scrim leaves the right of the photograph open. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(100deg,rgba(7,19,32,0.92)_0%,rgba(7,19,32,0.66)_38%,rgba(7,19,32,0.12)_78%,transparent_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,19,32,0.88)_0%,rgba(7,19,32,0.74)_45%,rgba(7,19,32,0.92)_100%)] md:bg-[linear-gradient(100deg,rgba(7,19,32,0.92)_0%,rgba(7,19,32,0.66)_38%,rgba(7,19,32,0.12)_78%,transparent_100%)]"
         />
         <div
           aria-hidden="true"

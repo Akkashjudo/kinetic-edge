@@ -39,20 +39,22 @@ The following are absent by design, not by oversight — do not add them without
 - an email address (none exists — phone and WhatsApp are the contact routes)
 - separate opening hours or a separate phone number for Centre 02 (only its address was
   supplied, on 28 Aug 2026; the hours shown are verified for Centre 01 only)
-- prices, awards, or partners other than VALD Performance and Hundred
+- prices, awards, or partners other than Hundred (VALD Performance was removed on 25 Sep 2026)
 - a testimonial from Sankar Muthusamy (the source has a placeholder; `testimonial` stays null)
 - upcoming workshops
 
-Two rules that are easy to get wrong:
+Three rules that are easy to get wrong:
 
 1. **Competitions are not partners.** The eight competitions in `data/competitions.ts` are
    events Kinetic Edge athletes compete at. They must never appear under "Trusted Partners"
-   or imply affiliation. VALD Performance and Hundred are the only confirmed partners. The
-   competitions list is not currently rendered — the client asked for it to be removed.
-2. **Athlete alt text is generated, never written.** `resultAlt()` in
-   `data/athlete-results.ts` builds alt text from the verified fields on each result. The
-   previous site hand-wrote alt tags and credited some athletes with other athletes'
-   results. Do not reintroduce hand-written alt text there.
+   or imply affiliation. Hundred is the only confirmed partner. The competitions list is
+   not currently rendered — the client asked for it to be removed.
+2. **Athlete alt text is generated, never written.** `athleteAlt()` in
+   `data/athletes.ts` builds alt text from the verified fields. The previous site
+   hand-wrote alt tags and credited some athletes with other athletes' results. Do not
+   reintroduce hand-written alt text there.
+3. **The athlete ambassador is not a service.** Sankar Muthusamy's section says that he
+   represents Kinetic Edge, and carries no booking or consultation call to action.
 
 Placeholder **images** are fine. Placeholder **facts** are not.
 
@@ -71,29 +73,26 @@ Nothing repeated is hardcoded in JSX. All of it is typed data:
 | `data/programmes.ts` | The five programmes and the four audiences |
 | `data/ambassadors.ts` | Athlete ambassadors — one card each; testimonial deliberately null |
 | `data/team.ts` | Verified names and roles; expertise lines only where the source states one |
-| `data/athlete-results.ts` | Verified competition results — **currently empty, see below** |
+| `data/athletes.ts` | Athletes and their verified results, with generated alt text |
 | `data/competitions.ts` | Where athletes compete (not partners; not currently rendered) |
-| `data/partners.ts` | VALD Performance and Hundred |
-| `data/education.ts` | KE Education — focus areas and the past workshop |
-| `data/collaborations.ts` | Camps, workshops, assessments and representations, 2023–2025 |
+| `data/partners.ts` | Hundred, the apparel sponsor |
+| `data/collaborations.ts` | Camps, workshops, assessments and representations, 2023–2025 — the whole of KE Education |
 | `data/story.ts` | 2020 → today timeline, the homepage About summary |
 | `data/faq.ts` | Services and contact FAQs |
 | `data/images.ts` | Every photograph slot — see [IMAGES.md](IMAGES.md) |
+| `public/images/` | `centre/` the training floor and building, `founders/` Deepak and the pair, `athletes/` the athletes, `team/` portraits |
 
 Shared types are in `lib/types.ts`.
 
-### ⚠ Athlete results are not populated
+### Athletes
 
-`data/athlete-results.ts` is intentionally an empty array. 21 verified results exist but
-were not available when this was built, and nothing was invented to fill the gap.
+`data/athletes.ts` holds each athlete, their sport, their photograph and every verified
+result, read off the congratulation posters the client supplied on 25 Sep 2026. Add an
+athlete or a result there and the homepage preview and `/athletes` both render it — **no
+component changes are needed.**
 
-Everything downstream is already wired: add the result objects to that array and the
-homepage proof section, the `/athletes` results grid, sport filters and featured editorial
-cards all begin rendering. **No component changes are needed.** The file documents the
-exact shape to use.
-
-While the array is empty, the homepage results section renders nothing at all, and
-`/athletes` stands on the athlete ambassadors instead.
+The strongest result goes first in each athlete's list: that is the one the card leads
+with, and the rest open in their profile.
 
 ---
 
@@ -175,8 +174,10 @@ and JSON-LD: `SportsActivityLocation` site-wide, plus `BreadcrumbList`, `Service
 ## What is designed to be added later
 
 The layouts already accommodate these; they are simply absent until real data exists:
-the 21 verified athlete results, Sankar Muthusamy's approved testimonial, further athlete
-ambassadors, photographs for the eighteen empty image slots (hero first), portraits and
-expertise lines for the rest of the team, Centre 02 hours and interior photography, an
-email address, physiotherapy registration number, return-to-sport case studies, pricing,
-Google Business Profile, upcoming education programmes, and additional verified partners.
+athletes training and being tested (the eight remaining image slots in
+[IMAGES.md](IMAGES.md) — jump and force-plate testing, the rehabilitation rooms, remote
+coaching and a full team photograph), video of the centre, Sankar Muthusamy's approved
+testimonial, further athlete results and ambassadors, portraits and expertise lines for
+the rest of the team, Centre 02 hours, an email address, physiotherapy registration
+number, return-to-sport case studies, pricing, Google Business Profile, upcoming education
+programmes, and additional verified partners.

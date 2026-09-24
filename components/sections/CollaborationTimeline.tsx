@@ -22,10 +22,11 @@ const KIND_TONE: Record<CollaborationEvent["kind"], string> = {
 export function CollaborationTimeline({
   index = "03",
   events = collaborations,
-  label = "Collaborations",
-  title = "Where the work has taken us.",
-  lead = "Camps, assessments and collaborations delivered with schools, networks and institutions since 2023.",
+  label = "KE Education",
+  title = "Collaborations",
+  lead = "Where the work has taken us.",
   surface = "paper",
+  aside,
 }: {
   index?: string;
   events?: CollaborationEvent[];
@@ -33,6 +34,8 @@ export function CollaborationTimeline({
   title?: string;
   lead?: string;
   surface?: "paper" | "bone";
+  /** Optional action beside the heading, e.g. a link to the full record. */
+  aside?: React.ReactNode;
 }) {
   const years = byYear(events);
 
@@ -43,7 +46,13 @@ export function CollaborationTimeline({
     >
       <Container>
         <Reveal>
-          <SectionHeading index={index} label={label} title={title} lead={lead} />
+          <SectionHeading
+            index={index}
+            label={label}
+            title={title}
+            lead={lead}
+            aside={aside}
+          />
         </Reveal>
 
         <div className="mt-14 lg:mt-18">

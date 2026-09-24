@@ -4,11 +4,15 @@ import { Figure } from "@/components/ui/Figure";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
-/** Photographs paired with each chapter, in order. */
+/**
+ * Photographs paired with each chapter, in order: the founder, the floor that
+ * opened in 2023, the rehabilitation centre brought in-house in 2024, and the
+ * floor as it is today.
+ */
 const chapterImages = [
   "founder",
   "strengthTraining",
-  "physiotherapy",
+  "rehabCentre",
   "facilityInterior",
 ] as const;
 

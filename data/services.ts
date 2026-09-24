@@ -118,7 +118,8 @@ export const services: ServiceDetail[] = [
     headline: "From injury back to performance.",
     intro:
       "Physiotherapy at Kinetic Edge is delivered inside a performance environment. The assessment considers the injury and what you are going back to — and rehabilitation runs as a progression with criteria at each stage, through to a return to training and sport.",
-    imageKey: "physiotherapy",
+    // The rehabilitation centre itself — no interior frame has been supplied.
+    imageKey: "rehabCentre",
     blocks: [
       { title: "Injury Assessment", body: "Understanding the injury, how it behaves, what provokes it and what you need to get back to." },
       { title: "Pain Management", body: "Settling symptoms so that meaningful rehabilitation can begin and progress." },
@@ -155,7 +156,8 @@ export const services: ServiceDetail[] = [
     headline: "Structured coaching, wherever you train.",
     intro:
       "Athletes and clients who cannot train at our Chennai centres can still be coached by Kinetic Edge. The process is the same one used on the floor — assess, plan, train, track, improve — delivered remotely and built around the equipment and schedule you actually have.",
-    imageKey: "onlineCoaching",
+    // No photograph of remote coaching has been supplied; the page hero runs
+    // without an image rather than showing a placeholder.
     blocks: [
       { title: "Individualised Training Programmes", body: "Written around the equipment, facility and time you genuinely have access to." },
       { title: "Coach Feedback", body: "Execution, load and technique are reviewed — a written plan on its own is not coaching." },

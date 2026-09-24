@@ -15,23 +15,35 @@ prices, awards, sponsors, or upcoming events.
 Specifically absent, and to stay absent until the client supplies them:
 
 - **No email address.** Contact is phone and WhatsApp only.
-- **No address for Centre 02.** It is an *environment*, never a location. It must never
-  appear on a map, in an address block, or in directions.
-- **Only one partner: VALD Performance.** The competitions in `data/competitions.ts` are
-  competitions, not partners — never merge the two sections or relabel one as the other.
+- **No separate hours or phone number for Centre 02.** Its address *was* supplied on
+  28 Aug 2026 and is published; the hours on the site are verified for Centre 01 only.
+- **One partner: Hundred (apparel sponsor).** VALD Performance was removed on
+  25 Sep 2026 at the client's request — do not reintroduce the logo, the copy or the
+  asset. The competitions in `data/competitions.ts` are competitions, not partners; never
+  merge the two or relabel one as the other. That list is currently unrendered, also at
+  the client's request.
+- **No workshops or events.** The X-Plosive Plyometric Workshop 2.0 was removed on
+  25 Sep 2026 and KE Education is the collaborations record only.
 
 Placeholder images are fine. Placeholder facts are not. Never substitute a stock or
-generated portrait for a real member of staff.
+generated portrait for a real member of staff or athlete.
 
-## Athlete results
+## Athletes
 
-`data/athlete-results.ts` is empty on purpose — 21 verified results exist but were not
-available at build time. Add them to that array and every downstream surface renders
-without component changes.
+`data/athletes.ts` holds every athlete and their verified results, read off the
+congratulation posters the client supplied. Add results there and the homepage preview and
+`/athletes` both render them — no component changes.
 
-Alt text for results is **generated** by `resultAlt()` from the verified fields. Never
-hand-write it, and never carry alt text over from the previous site: several old tags
-credited one athlete with another athlete's result.
+Never invent or upgrade a placing, add a year the source does not state, or aggregate
+anything into medal totals, athlete counts or success rates.
+
+Alt text is **generated** by `athleteAlt()` from the verified fields. Never hand-write it,
+and never carry alt text over from the previous site: several old tags credited one
+athlete with another athlete's result.
+
+**The athlete ambassador is not a service.** Sankar Muthusamy's section states that he
+represents Kinetic Edge. It carries no booking, consultation or coaching call to action —
+removed 25 Sep 2026.
 
 ## Architecture
 
@@ -52,6 +64,12 @@ top of `components/ui/Reveal.tsx`.
 **Accent contrast.** `--accent` is the brand colour and is for rules, marks and dark
 surfaces. For small text and filled buttons on light surfaces use `--accent-ink`; the raw
 brand blue is only 3.96:1 on white and fails WCAG AA.
+
+**Never observe an element you have hidden.** Chrome does not reliably update an
+IntersectionObserver that has a `rootMargin` while the target's own `clip-path` (or a
+scale-to-nothing transform) hides it. `RevealMask` therefore observes an unclipped wrapper
+and animates the clip on a child. Observing the clipped element left every image frame
+empty for two seconds until the watchdog forced it.
 
 ## Before calling a change done
 

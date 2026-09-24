@@ -1,34 +1,41 @@
+import Image from "next/image";
 import { ambassadors } from "@/data/ambassadors";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
-import { CTAButton } from "@/components/ui/CTAButton";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { AmbassadorGallery } from "./AmbassadorGallery";
+import { Reveal, RevealMask } from "@/components/ui/Reveal";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 
 /**
- * Athletes who represent Kinetic Edge.
+ * The athlete ambassador.
  *
- * Renders one card per entry in data/ambassadors.ts; a card opens the athlete's
- * full profile. With a single ambassador the card takes the whole right-hand
- * column rather than sitting alone in a grid built for several.
+ * This section says one thing: Sankar Muthusamy represents Kinetic Edge.
  *
- * Dark on the homepage, where it follows three light sections; light on
- * /athletes, where it would otherwise stack under the dark page hero.
+ * ⚠ TWO RULES FROM THE CLIENT, 25 Sep 2026 — do not undo either:
+ *
+ * 1. NO CALL TO ACTION. No booking, consultation, coaching or "view profile"
+ *    control belongs here. He is an ambassador, not a service.
+ * 2. THE PHOTOGRAPH IS NEVER CROPPED. It is rendered at its own aspect ratio
+ *    with `object-contain`, so his head, body, racket, hands and legs stay in
+ *    frame at every breakpoint. Do not put it in a card crop, do not switch to
+ *    `object-cover`, and do not swap in a tighter frame on small screens.
+ *
+ * The artwork is the focus of the section and runs the full width of the
+ * container. His name and credentials are also set in HTML beneath it — sharp,
+ * selectable, translatable, and available to a screen reader.
  */
 export function AthleteAmbassadors({
   index = "05",
   tone = "dark",
-  showCta = true,
 }: {
   index?: string;
   tone?: "dark" | "light";
-  /** Link through to /athletes — off on /athletes itself. */
-  showCta?: boolean;
 }) {
-  if (ambassadors.length === 0) return null;
+  const ambassador = ambassadors[0];
+  if (!ambassador) return null;
 
   const dark = tone === "dark";
+  const { name, credentials, role, statement, body, closing, testimonial, poster } =
+    ambassador;
 
   return (
     <section
@@ -46,41 +53,113 @@ export function AthleteAmbassadors({
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(70% 60% at 85% 20%, rgba(19,133,214,0.2) 0%, transparent 62%)",
+                "radial-gradient(70% 60% at 85% 15%, rgba(19,133,214,0.18) 0%, transparent 62%)",
             }}
           />
         </>
       ) : null}
 
       <Container className="relative">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-5">
-            <Reveal>
-              <SectionHeading
-                index={index}
-                label="Athlete Ambassadors"
-                title="Athletes Who Represent Kinetic Edge"
-                lead="Athletes who train with Kinetic Edge and carry its name into competition."
-                tone={tone}
-              />
-            </Reveal>
+        {/* Identity */}
+        <Reveal>
+          <SectionLabel index={index} tone={tone} className="mb-7">
+            Athlete Ambassador
+          </SectionLabel>
 
-            {showCta ? (
-              <Reveal delay={0.08}>
-                <div className="mt-9">
-                  <CTAButton href="/athletes" variant={dark ? "outlineLight" : "outline"}>
-                    Meet our athletes
-                  </CTAButton>
-                </div>
-              </Reveal>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+            <div>
+              <h2 className={cn("ke-h1", dark ? "text-white" : "text-ink")}>{name}</h2>
+
+              <ul className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+                {credentials.map((credential, i) => (
+                  <li
+                    key={credential}
+                    className={cn(
+                      "ke-label flex items-center gap-3",
+                      dark ? "text-steel-400" : "text-steel",
+                    )}
+                  >
+                    {i > 0 ? (
+                      <span aria-hidden="true" className={dark ? "text-white/25" : "text-line"}>
+                        /
+                      </span>
+                    ) : null}
+                    {credential}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* The one thing this section exists to say. */}
+            <p className="ke-label inline-flex shrink-0 items-center gap-2.5 self-start bg-ke-blue px-4 py-3 text-white lg:self-auto">
+              <span aria-hidden="true" className="h-1.5 w-1.5 bg-white" />
+              {role}
+            </p>
+          </div>
+        </Reveal>
+
+        {/* The artwork, whole. Its own 3:2 ratio, so `object-contain` letterboxes
+            nothing and crops nothing. */}
+        <RevealMask className="mt-12 lg:mt-16">
+          <div className="relative w-full" style={{ aspectRatio: `${poster.width} / ${poster.height}` }}>
+            <Image
+              src={poster.src}
+              alt={`${name} — ${credentials.join(", ")}, ${role}`}
+              fill
+              sizes="(min-width: 1440px) 1312px, (min-width: 1024px) 92vw, 100vw"
+              className="object-contain"
+            />
+          </div>
+        </RevealMask>
+
+        {/* His preparation, in words. */}
+        <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
+          <Reveal>
+            <p
+              className={cn(
+                "font-display text-2xl font-bold leading-[1.15] tracking-[-0.03em] sm:text-3xl lg:text-4xl",
+                dark ? "text-white" : "text-ink",
+              )}
+            >
+              {statement}
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.06}>
+            <div className="space-y-4">
+              {body.map((paragraph) => (
+                <p
+                  key={paragraph.slice(0, 32)}
+                  className={cn("ke-body", dark ? "text-steel-400" : "text-steel")}
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Rendered only when an approved quote exists. */}
+            {testimonial ? (
+              <figure className="mt-8 border-l-2 border-ke-blue pl-6">
+                <blockquote className={cn("ke-lead", dark ? "text-white/90" : "text-ink")}>
+                  &ldquo;{testimonial.quote}&rdquo;
+                </blockquote>
+                <figcaption
+                  className={cn("ke-label mt-4", dark ? "text-steel-400" : "text-steel")}
+                >
+                  {testimonial.attribution}
+                </figcaption>
+              </figure>
             ) : null}
-          </div>
 
-          <div className="lg:col-span-7">
-            <Reveal delay={0.06}>
-              <AmbassadorGallery ambassadors={ambassadors} tone={tone} />
-            </Reveal>
-          </div>
+            <p
+              className={cn(
+                "mt-8 font-display text-lg font-bold tracking-[-0.02em]",
+                dark ? "text-white" : "text-ink",
+              )}
+            >
+              {closing}
+            </p>
+          </Reveal>
         </div>
       </Container>
     </section>

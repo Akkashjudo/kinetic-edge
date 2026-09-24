@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { collaborations } from "@/data/collaborations";
 import { site } from "@/data/site";
 import { Hero } from "@/components/sections/Hero";
 import { ServicesOverview } from "@/components/sections/ServicesOverview";
 import { AudienceCards } from "@/components/sections/AudienceCards";
 import { CentreCards } from "@/components/sections/CentreCards";
 import { AthleteAmbassadors } from "@/components/sections/AthleteAmbassadors";
-import { AthleteResults } from "@/components/sections/AthleteResults";
+import { AthleteShowcase } from "@/components/sections/AthleteShowcase";
 import { MethodProcess } from "@/components/sections/MethodProcess";
 import { PartnerSection } from "@/components/sections/PartnerSection";
-import { EducationPreview } from "@/components/sections/EducationPreview";
+import { CollaborationTimeline } from "@/components/sections/CollaborationTimeline";
 import { AboutPreview } from "@/components/sections/AboutPreview";
 import { ContactCTA } from "@/components/sections/ContactCTA";
+import { CTAButton } from "@/components/ui/CTAButton";
 
 export const metadata: Metadata = {
   title: `${site.legalName} — Chennai`,
@@ -31,13 +33,14 @@ export const metadata: Metadata = {
  *   How can it help me?           Services
  *   Is it for someone like me?    Who we work with
  *   Where is it?                  Two centres
- *   Who trusts it?                Athlete ambassadors (+ results, once supplied)
+ *   Who represents it?            Athlete ambassador
+ *   Does the training work?       Athletes and their results
  *   How does it work?             The Kinetic Edge System
- *   What is it built on?          Partners · KE Education
+ *   What is it built on?          Partners · Collaborations
  *   Who is behind it?             About + team
  *   What do I do next?            Final call to action
  *
- * Light and dark alternate deliberately: the hero and the ambassadors are the
+ * Light and dark alternate deliberately: the hero and the ambassador are the
  * only full dark bands, so no two dark sections ever stack.
  */
 export default function HomePage() {
@@ -48,12 +51,23 @@ export default function HomePage() {
       <AudienceCards index="03" />
       <CentreCards index="04" />
       <AthleteAmbassadors index="05" />
-      {/* Renders nothing until verified results exist in data/athlete-results.ts. */}
-      <AthleteResults />
-      <MethodProcess index="06" />
-      <PartnerSection index="07" variant="strip" />
-      <EducationPreview index="08" />
-      <AboutPreview index="09" />
+      <AthleteShowcase index="06" variant="preview" surface="paper" />
+      <MethodProcess index="07" />
+      <PartnerSection index="08" variant="strip" />
+
+      {/* KE Education — the collaborations record, and nothing else. */}
+      <CollaborationTimeline
+        index="09"
+        events={collaborations.slice(0, 5)}
+        surface="bone"
+        aside={
+          <CTAButton href="/education" variant="outline">
+            All collaborations
+          </CTAButton>
+        }
+      />
+
+      <AboutPreview index="10" />
       <ContactCTA />
     </>
   );

@@ -32,15 +32,16 @@ export interface SiteImage {
 const imageRegistry = {
   /* ---------------------------------------------------------------- Homepage */
   hero: {
-    src: null,
-    alt: "Athlete training on the Kinetic Edge performance floor in Chennai",
-    shot: "Wide, low-light cinematic frame of real athlete training. Landscape 21:9, min 2400px wide. Leave clear space on the left third for the headline.",
-    position: "center 40%",
+    src: "/images/centre/floor-wide.webp",
+    alt: "The Kinetic Edge training floor in Mogappair East — turf acceleration lane, plyometric boxes and the entrance to the performance centre",
+    shot: "SUPPLIED — the floor, looking down the turf lane. A frame with athletes mid-session would be stronger still: landscape 21:9, min 2400px wide, clear space on the left third for the headline.",
+    position: "center 45%",
   },
   brandIntro: {
-    src: null,
-    alt: "Coach and athlete working through a prescribed session at Kinetic Edge",
-    shot: "Portrait 4:5 coaching moment — coach observing, athlete under load. Min 1400px wide.",
+    src: "/images/founders/founders-conclave.webp",
+    alt: "The founders of Kinetic Edge at the Symbiosis School of Sports Sciences Sports Conclave, 2025",
+    shot: "SUPPLIED — the founders representing Kinetic Edge at a sports science conclave.",
+    position: "center 25%",
   },
 
   /* ----------------------------------------------------------------- Centres */
@@ -60,19 +61,20 @@ const imageRegistry = {
 
   /* ---------------------------------------------------------------- Services */
   strengthTraining: {
-    src: null,
-    alt: "Athlete performing a barbell lift under coaching supervision",
-    shot: "Barbell work, side-on, coach in frame. Landscape 3:2, min 1800px wide.",
+    src: "/images/centre/floor-racks.webp",
+    alt: "Squat rack, barbells, dumbbells and plyometric boxes on the Kinetic Edge training floor",
+    shot: "SUPPLIED — the strength floor. A frame of an athlete under the bar, coach in shot, would be a stronger fit when one exists.",
   },
   sprinting: {
-    src: null,
-    alt: "Athlete accelerating during a speed session",
-    shot: "Sprint / acceleration frame, panned or frozen. Landscape 3:2, min 1800px wide.",
+    src: "/images/centre/floor-turf-lane.webp",
+    alt: "The indoor turf acceleration lane at Kinetic Edge, marked out for speed work",
+    shot: "SUPPLIED — the turf lane. An athlete accelerating down it would be the stronger frame.",
+    position: "center 60%",
   },
   athleteDevelopment: {
-    src: null,
-    alt: "Youth athletes in a long-term development session",
-    shot: "Group of developing athletes mid-session. Landscape 3:2, min 1800px wide.",
+    src: "/images/centre/floor-rack-trapbar.webp",
+    alt: "Trap bar, squat rack and dumbbells on the Kinetic Edge training floor",
+    shot: "SUPPLIED — the floor. A group of developing athletes mid-session would be a stronger fit.",
   },
   jumpTesting: {
     src: null,
@@ -83,11 +85,6 @@ const imageRegistry = {
     src: null,
     alt: "Force plate testing session at Kinetic Edge",
     shot: "Force plates in use, screen or tablet readout visible. Landscape 3:2, min 1800px wide.",
-  },
-  valdTesting: {
-    src: null,
-    alt: "Athlete testing session using VALD Performance technology",
-    shot: "VALD hardware in use during a testing session. Landscape 3:2, min 1800px wide.",
   },
   physiotherapy: {
     src: null,
@@ -115,11 +112,24 @@ const imageRegistry = {
     shot: "Athlete training with a programme on a phone or tablet. Landscape 3:2, min 1800px wide.",
   },
 
-  /* -------------------------------------------------------------------- Team */
+  /* ----------------------------------------------------------------- People */
   founder: {
-    src: null,
-    alt: "Deepak, Founder and Head of Strength & Conditioning at Kinetic Edge",
-    shot: "Founder portrait, coaching context preferred. Portrait 4:5, min 1200px wide.",
+    src: "/images/founders/deepak.webp",
+    alt: "Deepak, Founder and Managing Director of Kinetic Edge",
+    shot: "SUPPLIED — founder portrait at the centre.",
+    position: "center 30%",
+  },
+  foundersTogether: {
+    src: "/images/founders/founders-ses.webp",
+    alt: "The founders of Kinetic Edge, Deepak and Lakshmi Priyanka Subramanian",
+    shot: "SUPPLIED — the two founders together.",
+    position: "center 25%",
+  },
+  coachTrack: {
+    src: "/images/centre/athletics-track.webp",
+    alt: "A Kinetic Edge coach at the athletics track",
+    shot: "SUPPLIED — coach trackside.",
+    position: "center 30%",
   },
   teamGroup: {
     src: null,
@@ -129,17 +139,10 @@ const imageRegistry = {
 
   /* --------------------------------------------------------------- Athletes */
   athletesHero: {
-    src: null,
-    alt: "Kinetic Edge athlete in competition",
-    shot: "Competition frame — the strongest single image available. Landscape 21:9, min 2400px wide.",
-    position: "center 35%",
-  },
-
-  /* -------------------------------------------------------------- Education */
-  workshop: {
-    src: null,
-    alt: "X-Plosive Plyometric Workshop 2.0 delivered at Kinetic Edge",
-    shot: "Workshop delivery — presenting, or attendees around a testing setup. Landscape 3:2, min 1800px wide.",
+    src: "/images/centre/floor-benches.webp",
+    alt: "The Kinetic Edge training floor, where its athletes prepare",
+    shot: "SUPPLIED — the floor. A competition frame of a Kinetic Edge athlete would be the stronger image here: landscape 21:9, min 2400px wide.",
+    position: "center 55%",
   },
 
   /* --------------------------------------------------------------- Facility */
@@ -148,10 +151,16 @@ const imageRegistry = {
     alt: "The entrance to Kinetic Edge High Performance & Fitness Centre on Justice Rathinavel Pandian Road, Mogappair East, Chennai",
     shot: "SUPPLIED — exterior of Centre 01.",
   },
+  centreBuilding: {
+    src: "/images/centre/building.webp",
+    alt: "The Kinetic Edge High Performance & Fitness Centre building on its street in Mogappair East, Chennai",
+    shot: "SUPPLIED — the building from the street.",
+  },
   facilityInterior: {
-    src: null,
-    alt: "Inside the Kinetic Edge High Performance Centre",
-    shot: "Wide interior showing the scale of the floor. Landscape 16:9, min 2200px wide.",
+    src: "/images/centre/floor-benches.webp",
+    alt: "Inside the Kinetic Edge High Performance Centre — benches, racks and the glazed entrance",
+    shot: "SUPPLIED — wide interior of the floor.",
+    position: "center 55%",
   },
 } satisfies Record<string, SiteImage>;
 

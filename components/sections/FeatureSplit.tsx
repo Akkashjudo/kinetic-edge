@@ -23,7 +23,12 @@ export function FeatureSplit({
   accent = "performance",
   surface = "paper",
 }: {
-  imageKey: SiteImageKey;
+  /**
+   * Omit where no honest photograph exists for the subject. The block then
+   * lays out as text and points across the full width, rather than parking a
+   * placeholder plate next to it.
+   */
+  imageKey?: SiteImageKey;
   label: string;
   index?: string;
   title: string;
@@ -41,15 +46,22 @@ export function FeatureSplit({
       className={cn("ke-section", surface === "bone" ? "bg-bone" : "bg-paper")}
     >
       <Container>
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
-          <RevealMask className={cn(flip ? "lg:order-1" : "lg:order-2")}>
-            <Figure
-              imageKey={imageKey}
-              ratio="4/3"
-              sizes="(min-width: 1024px) 48vw, 100vw"
-              tone="dark"
-            />
-          </RevealMask>
+        <div
+          className={cn(
+            "grid items-center gap-10 lg:gap-20",
+            imageKey ? "lg:grid-cols-2" : "max-w-4xl",
+          )}
+        >
+          {imageKey ? (
+            <RevealMask className={cn(flip ? "lg:order-1" : "lg:order-2")}>
+              <Figure
+                imageKey={imageKey}
+                ratio="4/3"
+                sizes="(min-width: 1024px) 48vw, 100vw"
+                tone="dark"
+              />
+            </RevealMask>
+          ) : null}
 
           <Reveal className={cn(flip ? "lg:order-2" : "lg:order-1")}>
             <SectionLabel index={index} className="mb-6">

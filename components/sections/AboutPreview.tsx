@@ -4,44 +4,69 @@ import { aboutSummary } from "@/data/story";
 import { team } from "@/data/team";
 import { Container } from "@/components/ui/Container";
 import { CTAButton } from "@/components/ui/CTAButton";
-import { Reveal } from "@/components/ui/Reveal";
+import { Figure } from "@/components/ui/Figure";
+import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { TeamCard } from "@/components/ui/TeamCard";
 
 /**
  * About Kinetic Edge, on the homepage — who is behind it, in one screen.
  *
- * A short introduction, the philosophy, and the team as faces. The history,
- * the approach in full and the complete team directory all live on /about;
- * nothing here tries to be that page.
+ * The two founders carry the section: the pair photograph leads and the
+ * founder portrait sits beneath it, offset, so the pair reads as one
+ * art-directed composition rather than two tiles in a grid. Both are real
+ * supplied photographs; nothing here is a placeholder plate.
+ *
+ * The history, the approach in full and the complete team directory live on
+ * /about; nothing here tries to be that page.
  *
  * The team row prefers people with a real photograph, so it reads as one set of
- * portraits rather than a mix of faces and initials. It rebalances on its own as
- * more portraits are supplied.
+ * portraits rather than a mix of faces and initials. It rebalances on its own
+ * as more portraits are supplied.
  */
-export function AboutPreview({ index = "09" }: { index?: string }) {
+export function AboutPreview({ index = "10" }: { index?: string }) {
   const photographed = team.filter((member) => member.image).slice(0, 6);
 
   return (
     <section data-accent="performance" className="ke-section bg-paper">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-          <Reveal className="lg:col-span-5">
-            <SectionLabel index={index} className="mb-6">
-              About Kinetic Edge
-            </SectionLabel>
-            <h2 className="ke-h2 max-w-[13ch] text-ink">{aboutSummary.mission}</h2>
-          </Reveal>
-
-          <Reveal delay={0.06} className="lg:col-span-7 lg:pt-11">
-            <p className="ke-lead max-w-2xl text-ink/85">{aboutSummary.intro}</p>
-            <p className="ke-body mt-5 max-w-2xl text-steel">{aboutSummary.philosophy}</p>
-            <div className="mt-9">
-              <CTAButton href="/about" variant="primary">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <Reveal>
+              <SectionLabel index={index} className="mb-6">
                 About Kinetic Edge
-              </CTAButton>
-            </div>
-          </Reveal>
+              </SectionLabel>
+              <h2 className="ke-h2 max-w-[13ch] text-ink">{aboutSummary.mission}</h2>
+              <p className="ke-lead mt-7 max-w-xl text-ink/85">{aboutSummary.intro}</p>
+              <p className="ke-body mt-5 max-w-xl text-steel">{aboutSummary.philosophy}</p>
+              <div className="mt-9">
+                <CTAButton href="/about" variant="primary">
+                  About Kinetic Edge
+                </CTAButton>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* The founders. Two frames, offset, rather than a tidy pair. */}
+          <div className="grid grid-cols-5 items-start gap-4 lg:col-span-7 lg:gap-6">
+            <RevealMask className="col-span-3">
+              <Figure
+                imageKey="foundersTogether"
+                ratio="4/5"
+                sizes="(min-width: 1024px) 34vw, 55vw"
+                tone="dark"
+              />
+            </RevealMask>
+
+            <RevealMask delay={0.12} className="col-span-2 mt-10 lg:mt-20">
+              <Figure
+                imageKey="founder"
+                ratio="4/5"
+                sizes="(min-width: 1024px) 23vw, 37vw"
+                tone="dark"
+              />
+            </RevealMask>
+          </div>
         </div>
 
         {photographed.length > 0 ? (

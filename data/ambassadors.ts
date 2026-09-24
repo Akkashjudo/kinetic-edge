@@ -6,6 +6,15 @@ import type { Ambassador } from "@/lib/types";
  * The section renders one card per entry, so a second ambassador is added here
  * and appears on the homepage and /athletes with no component changes.
  *
+ * ⚠ THE ARTWORK IS SHOWN WHOLE. The client asked on 25 Sep 2026 for the full
+ * supplied photograph to be visible — no crop of his head, body, racket, hands
+ * or legs, at any breakpoint. The section renders it at its own aspect ratio
+ * with `object-contain`. Do not switch it to a cropped card frame.
+ *
+ * ⚠ NO BOOKING, CONSULTATION OR PROFILE CALL TO ACTION. The section states that
+ * he represents Kinetic Edge; he is not offering appointments. The "View
+ * profile" control was removed on 25 Sep 2026 and must not be replaced.
+ *
  * ⚠ THE TESTIMONIAL IS DELIBERATELY NULL.
  *
  * The client content document carries a bracketed placeholder where Sankar's
@@ -38,18 +47,10 @@ export const ambassadors: Ambassador[] = [
     ],
     closing: "Train. Prepare. Perform. Repeat.",
     testimonial: null,
-    images: {
-      card: {
-        src: "/images/athletes/sankar-action.webp",
-        width: 1060,
-        height: 944,
-        position: "center 30%",
-      },
-      poster: {
-        src: "/images/athletes/sankar-poster.webp",
-        width: 1536,
-        height: 1024,
-      },
+    poster: {
+      src: "/images/athletes/sankar-poster.webp",
+      width: 1536,
+      height: 1024,
     },
   },
 ];

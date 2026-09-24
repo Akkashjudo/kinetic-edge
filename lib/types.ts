@@ -52,7 +52,8 @@ export interface ServiceDetail extends ServiceSummary {
   intro: string;
   /** Capability blocks rendered as the numbered body of a service page. */
   blocks: { title: string; body: string }[];
-  imageKey: ImageKey;
+  /** Omitted where no honest photograph exists for the service yet. */
+  imageKey?: ImageKey;
   metaTitle: string;
   metaDescription: string;
 }
@@ -178,29 +179,39 @@ export interface Ambassador {
   closing: string;
   /** Null until an approved quote exists. Never paraphrased or invented. */
   testimonial: { quote: string; attribution: string } | null;
-  images: {
-    /** Clean frame with no baked-in typography — cards and small screens. */
-    card: { src: string; width: number; height: number; position?: string };
-    /** Designed key art, shown in the profile from `sm` up. */
-    poster?: { src: string; width: number; height: number };
-  };
+  /**
+   * The supplied artwork, shown whole. It is never cropped to a card shape at
+   * any breakpoint — see components/sections/AthleteAmbassadors.tsx.
+   */
+  poster: { src: string; width: number; height: number };
 }
 
 /**
- * A verified competition result for a Kinetic Edge athlete.
- * These must never be aggregated into medal totals or athlete counts.
+ * One verified competition result. Every field is quoted from the source the
+ * client supplied; anything it does not state is left out rather than guessed.
  */
-export interface AthleteResult {
-  id: string;
-  athleteName: string;
-  sport: string;
-  competition: string;
-  category?: string;
+export interface AthleteAchievement {
+  /** "Gold", "Silver", "Bronze", "Winner", "Runner Up" — as stated. */
   result: string;
+  /** Event or category, e.g. "U-17 Girls Doubles", "Men's Singles". */
+  category?: string;
+  competition: string;
+  /** Only where the source states one. */
   year?: string;
-  image?: string;
-  /** Promotes a result to the larger editorial cards. */
-  featured?: boolean;
+}
+
+/**
+ * A Kinetic Edge athlete and their verified results.
+ * These must never be aggregated into medal totals or success rates.
+ */
+export interface Athlete {
+  slug: string;
+  name: string;
+  sport: string;
+  /** A real photograph of the athlete. Never a stock or generated portrait. */
+  image: { src: string; width: number; height: number };
+  /** Strongest first — the first one leads the card. */
+  achievements: AthleteAchievement[];
 }
 
 export interface FaqItem {
@@ -224,17 +235,3 @@ export interface StoryChapter {
   body: string;
 }
 
-export interface EducationEvent {
-  slug: string;
-  title: string;
-  subtitle: string;
-  status: "past" | "upcoming";
-  date: string;
-  /** ISO date, used for the <time dateTime> attribute only. */
-  isoDate: string;
-  time: string;
-  venue: string;
-  instructor: string;
-  partner?: string;
-  topics: string[];
-}

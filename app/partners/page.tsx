@@ -9,13 +9,14 @@ import { ContactCTA } from "@/components/sections/ContactCTA";
 export const metadata: Metadata = pageMetadata({
   title: "Partners",
   description:
-    "VALD Performance, technology and testing partner, and Hundred, apparel sponsor — the confirmed partners of Kinetic Edge, Chennai.",
+    "Hundred, apparel sponsor — the confirmed partner of Kinetic Edge, Chennai.",
   path: "/partners",
 });
 
 /**
  * Confirmed partners only. The competitions list that used to follow was
  * removed at the client's request; competitions are never shown as partners.
+ * The VALD Performance partnership was removed on 25 Sep 2026.
  */
 export default function PartnersPage() {
   return (
@@ -30,8 +31,8 @@ export default function PartnersPage() {
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "Partners" }]}
         label="Partners"
-        title="Performance requires the right tools."
-        lead="Kinetic Edge names the technology it uses. Only confirmed partners appear on this page."
+        title="Who Kinetic Edge works with."
+        lead="Only confirmed partners appear on this page. Nothing here is a sponsorship Kinetic Edge has not agreed."
         actions={
           <CTAButton href="/services/athlete-performance" variant="light">
             Athlete Performance Training
@@ -39,12 +40,7 @@ export default function PartnersPage() {
         }
       />
 
-      <PartnerSection
-        index="01"
-        variant="full"
-        title="Technology, testing and kit."
-        lead="Objective measurement sits underneath the process — it is what makes assess and re-test mean something."
-      />
+      <PartnerSection index="01" variant="full" />
 
       <ContactCTA surface="bone" />
     </>

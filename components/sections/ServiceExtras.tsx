@@ -1,5 +1,4 @@
 import { onlinePathway, rehabPathway } from "@/data/method";
-import { partners } from "@/data/partners";
 import { programmes } from "@/data/programmes";
 import { FeatureSplit } from "./FeatureSplit";
 import { ProcessSteps } from "./ProcessSteps";
@@ -37,12 +36,13 @@ export function ServiceExtras({ slug }: { slug: string }) {
     case "athlete-performance":
       return (
         <>
+          {/* No photograph of testing has been supplied, so this block runs
+              without one rather than showing a placeholder plate. */}
           <FeatureSplit
-            imageKey="forcePlate"
             index="02"
             label="Performance testing"
             title="Objective data, not impressions."
-            body={`Testing at Kinetic Edge uses ${partners[0].name} technology to measure force production and jump characteristics. The numbers are not the point on their own — they are the reference the next block of training is written against, and the reference it is judged by.`}
+            body="Force production and jump characteristics are measured rather than estimated. The numbers are not the point on their own — they are the reference the next block of training is written against, and the reference it is judged by."
             points={[
               "Force production measured, not estimated",
               "Jump characteristics beyond jump height",
@@ -52,7 +52,7 @@ export function ServiceExtras({ slug }: { slug: string }) {
             surface="bone"
           />
           <FeatureSplit
-            imageKey="athleteDevelopment"
+            imageKey="coachTrack"
             index="03"
             label="Developing athletes"
             title="Young athletes are not small adults."
@@ -87,7 +87,7 @@ export function ServiceExtras({ slug }: { slug: string }) {
             accent="rehab"
           />
           <FeatureSplit
-            imageKey="mobility"
+            imageKey="strengthTraining"
             index="03"
             label="Alongside the performance floor"
             title="Treatment that does not stop at the plinth."

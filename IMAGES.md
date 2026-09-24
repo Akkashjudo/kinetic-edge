@@ -10,44 +10,49 @@ Components never hardcode an image path.
 3. Rewrite that slot's `alt` to describe the photograph you actually supplied.
 
 Until `src` is set, the slot renders a branded placeholder plate at the exact final crop
-and aspect ratio — so dropping the photograph in shifts nothing on the page.
+and aspect ratio — so dropping the photograph in shifts nothing on the page. Where a
+section would otherwise show a plate and no honest photograph exists, that section is
+built to run without an image instead — see `FeatureSplit`'s optional `imageKey`.
 
 **Placeholder images are fine. Placeholder facts are not.** Never caption a placeholder
 with an invented athlete, result, credential or statistic, and never use a stock or
 AI-generated portrait to stand in for a real member of staff.
 
-## Slots (21)
+## Slots (22 — 14 supplied, 8 still needed)
 
-| Key | Status | What the photograph should be |
+| Key | Status | Photograph |
 | --- | --- | --- |
-| `hero` | needed | Wide, low-light cinematic frame of real athlete training. Landscape 21:9, min 2400px wide. Leave clear space on the left third for the headline. |
-| `brandIntro` | needed | Portrait 4:5 coaching moment — coach observing, athlete under load. Min 1400px wide. |
-| `performanceCentre` | needed | The performance floor: racks, platforms, turf. Landscape 4:3, min 2000px wide. |
-| `rehabCentre` | needed | The clinical space: plinth, assessment area, rehab equipment. Landscape 4:3, min 2000px wide. |
-| `strengthTraining` | needed | Barbell work, side-on, coach in frame. Landscape 3:2, min 1800px wide. |
-| `sprinting` | needed | Sprint / acceleration frame, panned or frozen. Landscape 3:2, min 1800px wide. |
-| `athleteDevelopment` | needed | Group of developing athletes mid-session. Landscape 3:2, min 1800px wide. |
-| `jumpTesting` | needed | Jump test in progress with the testing setup visible. Landscape 3:2, min 1800px wide. |
-| `forcePlate` | needed | Force plates in use, screen or tablet readout visible. Landscape 3:2, min 1800px wide. |
-| `valdTesting` | needed | VALD hardware in use during a testing session. Landscape 3:2, min 1800px wide. |
-| `physiotherapy` | needed | Hands-on assessment or treatment in the clinical space. Landscape 3:2, min 1800px wide. |
-| `rehabilitation` | needed | Rehab under load — bridging the clinical and performance environments. Landscape 3:2, min 1800px wide. |
-| `returnToSport` | needed | On-field or on-court reconditioning, sport-specific. Landscape 3:2, min 1800px wide. |
-| `mobility` | needed | Mobility / recovery session, calm and clinical. Landscape 3:2, min 1800px wide. |
-| `onlineCoaching` | needed | Athlete training with a programme on a phone or tablet. Landscape 3:2, min 1800px wide. |
-| `founder` | needed | Founder portrait, coaching context preferred. Portrait 4:5, min 1200px wide. |
-| `teamGroup` | needed | Full team on the performance floor. Landscape 16:9, min 2200px wide. |
-| `athletesHero` | needed | Competition frame — the strongest single image available. Landscape 21:9, min 2400px wide. |
-| `workshop` | needed | Workshop delivery — presenting, or attendees around a testing setup. Landscape 3:2, min 1800px wide. |
-| `facility` | needed | Exterior or entrance of Centre 01. Landscape 4:3, min 1800px wide. |
-| `facilityInterior` | needed | Wide interior showing the scale of the floor. Landscape 16:9, min 2200px wide. |
+| `hero` | supplied | The floor, looking down the turf lane. A frame with athletes mid-session would be stronger still: landscape 21:9, min 2400px wide, clear space on the left third for the headline. |
+| `brandIntro` | supplied | The founders representing Kinetic Edge at a sports science conclave. |
+| `performanceCentre` | supplied | Centre 01 exterior. A frame of the training floor itself (racks, platforms, turf) would be a stronger fit here when one exists. |
+| `rehabCentre` | supplied | Exterior of the rehabilitation centre. An interior frame (plinth, assessment area, rehab equipment) would still be worth adding as a second slot. |
+| `strengthTraining` | supplied | The strength floor. A frame of an athlete under the bar, coach in shot, would be a stronger fit when one exists. |
+| `sprinting` | supplied | The turf lane. An athlete accelerating down it would be the stronger frame. |
+| `athleteDevelopment` | supplied | The floor. A group of developing athletes mid-session would be a stronger fit. |
+| `jumpTesting` | **needed** | Jump test in progress with the testing setup visible. Landscape 3:2, min 1800px wide. |
+| `forcePlate` | **needed** | Force plates in use, screen or tablet readout visible. Landscape 3:2, min 1800px wide. |
+| `physiotherapy` | **needed** | Hands-on assessment or treatment in the clinical space. Landscape 3:2, min 1800px wide. |
+| `rehabilitation` | **needed** | Rehab under load — bridging the clinical and performance environments. Landscape 3:2, min 1800px wide. |
+| `returnToSport` | **needed** | On-field or on-court reconditioning, sport-specific. Landscape 3:2, min 1800px wide. |
+| `mobility` | **needed** | Mobility / recovery session, calm and clinical. Landscape 3:2, min 1800px wide. |
+| `onlineCoaching` | **needed** | Athlete training with a programme on a phone or tablet. Landscape 3:2, min 1800px wide. |
+| `founder` | supplied | Founder portrait at the centre. |
+| `foundersTogether` | supplied | The two founders together. |
+| `coachTrack` | supplied | Coach trackside. |
+| `teamGroup` | **needed** | Full team on the performance floor. Landscape 16:9, min 2200px wide. |
+| `athletesHero` | supplied | The floor. A competition frame of a Kinetic Edge athlete would be the stronger image here: landscape 21:9, min 2400px wide. |
+| `facility` | supplied | Exterior of Centre 01. |
+| `centreBuilding` | supplied | The building from the street. |
+| `facilityInterior` | supplied | Wide interior of the floor. |
 
-## Athlete result images
+## Athlete photographs
 
-Result photographs are not listed here — each one lives on its own result object in
-[`data/athlete-results.ts`](data/athlete-results.ts) as an `image` path. Their alt text is
-**generated** from the verified fields on that object by `resultAlt()`, never written by
-hand. That is deliberate: it is what prevents one athlete being credited with another
+Athlete photographs are not listed here — each one lives on its athlete in
+[`data/athletes.ts`](data/athletes.ts), with its intrinsic width and height. The current
+set are crops taken from the congratulation posters the client supplied, at 900×1125.
+
+Their alt text is **generated** from the verified fields by `athleteAlt()`, never written
+by hand. That is deliberate: it is what prevents one athlete being credited with another
 athlete's result, which is how the previous site went wrong.
 
 ## Team photographs

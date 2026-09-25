@@ -46,6 +46,26 @@ const imageRegistry = {
     shot: "SUPPLIED — the floor, looking down the turf lane. A frame with athletes mid-session would be stronger still: landscape 21:9, min 2400px wide, clear space on the left third for the headline.",
     position: "center 45%",
   },
+  /**
+   * The hero is art-directed: three frames of the same room, one per
+   * breakpoint. `hero` is the desktop frame and must not change — see the note
+   * in components/sections/Hero.tsx. These two are shot for their shapes, so
+   * neither is a crop of the other.
+   */
+  heroTablet: {
+    src: "/images/centre/floor-entrance-wide.webp",
+    width: 1448,
+    height: 1086,
+    alt: "The Kinetic Edge training floor from the entrance — the glazed KE door, the strength area beyond it and the turf acceleration lane along the right wall",
+    shot: "SUPPLIED — the floor from the entrance, landscape 4:3. Shot for the tablet hero.",
+  },
+  heroMobile: {
+    src: "/images/centre/floor-entrance-tall.webp",
+    width: 941,
+    height: 1672,
+    alt: "The Kinetic Edge training floor from the entrance — the glazed KE door, the strength area beyond it and the turf acceleration lane along the right wall",
+    shot: "SUPPLIED — the same frame shot vertically, 9:16. Shot for the mobile hero.",
+  },
   brandIntro: {
     src: "/images/founders/founders-conclave.webp",
     width: 1146,

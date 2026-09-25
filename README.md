@@ -157,6 +157,13 @@ Verified during the build, across all 13 routes:
   profile morph is dropped in favour of a plain fade, and the brand entrance never runs
 - no photograph rendered at less than ~80% of itself, and no text over a face
 
+### The hero
+
+Three photographs of the same room, one per breakpoint — portrait below 768, landscape from
+768 to 1023, and the original desktop frame from 1024. `ArtDirectedImage` renders them as a
+`<picture>` against Next's image optimiser, so exactly one file is fetched and preloaded at
+any width. Verified at 375, 390, 430, 768, 820, 1024, 1440 and 1920.
+
 ### Image ratios
 
 Every supplied slot in `data/images.ts` records its intrinsic `width`/`height`, and

@@ -75,13 +75,17 @@ top of `components/ui/Reveal.tsx`.
 surfaces. For small text and filled buttons on light surfaces use `--accent-ink`; the raw
 brand blue is only 3.96:1 on white and fails WCAG AA.
 
-**The hero is two compositions, not one crop.** Below `lg` the copy sits on flat night and
-the photograph follows it as a whole 4:3 band; from `lg` the same single `<Image>` becomes
-the full-bleed background with the directional scrim. Do not split it into two elements
-(that preloads a candidate that is never painted) and do not pour the landscape frame into
-a phone-shaped box again — it showed 41% of the photograph under a scrim heavy enough to
-turn the rest black. The scroll scrub is gated on `lg` as well, because scaling an in-flow
-block to 1.06 pushes it past both edges.
+**The hero is three photographs, not one crop.** `heroMobile` below 768, `heroTablet` from
+768 to 1023, and `hero` — the desktop frame — from 1024. They are separate shots of the
+same room, and the section's min-height is tuned per breakpoint so each is shown at close
+to its own ratio. **The desktop frame is not to be changed, repositioned or re-cropped.**
+
+`ArtDirectedImage` renders this as a `<picture>`, which is the only markup that fetches one
+of three. Two rules hold it together: never swap it for `next/image` (one `<img>` cannot do
+art direction, and three `<Image>`s with `hidden`/`block` all download, because Chrome
+fetches an eager image inside a `display:none` ancestor); and keep every `media` range
+**mutually exclusive**, because `<picture>` takes the first match but `<link rel="preload">`
+fires on every match — overlapping ranges preloaded all three frames on one screen.
 
 **Never observe an element you have hidden.** Chrome does not reliably update an
 IntersectionObserver that has a `rootMargin` while the target's own `clip-path` (or a

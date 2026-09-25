@@ -55,6 +55,9 @@ Three rules that are easy to get wrong:
    reintroduce hand-written alt text there.
 3. **The athlete ambassador is not a service.** Sankar Muthusamy's section says that he
    represents Kinetic Edge, and carries no booking or consultation call to action.
+4. **Nothing is printed on an athlete's photograph.** The sport, the result count and the
+   caption all live in the panel beside the image. Every athlete crop puts the head in the
+   upper third, so anything laid over the frame lands on a face.
 
 Placeholder **images** are fine. Placeholder **facts** are not.
 
@@ -150,10 +153,26 @@ Verified during the build, across all 13 routes:
 - no hydration warnings and no console errors
 - keyboard-operable mobile menu, athlete profile dialog (focus trap, Escape, focus
   restore, scroll lock — shared in `lib/useModal.ts`) and services dropdown
-- `prefers-reduced-motion` honoured — animations collapse to instant state changes, and
-  the profile morph is dropped in favour of a plain fade
+- `prefers-reduced-motion` honoured — animations collapse to instant state changes, the
+  profile morph is dropped in favour of a plain fade, and the brand entrance never runs
+- no photograph rendered at less than ~80% of itself, and no text over a face
+
+### Image ratios
+
+Every supplied slot in `data/images.ts` records its intrinsic `width`/`height`, and
+`<Figure ratio="natural">` renders the photograph at its own shape. Most of the supplied
+files are 2:3 phone photographs; before this, fixed landscape frames were showing 42–60% of
+several of them, including the founder portrait in the 2020 chapter. Use a fixed ratio only
+where the composition needs a band, and give the block a narrower column rather than
+cropping harder — see `ServiceBlocks`.
 
 ### Motion notes
+
+- The site opens with a brand entrance: the KE mark resolves on night, a hairline draws
+  under it, and the plate wipes upward off the hero. It leaves as soon as the document is
+  ready, with a 700ms floor and a hard 1.8s ceiling, plays once per tab, and is hidden in
+  CSS — never painted — for a returning visitor or under `prefers-reduced-motion`.
+  `components/motion/BrandLoader.tsx`.
 
 - Reveals are driven by `lib/useRevealInView.ts`, never Framer's `whileInView` — the app
   runs on `domAnimation`, which does not include the viewport feature.

@@ -93,7 +93,8 @@ export function PageHero({
             <RevealMask delay={0.1} className="hidden lg:block">
               <Figure
                 imageKey={imageKey}
-                ratio="4/5"
+                ratio="natural"
+                fallbackRatio="4/5"
                 sizes="(min-width: 1024px) 38vw, 0px"
                 tone="dark"
               />

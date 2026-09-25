@@ -1,12 +1,21 @@
 import Image from "next/image";
-import { siteImages, type SiteImageKey } from "@/data/images";
+import { naturalRatio, siteImages, type SiteImageKey } from "@/data/images";
 import { cn } from "@/lib/utils";
 import { KEMark } from "./Logo";
 
 interface FigureProps {
   imageKey: SiteImageKey;
-  /** CSS aspect-ratio, e.g. "16/9", "4/5", "21/9". */
+  /**
+   * CSS aspect-ratio, e.g. "16/9", "4/5", "21/9".
+   *
+   * `"natural"` uses the photograph's own ratio, so nothing is cropped at all.
+   * Prefer it wherever the composition can take any shape — most of these are
+   * phone photographs at 2:3, and a fixed landscape frame cuts them in half.
+   * `fallbackRatio` is what a `"natural"` frame uses while the slot is still a
+   * placeholder plate.
+   */
   ratio?: string;
+  fallbackRatio?: string;
   /** Responsive sizes hint — always set this for anything not full-bleed. */
   sizes?: string;
   /** Only for genuinely above-the-fold imagery. */
@@ -31,6 +40,7 @@ interface FigureProps {
 export function Figure({
   imageKey,
   ratio = "4/3",
+  fallbackRatio = "4/3",
   sizes = "(min-width: 1024px) 50vw, 100vw",
   priority = false,
   tone = "dark",
@@ -40,11 +50,13 @@ export function Figure({
   overlay = false,
 }: FigureProps) {
   const image = siteImages[imageKey];
+  const frame =
+    ratio === "natural" ? (naturalRatio(imageKey) ?? fallbackRatio) : ratio;
 
   return (
     <div
       className={cn("relative overflow-hidden bg-ink", className)}
-      style={{ aspectRatio: ratio }}
+      style={{ aspectRatio: frame }}
     >
       {image.src ? (
         <Image

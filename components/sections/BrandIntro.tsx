@@ -66,7 +66,8 @@ export function BrandIntro() {
             <RevealMask className="lg:sticky lg:top-28">
               <Figure
                 imageKey="brandIntro"
-                ratio="4/5"
+                ratio="natural"
+                fallbackRatio="4/5"
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 tone="dark"
               />

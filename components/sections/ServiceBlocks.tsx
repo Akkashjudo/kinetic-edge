@@ -60,12 +60,17 @@ export function ServiceBlocks({
           ))}
         </ol>
 
+        {/* A photograph, at its own ratio, in a narrower column than the text.
+            A full-bleed band forced every one of these into 16:9 and threw away
+            a third of a 5:4 frame; centring it means no crop and no 1000px-tall
+            slab either. */}
         {breakImage && breakAfter > 0 ? (
-          <RevealMask className="mt-14 lg:mt-18">
+          <RevealMask className="mx-auto mt-14 max-w-4xl lg:mt-18">
             <Figure
               imageKey={breakImage}
-              ratio="21/9"
-              sizes="(min-width: 1280px) 1280px, 100vw"
+              ratio="natural"
+              fallbackRatio="3/2"
+              sizes="(min-width: 1024px) 896px, 100vw"
               tone="dark"
             />
           </RevealMask>

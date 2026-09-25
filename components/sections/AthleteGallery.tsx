@@ -16,14 +16,25 @@ import {
 /**
  * The athletes, as cards that open a full result list.
  *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * NOTHING IS EVER PRINTED ON TOP OF AN ATHLETE
+ *
+ * The photographs are portrait crops from the client's posters, and every
+ * athlete's head sits in the upper third of the frame. Chips positioned over
+ * the photograph — the sport, a result count, a gradient caption — land
+ * squarely on their faces at every breakpoint. They did, and it was the first
+ * thing the client saw.
+ *
+ * So the photograph carries no text, no badge and no scrim. All of it lives in
+ * the information panel beside it (below it, from `sm` up). Keep it that way.
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
  * Every card leads with one achievement — the strongest, which is the first in
  * the data — so the grid stays readable at a glance. Athletes with more results
- * carry a count, and the rest of the list lives in the profile rather than
- * stretching the card.
+ * carry a count on the control, and the rest of the list opens in the profile.
  *
- * Photographs are real crops of the athletes' own photos from the client's
- * posters, and alt text is generated from the verified fields, never written by
- * hand (see data/athletes.ts).
+ * Alt text is generated from the verified fields, never written by hand
+ * (see data/athletes.ts).
  */
 export function AthleteGallery({ athletes }: { athletes: Athlete[] }) {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
@@ -41,13 +52,14 @@ export function AthleteGallery({ athletes }: { athletes: Athlete[] }) {
 
   return (
     <MorphProvider>
-      <ul className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
-        {athletes.map((athlete, i) => (
+      {/* One column of horizontal cards on a phone — at 375px a two-up grid
+          leaves a 158px photograph and a four-line result. From `sm` the card
+          turns vertical and the grid takes over. */}
+      <ul className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 sm:gap-y-12 lg:grid-cols-3 xl:grid-cols-4">
+        {athletes.map((athlete) => (
           <li key={athlete.slug} className="flex">
             <AthleteCard
               athlete={athlete}
-              // Only the first row is likely to be above the fold anywhere.
-              priority={i < 2}
               onOpen={() => open(athlete.slug)}
               registerTrigger={(node) => {
                 if (node) triggers.current.set(athlete.slug, node);
@@ -85,12 +97,10 @@ function resultTone(result: string) {
 
 function AthleteCard({
   athlete,
-  priority,
   onOpen,
   registerTrigger,
 }: {
   athlete: Athlete;
-  priority: boolean;
   onOpen: () => void;
   registerTrigger: (node: HTMLButtonElement | null) => void;
 }) {
@@ -102,33 +112,25 @@ function AthleteCard({
       layoutId={`athlete-${athlete.slug}`}
       layoutCrossfade={false}
       transition={MORPH}
-      className="group relative flex flex-1 flex-col outline-offset-4 outline-accent has-[button:focus-visible]:outline-2"
+      className="group relative flex flex-1 items-stretch gap-4 border-b border-line pb-4 outline-offset-4 outline-accent has-[button:focus-visible]:outline-2 sm:flex-col sm:gap-0 sm:border-0 sm:pb-0"
     >
       <m.div
         layoutId={`athlete-image-${athlete.slug}`}
         layoutCrossfade={false}
         transition={MORPH}
-        className="relative aspect-4/5 overflow-hidden bg-mist"
+        className="relative aspect-4/5 w-[40%] shrink-0 self-start overflow-hidden bg-mist sm:w-full"
       >
         <Image
           src={athlete.image.src}
           alt={athleteAlt(athlete)}
           fill
-          sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, 45vw"
-          priority={priority}
+          // The crop is 4:5 and so is the frame — the photograph is never cut.
+          sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 40vw"
+          // Never above the fold: the athletes sit below a full hero on both
+          // pages that show them. Preloading two of these cost two requests
+          // before the hero image on the homepage.
           className="object-cover object-top transition-transform duration-[900ms] ease-[var(--ease-ke)] group-hover:scale-[1.04]"
         />
-
-        <p className="ke-label absolute left-3 top-3 bg-paper/95 px-2.5 py-1.5 text-ink backdrop-blur-sm">
-          {athlete.sport}
-        </p>
-
-        {more > 0 ? (
-          <p className="ke-label absolute right-3 top-3 bg-ink/85 px-2.5 py-1.5 text-white backdrop-blur-sm">
-            +{more}
-            <span className="sr-only"> more results</span>
-          </p>
-        ) : null}
 
         {/* Accent rule draws in under the photograph on hover. */}
         <span
@@ -137,14 +139,18 @@ function AthleteCard({
         />
       </m.div>
 
-      <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="font-display text-[1.0625rem] font-bold leading-snug tracking-[-0.022em] text-ink md:text-[1.1875rem]">
+      {/* The information panel. Everything that used to sit on the photograph
+          is here, where it can never cover anyone. */}
+      <div className="flex min-w-0 flex-1 flex-col sm:mt-4">
+        <p className="ke-label text-accent-ink">{athlete.sport}</p>
+
+        <h3 className="mt-2 font-display text-[1.0625rem] font-bold leading-snug tracking-[-0.022em] text-ink transition-colors duration-300 group-hover:text-accent-ink md:text-[1.1875rem]">
           {athlete.name}
         </h3>
 
         {/* Placing and category wrap as whole units — on a narrow card the
             category drops to its own line instead of stranding a separator. */}
-        <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+        <div className="mt-2.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           <p className="flex items-center gap-2 font-display text-[0.9375rem] font-semibold tracking-[-0.015em] text-ink">
             <span
               aria-hidden="true"
@@ -163,7 +169,7 @@ function AthleteCard({
           {top.year ? ` · ${top.year}` : ""}
         </p>
 
-        <div className="mt-auto pt-4">
+        <div className="mt-auto pt-3.5 sm:pt-4">
           <button
             ref={registerTrigger}
             type="button"
@@ -175,6 +181,14 @@ function AthleteCard({
               {more > 0 ? "All results" : "View profile"}
             </span>
             <span className="sr-only">: {athlete.name}</span>
+            {more > 0 ? (
+              <span
+                aria-hidden="true"
+                className="font-mono text-[0.6875rem] tabular-nums text-steel"
+              >
+                +{more}
+              </span>
+            ) : null}
             <Plus
               aria-hidden="true"
               className="h-4 w-4 transition-transform duration-300 ease-[var(--ease-ke)] group-hover:rotate-90"
@@ -194,12 +208,15 @@ function AthleteProfile({
   titleId: string;
 }) {
   return (
-    <div className="grid lg:grid-cols-[minmax(0,38%)_minmax(0,1fr)]">
+    <div className="grid lg:grid-cols-[minmax(0,34%)_minmax(0,1fr)] lg:items-start">
+      {/* Held at the photograph's own 4:5 ratio on every screen. Stretching this
+          column to the height of the results list is what used to cut the top
+          of an athlete's head off on desktop. */}
       <m.div
         layoutId={`athlete-image-${athlete.slug}`}
         layoutCrossfade={false}
         transition={MORPH}
-        className="relative aspect-4/5 overflow-hidden bg-ink lg:aspect-auto lg:min-h-[32rem]"
+        className="relative aspect-4/5 overflow-hidden bg-ink"
       >
         <Image
           src={athlete.image.src}

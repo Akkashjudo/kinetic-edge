@@ -21,6 +21,13 @@
 export interface SiteImage {
   /** Public path once a real photograph exists, otherwise null. */
   src: string | null;
+  /**
+   * Intrinsic pixel size of the supplied file. Set it whenever `src` is set:
+   * it is what lets a component ask for `ratio="natural"` and show the
+   * photograph whole instead of guessing a frame shape and cutting into it.
+   */
+  width?: number;
+  height?: number;
   /** Describes the supplied photograph — rewrite when the image lands. */
   alt: string;
   /** Art direction note for whoever supplies the photograph. */
@@ -33,12 +40,16 @@ const imageRegistry = {
   /* ---------------------------------------------------------------- Homepage */
   hero: {
     src: "/images/centre/floor-wide.webp",
+    width: 1280,
+    height: 960,
     alt: "The Kinetic Edge training floor in Mogappair East — turf acceleration lane, plyometric boxes and the entrance to the performance centre",
     shot: "SUPPLIED — the floor, looking down the turf lane. A frame with athletes mid-session would be stronger still: landscape 21:9, min 2400px wide, clear space on the left third for the headline.",
     position: "center 45%",
   },
   brandIntro: {
     src: "/images/founders/founders-conclave.webp",
+    width: 1146,
+    height: 1600,
     alt: "The founders of Kinetic Edge at the Symbiosis School of Sports Sciences Sports Conclave, 2025",
     shot: "SUPPLIED — the founders representing Kinetic Edge at a sports science conclave.",
     position: "center 25%",
@@ -47,11 +58,15 @@ const imageRegistry = {
   /* ----------------------------------------------------------------- Centres */
   performanceCentre: {
     src: "/images/centres/centre-01-exterior.webp",
+    width: 1500,
+    height: 1200,
     alt: "Kinetic Edge High Performance & Fitness Centre on Justice Rathinavel Pandian Road, Mogappair East",
     shot: "SUPPLIED — Centre 01 exterior. A frame of the training floor itself (racks, platforms, turf) would be a stronger fit here when one exists.",
   },
   rehabCentre: {
     src: "/images/centres/centre-02-exterior.webp",
+    width: 1170,
+    height: 936,
     alt: "The frontage of Kinetic Edge Fitness & Rehabilitation Centre, signed for strength and cardiovascular training and physiotherapy",
     shot: "SUPPLIED — exterior of the rehabilitation centre. An interior frame (plinth, assessment area, rehab equipment) would still be worth adding as a second slot.",
     // The signage runs along the very top of this frame; any crop wider than
@@ -62,17 +77,23 @@ const imageRegistry = {
   /* ---------------------------------------------------------------- Services */
   strengthTraining: {
     src: "/images/centre/floor-racks.webp",
+    width: 1280,
+    height: 960,
     alt: "Squat rack, barbells, dumbbells and plyometric boxes on the Kinetic Edge training floor",
     shot: "SUPPLIED — the strength floor. A frame of an athlete under the bar, coach in shot, would be a stronger fit when one exists.",
   },
   sprinting: {
     src: "/images/centre/floor-turf-lane.webp",
+    width: 1280,
+    height: 960,
     alt: "The indoor turf acceleration lane at Kinetic Edge, marked out for speed work",
     shot: "SUPPLIED — the turf lane. An athlete accelerating down it would be the stronger frame.",
     position: "center 60%",
   },
   athleteDevelopment: {
     src: "/images/centre/floor-rack-trapbar.webp",
+    width: 1280,
+    height: 960,
     alt: "Trap bar, squat rack and dumbbells on the Kinetic Edge training floor",
     shot: "SUPPLIED — the floor. A group of developing athletes mid-session would be a stronger fit.",
   },
@@ -115,18 +136,24 @@ const imageRegistry = {
   /* ----------------------------------------------------------------- People */
   founder: {
     src: "/images/founders/deepak.webp",
+    width: 1070,
+    height: 1600,
     alt: "Deepak, Founder and Managing Director of Kinetic Edge",
     shot: "SUPPLIED — founder portrait at the centre.",
     position: "center 30%",
   },
   foundersTogether: {
     src: "/images/founders/founders-ses.webp",
+    width: 1170,
+    height: 1530,
     alt: "The founders of Kinetic Edge, Deepak and Lakshmi Priyanka Subramanian",
     shot: "SUPPLIED — the two founders together.",
     position: "center 25%",
   },
   coachTrack: {
     src: "/images/centre/athletics-track.webp",
+    width: 960,
+    height: 1280,
     alt: "A Kinetic Edge coach at the athletics track",
     shot: "SUPPLIED — coach trackside.",
     position: "center 30%",
@@ -140,6 +167,8 @@ const imageRegistry = {
   /* --------------------------------------------------------------- Athletes */
   athletesHero: {
     src: "/images/centre/floor-benches.webp",
+    width: 1280,
+    height: 960,
     alt: "The Kinetic Edge training floor, where its athletes prepare",
     shot: "SUPPLIED — the floor. A competition frame of a Kinetic Edge athlete would be the stronger image here: landscape 21:9, min 2400px wide.",
     position: "center 55%",
@@ -148,16 +177,22 @@ const imageRegistry = {
   /* --------------------------------------------------------------- Facility */
   facility: {
     src: "/images/centres/centre-01-exterior.webp",
+    width: 1500,
+    height: 1200,
     alt: "The entrance to Kinetic Edge High Performance & Fitness Centre on Justice Rathinavel Pandian Road, Mogappair East, Chennai",
     shot: "SUPPLIED — exterior of Centre 01.",
   },
   centreBuilding: {
     src: "/images/centre/building.webp",
+    width: 1132,
+    height: 1600,
     alt: "The Kinetic Edge High Performance & Fitness Centre building on its street in Mogappair East, Chennai",
     shot: "SUPPLIED — the building from the street.",
   },
   facilityInterior: {
     src: "/images/centre/floor-benches.webp",
+    width: 1280,
+    height: 960,
     alt: "Inside the Kinetic Edge High Performance Centre — benches, racks and the glazed entrance",
     shot: "SUPPLIED — wide interior of the floor.",
     position: "center 55%",
@@ -170,3 +205,16 @@ export type SiteImageKey = keyof typeof imageRegistry;
 export const siteImages: Record<SiteImageKey, SiteImage> = imageRegistry;
 
 export const getImage = (key: SiteImageKey): SiteImage => siteImages[key];
+
+/**
+ * The photograph's own aspect ratio as a CSS value, or null where the file has
+ * not been supplied yet (the placeholder plate then keeps the caller's shape).
+ *
+ * Use this — via `<Figure ratio="natural">` — rather than pouring a portrait
+ * into a landscape frame. Several slots here are phone photographs at 2:3; a
+ * 16:10 frame threw away 42% of one of them, head and feet included.
+ */
+export function naturalRatio(key: SiteImageKey): string | null {
+  const { width, height } = siteImages[key];
+  return width && height ? `${width} / ${height}` : null;
+}

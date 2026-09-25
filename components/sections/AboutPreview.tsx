@@ -52,7 +52,8 @@ export function AboutPreview({ index = "10" }: { index?: string }) {
             <RevealMask className="col-span-3">
               <Figure
                 imageKey="foundersTogether"
-                ratio="4/5"
+                ratio="natural"
+                fallbackRatio="4/5"
                 sizes="(min-width: 1024px) 34vw, 55vw"
                 tone="dark"
               />
@@ -61,7 +62,8 @@ export function AboutPreview({ index = "10" }: { index?: string }) {
             <RevealMask delay={0.12} className="col-span-2 mt-10 lg:mt-20">
               <Figure
                 imageKey="founder"
-                ratio="4/5"
+                ratio="natural"
+                fallbackRatio="4/5"
                 sizes="(min-width: 1024px) 23vw, 37vw"
                 tone="dark"
               />

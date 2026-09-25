@@ -45,7 +45,7 @@ export function CentreCards({
                 <div className="relative overflow-hidden">
                   <Figure
                     imageKey={centre.imageKey}
-                    ratio="16/10"
+                    ratio="5/4"
                     sizes="(min-width: 768px) 48vw, 100vw"
                     tone="dark"
                     imageClassName="transition-transform duration-[900ms] ease-[var(--ease-ke)] group-hover:scale-[1.04]"

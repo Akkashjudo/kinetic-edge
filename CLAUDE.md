@@ -41,6 +41,12 @@ Alt text is **generated** by `athleteAlt()` from the verified fields. Never hand
 and never carry alt text over from the previous site: several old tags credited one
 athlete with another athlete's result.
 
+**Nothing is ever printed on top of an athlete.** Every athlete photograph is a portrait
+crop from a poster and every head sits in the upper third of the frame, so a sport chip, a
+result count or a caption positioned over the image lands on a face at every breakpoint.
+It did. The photograph carries no text, no badge and no scrim; all of it lives in the
+information panel beside it. See `components/sections/AthleteGallery.tsx`.
+
 **The athlete ambassador is not a service.** Sankar Muthusamy's section states that he
 represents Kinetic Edge. It carries no booking, consultation or coaching call to action —
 removed 25 Sep 2026.
@@ -51,10 +57,14 @@ removed 25 Sep 2026.
   in page JSX.
 - Photographs go through `data/images.ts` and the `Figure` component. Never hardcode an
   image path in a component. See [IMAGES.md](IMAGES.md).
+- Every supplied slot records its intrinsic `width`/`height`, and `<Figure ratio="natural">`
+  uses them so the photograph is shown whole. Reach for a fixed ratio only when the
+  composition genuinely needs a band, and check what it costs first — most of the supplied
+  files are 2:3 phone photographs, and a 16:10 frame was throwing away 58% of one of them.
 - Server components by default. Add `"use client"` only where state, effects or Framer
   Motion actually require it.
 
-## Two things that will bite you
+## Three things that will bite you
 
 **Reduced motion and hydration.** `useReducedMotion()` resolves differently on the server
 and the client. Never branch the *rendered tree* on it — that is a hydration mismatch.
@@ -64,6 +74,14 @@ top of `components/ui/Reveal.tsx`.
 **Accent contrast.** `--accent` is the brand colour and is for rules, marks and dark
 surfaces. For small text and filled buttons on light surfaces use `--accent-ink`; the raw
 brand blue is only 3.96:1 on white and fails WCAG AA.
+
+**The hero is two compositions, not one crop.** Below `lg` the copy sits on flat night and
+the photograph follows it as a whole 4:3 band; from `lg` the same single `<Image>` becomes
+the full-bleed background with the directional scrim. Do not split it into two elements
+(that preloads a candidate that is never painted) and do not pour the landscape frame into
+a phone-shaped box again — it showed 41% of the photograph under a scrim heavy enough to
+turn the rest black. The scroll scrub is gated on `lg` as well, because scaling an in-flow
+block to 1.06 pushes it past both edges.
 
 **Never observe an element you have hidden.** Chrome does not reliably update an
 IntersectionObserver that has a `rootMargin` while the target's own `clip-path` (or a
@@ -78,3 +96,4 @@ empty for two seconds until the watchdog forced it.
 - no horizontal overflow at 360 / 768 / 1440 px
 - one `h1` per page, no skipped heading levels
 - interactive targets ≥ 24×24 px, AA text contrast holds
+- no photograph showing less than ~80% of itself, and no text over a face

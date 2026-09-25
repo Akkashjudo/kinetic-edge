@@ -103,7 +103,7 @@ export function Logo({
           {withDescriptor ? (
             <span
               className={cn(
-                "mt-1.5 font-mono text-[0.5rem] tracking-[0.2em] sm:text-[0.5625rem]",
+                "mt-1.5 font-mono text-[0.5625rem] tracking-[0.16em] sm:text-[0.625rem] sm:tracking-[0.2em]",
                 tone === "dark" ? "text-steel-400" : "text-steel",
               )}
             >

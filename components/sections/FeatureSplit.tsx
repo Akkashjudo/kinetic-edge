@@ -56,7 +56,8 @@ export function FeatureSplit({
             <RevealMask className={cn(flip ? "lg:order-1" : "lg:order-2")}>
               <Figure
                 imageKey={imageKey}
-                ratio="4/3"
+                ratio="natural"
+                fallbackRatio="4/3"
                 sizes="(min-width: 1024px) 48vw, 100vw"
                 tone="dark"
               />

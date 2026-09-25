@@ -7,7 +7,20 @@ Components never hardcode an image path.
 
 1. Save the file into `/public/images/…` (WebP preferred, sized per the brief below).
 2. In `data/images.ts`, change that slot's `src` from `null` to the public path.
-3. Rewrite that slot's `alt` to describe the photograph you actually supplied.
+3. **Set `width` and `height` to the file's intrinsic pixel size.** They are what
+   `<Figure ratio="natural">` uses to show the photograph whole; without them it falls back
+   to the caller's frame and crops.
+4. Rewrite that slot's `alt` to describe the photograph you actually supplied.
+
+### Choosing a frame
+
+Prefer `ratio="natural"`. A fixed ratio is a decision to throw part of the photograph away,
+and most of what the client supplies is shot on a phone at 2:3 — a 16:10 frame keeps 42% of
+one of those. Where a composition genuinely needs a band, narrow the column instead of
+cropping harder, and never point a portrait slot at a landscape frame or the reverse.
+
+Nothing is ever laid over a photograph of a person: no chip, no badge, no caption, no
+scrim. Every athlete and founder crop puts the head in the upper third of the frame.
 
 Until `src` is set, the slot renders a branded placeholder plate at the exact final crop
 and aspect ratio — so dropping the photograph in shifts nothing on the page. Where a

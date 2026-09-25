@@ -1,20 +1,25 @@
+import Image from "next/image";
 import { storyChapters } from "@/data/story";
+import { team } from "@/data/team";
+import type { SiteImageKey } from "@/data/images";
 import { Container } from "@/components/ui/Container";
 import { Figure } from "@/components/ui/Figure";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 /**
- * Photographs paired with each chapter, in order: the founder, the floor that
- * opened in 2023, the rehabilitation centre brought in-house in 2024, and the
- * floor as it is today.
+ * Photographs paired with each chapter.
+ *
+ * 2020 is the exception: it is where two people started the practice, so it is
+ * given their two portraits rather than a photograph of a building that did not
+ * exist yet. The rest carry one frame each, at that photograph's own ratio —
+ * several of these are 2:3 phone photographs and a 16:10 frame was throwing
+ * away more than half of one of them.
  */
-const chapterImages = [
-  "founder",
-  "strengthTraining",
-  "rehabCentre",
-  "facilityInterior",
-] as const;
+const chapterImages: Record<number, { key: SiteImageKey; ratio: string }> = {
+  1: { key: "strengthTraining", ratio: "natural" },
+  2: { key: "rehabCentre", ratio: "natural" },
+};
 
 /**
  * Brand story. The chapter text is verified and must not be embellished —
@@ -69,7 +74,7 @@ export function StoryTimeline() {
                   <RevealMask delay={0.08} className="mt-10 lg:mt-14">
                     <Figure
                       imageKey="facilityInterior"
-                      ratio="21/9"
+                      ratio="16/9"
                       sizes="(min-width: 1280px) 1280px, 100vw"
                       tone="dark"
                     />
@@ -77,6 +82,8 @@ export function StoryTimeline() {
                 </li>
               );
             }
+
+            const media = chapterImages[index];
 
             return (
               <li
@@ -103,22 +110,69 @@ export function StoryTimeline() {
                   </p>
                 </Reveal>
 
-                <RevealMask
-                  delay={0.08}
-                  className={flip ? "lg:order-1" : undefined}
-                >
-                  <Figure
-                    imageKey={chapterImages[index] ?? "facility"}
-                    ratio="16/10"
-                    sizes="(min-width: 1024px) 45vw, 100vw"
-                    tone="dark"
-                  />
-                </RevealMask>
+                <div className={flip ? "lg:order-1" : undefined}>
+                  {media ? (
+                    <RevealMask delay={0.08}>
+                      <Figure
+                        imageKey={media.key}
+                        ratio={media.ratio}
+                        fallbackRatio="16/10"
+                        sizes="(min-width: 1024px) 45vw, 100vw"
+                        tone="dark"
+                      />
+                    </RevealMask>
+                  ) : (
+                    <FoundersPair />
+                  )}
+                </div>
               </li>
             );
           })}
         </ol>
       </Container>
     </section>
+  );
+}
+
+/**
+ * The 2020 chapter's photograph: the two people the practice started as.
+ *
+ * Names, roles and portraits all come from `data/team.ts` — nothing is written
+ * here — and the two frames are the portraits' own 4:5, so neither face is cut.
+ * The offset is what makes it read as a founders' spread rather than a grid of
+ * two.
+ */
+function FoundersPair() {
+  const founders = team
+    .filter((member) => member.group === "Leadership" && member.image)
+    .slice(0, 2);
+
+  if (founders.length < 2) return null;
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+      {founders.map((founder, i) => (
+        <figure key={founder.name} className={i === 1 ? "mt-8 sm:mt-12" : undefined}>
+          <RevealMask delay={0.08 + i * 0.08}>
+            <div className="relative aspect-4/5 overflow-hidden bg-mist">
+              <Image
+                src={founder.image as string}
+                alt={`${founder.name}, ${founder.role} of Kinetic Edge`}
+                fill
+                sizes="(min-width: 1024px) 22vw, 45vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </RevealMask>
+
+          <figcaption className="mt-3.5">
+            <p className="font-display text-[0.9375rem] font-bold leading-snug tracking-[-0.02em] text-ink">
+              {founder.name}
+            </p>
+            <p className="ke-body-sm mt-1 text-steel">{founder.role}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   );
 }

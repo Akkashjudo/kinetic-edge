@@ -41,6 +41,7 @@ export const services: ServiceDetail[] = [
     intro:
       "Strength and conditioning at Kinetic Edge starts with what the sport asks of the athlete, and works backwards. Physical qualities are assessed, trained deliberately and re-tested — so training is directed at what actually needs to change.",
     imageKey: "strengthTraining",
+    breakImageKey: "athleteDevelopment",
     blocks: [
       { title: "Strength", body: "The foundation everything else is built on. Trained progressively and to a standard the sport can use." },
       { title: "Power", body: "The ability to express strength quickly — developed through loading and velocity, not one or the other." },
@@ -81,6 +82,7 @@ export const services: ServiceDetail[] = [
     intro:
       "A session can be hard and still take an athlete nowhere. Athlete performance training starts by measuring where the athlete is, is planned against what their sport and competition calendar demand, and is re-tested — so progress is confirmed rather than assumed.",
     imageKey: "athleteDevelopment",
+    breakImageKey: "sprinting",
     blocks: [
       { title: "Performance Assessment", body: "The baseline every programme is written against — force production, jump characteristics, speed and movement, measured rather than estimated." },
       { title: "Strength Development", body: "Built to a level that supports the sport, then maintained through the competitive period." },
@@ -120,6 +122,7 @@ export const services: ServiceDetail[] = [
       "Physiotherapy at Kinetic Edge is delivered inside a performance environment. The assessment considers the injury and what you are going back to — and rehabilitation runs as a progression with criteria at each stage, through to a return to training and sport.",
     // The rehabilitation centre itself — no interior frame has been supplied.
     imageKey: "rehabCentre",
+    breakImageKey: "facilityInterior",
     blocks: [
       { title: "Injury Assessment", body: "Understanding the injury, how it behaves, what provokes it and what you need to get back to." },
       { title: "Pain Management", body: "Settling symptoms so that meaningful rehabilitation can begin and progress." },

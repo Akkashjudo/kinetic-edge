@@ -98,7 +98,7 @@ export default async function ServicePage({
 
       <ServiceBlocks
         blocks={service.blocks}
-        breakImage={service.imageKey}
+        breakImage={service.breakImageKey}
         index="01"
         label="What this covers"
         title={

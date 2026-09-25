@@ -164,6 +164,18 @@ Three photographs of the same room, one per breakpoint — portrait below 768, l
 `<picture>` against Next's image optimiser, so exactly one file is fetched and preloaded at
 any width. Verified at 375, 390, 430, 768, 820, 1024, 1440 and 1920.
 
+### Image performance
+
+A first view on a phone is one photograph: the hero, as AVIF at the width that screen
+actually needs. Everything else is lazy, nothing is preloaded except the hero frame for
+the matching breakpoint, no file is fetched twice, and every frame reserves its space
+before it loads — measured CLS is 0. Each image fades in from a 14px placeholder in
+`data/blur.ts` (`npm run blur` regenerates it) rather than opening onto an empty box.
+
+Static assets are cached for a week with a month of stale-while-revalidate; without that
+header Vercel serves `/public` as `max-age=0` and a returning visitor revalidates every
+photograph on the page.
+
 ### Image ratios
 
 Every supplied slot in `data/images.ts` records its intrinsic `width`/`height`, and

@@ -54,6 +54,13 @@ export interface ServiceDetail extends ServiceSummary {
   blocks: { title: string; body: string }[];
   /** Omitted where no honest photograph exists for the service yet. */
   imageKey?: ImageKey;
+  /**
+   * A SECOND photograph, breaking a long block list. It must never be the same
+   * key as `imageKey` — the page hero already carries that frame, and repeating
+   * it showed the visitor one picture twice and downloaded the file twice.
+   * Omit it rather than repeat.
+   */
+  breakImageKey?: ImageKey;
   metaTitle: string;
   metaDescription: string;
 }

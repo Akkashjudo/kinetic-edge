@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { blurFor } from "@/data/blur";
 import { naturalRatio, siteImages, type SiteImageKey } from "@/data/images";
 import { cn } from "@/lib/utils";
 import { KEMark } from "./Logo";
@@ -50,6 +51,7 @@ export function Figure({
   overlay = false,
 }: FigureProps) {
   const image = siteImages[imageKey];
+  const blur = blurFor(image.src);
   const frame =
     ratio === "natural" ? (naturalRatio(imageKey) ?? fallbackRatio) : ratio;
 
@@ -66,6 +68,10 @@ export function Figure({
           sizes={sizes}
           priority={priority}
           loading={priority ? undefined : "lazy"}
+          // A 14px blur while the file arrives, so a lazy frame never opens
+          // onto an empty box. See data/blur.ts.
+          placeholder={blur ? "blur" : "empty"}
+          blurDataURL={blur}
           className={cn("object-cover", imageClassName)}
           style={{ objectPosition: image.position ?? "center" }}
         />

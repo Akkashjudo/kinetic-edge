@@ -57,6 +57,13 @@ removed 25 Sep 2026.
   in page JSX.
 - Photographs go through `data/images.ts` and the `Figure` component. Never hardcode an
   image path in a component. See [IMAGES.md](IMAGES.md).
+- After adding or replacing anything in `/public/images`, run `npm run blur`. It
+  regenerates `data/blur.ts`, the 14px placeholder every image fades in from; without an
+  entry the frame opens onto an empty box.
+- Two slots that show the SAME file on one page must declare the same `sizes`, or the
+  browser fetches that photograph twice at two widths. `PORTRAIT_SIZES` in `TeamCard` is
+  shared for exactly this reason. A service page's `breakImageKey` must never equal its
+  `imageKey`, for the same reason and because it showed the visitor one picture twice.
 - Every supplied slot records its intrinsic `width`/`height`, and `<Figure ratio="natural">`
   uses them so the photograph is shown whole. Reach for a fixed ratio only when the
   composition genuinely needs a band, and check what it costs first — most of the supplied
@@ -92,6 +99,15 @@ IntersectionObserver that has a `rootMargin` while the target's own `clip-path` 
 scale-to-nothing transform) hides it. `RevealMask` therefore observes an unclipped wrapper
 and animates the clip on a child. Observing the clipped element left every image frame
 empty for two seconds until the watchdog forced it.
+
+## Caching
+
+Everything under `/public` is served by Vercel as `max-age=0, must-revalidate` unless
+`headers()` in `next.config.ts` says otherwise — and the image optimiser inherits that
+header, so the AVIF it generates was being revalidated on every page view too. The rule
+there gives `/images`, `/brand` and `/og.png` a week of freshness with a month of
+stale-while-revalidate, and `images.minimumCacheTTL` keeps generated variants for 30 days
+instead of the 60-second default. Do not use `immutable`: these files get swapped by hand.
 
 ## Before calling a change done
 

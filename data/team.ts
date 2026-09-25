@@ -49,6 +49,7 @@ export const team: TeamMember[] = [
     name: "Subramanian",
     role: "Executive Director",
     group: "Leadership",
+    image: "/images/team/subramanian.webp",
   },
 
   // ── Sport Science ───────────────────────────────────────────────────────
@@ -70,6 +71,7 @@ export const team: TeamMember[] = [
     name: "Viswabujithan",
     role: "Senior — Strength & Conditioning Coach",
     group: "Strength & Conditioning",
+    image: "/images/team/viswabujithan.webp",
   },
   {
     name: "Vinoth",

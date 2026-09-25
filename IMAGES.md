@@ -11,6 +11,9 @@ Components never hardcode an image path.
    `<Figure ratio="natural">` uses to show the photograph whole; without them it falls back
    to the caller's frame and crops.
 4. Rewrite that slot's `alt` to describe the photograph you actually supplied.
+5. Run `npm run blur`. It regenerates `data/blur.ts`, the tiny placeholder each frame
+   fades in from, for everything in `/public/images` — team portraits and athlete
+   photographs included.
 
 ### Choosing a frame
 

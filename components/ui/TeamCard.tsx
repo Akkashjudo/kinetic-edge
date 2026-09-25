@@ -1,6 +1,19 @@
 import Image from "next/image";
+import { blurFor } from "@/data/blur";
 import type { TeamMember } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+/**
+ * Shared by every 4:5 portrait on the site — the team grid here and the
+ * founders' pair in the 2020 story chapter.
+ *
+ * It is one constant on purpose. The two render at slightly different widths,
+ * and when they declared `16vw` and `22vw` separately a 1440px /about page
+ * downloaded Deepak twice and Priyanka twice, at 256w and 640w. Declaring the
+ * same hint puts both on one candidate that is sharp in the larger slot.
+ */
+export const PORTRAIT_SIZES =
+  "(min-width: 1280px) 20vw, (min-width: 640px) 30vw, 45vw";
 
 /** Initials from a verified name — never a generated or stock portrait. */
 function initials(name: string) {
@@ -37,7 +50,9 @@ export function TeamCard({
             src={member.image}
             alt={`${member.name}, ${member.role}, Kinetic Edge`}
             fill
-            sizes="(min-width: 1280px) 16vw, (min-width: 640px) 30vw, 45vw"
+            sizes={PORTRAIT_SIZES}
+            placeholder={blurFor(member.image) ? "blur" : "empty"}
+            blurDataURL={blurFor(member.image)}
             className="object-cover object-top transition-transform duration-700 ease-[var(--ease-ke)] group-hover:scale-[1.03]"
           />
         ) : (

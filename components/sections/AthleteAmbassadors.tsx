@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ambassadors } from "@/data/ambassadors";
+import { blurFor } from "@/data/blur";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
@@ -107,6 +108,8 @@ export function AthleteAmbassadors({
               alt={`${name} — ${credentials.join(", ")}, ${role}`}
               fill
               sizes="(min-width: 1440px) 1312px, (min-width: 1024px) 92vw, 100vw"
+              placeholder={blurFor(poster.src) ? "blur" : "empty"}
+              blurDataURL={blurFor(poster.src)}
               className="object-contain"
             />
           </div>

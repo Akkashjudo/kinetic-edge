@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { storyChapters } from "@/data/story";
 import { team } from "@/data/team";
+import { blurFor } from "@/data/blur";
 import type { SiteImageKey } from "@/data/images";
 import { Container } from "@/components/ui/Container";
 import { Figure } from "@/components/ui/Figure";
 import { Reveal, RevealMask } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { PORTRAIT_SIZES } from "@/components/ui/TeamCard";
 
 /**
  * Photographs paired with each chapter.
@@ -71,9 +73,12 @@ export function StoryTimeline() {
                     </div>
                   </Reveal>
 
+                  {/* Not `facilityInterior`: /about's page hero already shows
+                      that frame, and repeating it here put the same photograph
+                      on the page twice and fetched the file twice. */}
                   <RevealMask delay={0.08} className="mt-10 lg:mt-14">
                     <Figure
-                      imageKey="facilityInterior"
+                      imageKey="athleteDevelopment"
                       ratio="16/9"
                       sizes="(min-width: 1280px) 1280px, 100vw"
                       tone="dark"
@@ -117,7 +122,9 @@ export function StoryTimeline() {
                         imageKey={media.key}
                         ratio={media.ratio}
                         fallbackRatio="16/10"
-                        sizes="(min-width: 1024px) 45vw, 100vw"
+                        // Matches CentreCards, which shows the same
+                        // rehabilitation-centre frame further down /about.
+                        sizes="(min-width: 768px) 48vw, 100vw"
                         tone="dark"
                       />
                     </RevealMask>
@@ -143,8 +150,10 @@ export function StoryTimeline() {
  * two.
  */
 function FoundersPair() {
+  // Matched on the role, not on position in the list: Leadership also holds the
+  // Executive Director, who has a portrait now and is not a founder.
   const founders = team
-    .filter((member) => member.group === "Leadership" && member.image)
+    .filter((member) => /founder/i.test(member.role) && member.image)
     .slice(0, 2);
 
   if (founders.length < 2) return null;
@@ -159,7 +168,9 @@ function FoundersPair() {
                 src={founder.image as string}
                 alt={`${founder.name}, ${founder.role} of Kinetic Edge`}
                 fill
-                sizes="(min-width: 1024px) 22vw, 45vw"
+                sizes={PORTRAIT_SIZES}
+                placeholder={blurFor(founder.image) ? "blur" : "empty"}
+                blurDataURL={blurFor(founder.image)}
                 className="object-cover object-top"
               />
             </div>

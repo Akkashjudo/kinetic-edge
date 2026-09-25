@@ -5,6 +5,7 @@ import Image from "next/image";
 import { m } from "framer-motion";
 import { Plus } from "lucide-react";
 import { athleteAlt, headlineAchievement } from "@/data/athletes";
+import { blurFor } from "@/data/blur";
 import type { Athlete, AthleteAchievement } from "@/lib/types";
 import {
   MORPH,
@@ -126,6 +127,8 @@ function AthleteCard({
           fill
           // The crop is 4:5 and so is the frame — the photograph is never cut.
           sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 40vw"
+          placeholder={blurFor(athlete.image.src) ? "blur" : "empty"}
+          blurDataURL={blurFor(athlete.image.src)}
           // Never above the fold: the athletes sit below a full hero on both
           // pages that show them. Preloading two of these cost two requests
           // before the hero image on the homepage.
@@ -223,6 +226,8 @@ function AthleteProfile({
           alt={athleteAlt(athlete)}
           fill
           sizes="(min-width: 1024px) 340px, 100vw"
+          placeholder={blurFor(athlete.image.src) ? "blur" : "empty"}
+          blurDataURL={blurFor(athlete.image.src)}
           className="object-cover object-top"
         />
       </m.div>
